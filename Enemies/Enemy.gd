@@ -1,4 +1,4 @@
-extends CSGCylinder
+extends KinematicBody
 
 
 var nav: Navigation = null
@@ -12,13 +12,8 @@ func _ready():
 func prep():
 	path = nav.get_simple_path(translation, target.translation, true)
 	path = Array(path)
-#	print(path)
-#	for p in path:
-#		var sphere: CSGSphere = CSGSphere.new()
-#		sphere.set_name("asdf")
-#		get_parent().add_child(sphere)
-#
-#		sphere.translation = p
+	for p in path:
+		p.y = translation.y
 
 func _process(delta):
 #	path = nav.get_simple_path(translation, target.translation, true)
@@ -43,10 +38,11 @@ func _process(delta):
 	if distance < moving:
 		path.pop_front()
 		return
-		
+	
 	translation = translation.linear_interpolate(to, moving / distance)
 	
 	
-	
-	
+func take_damage():
+	print("asdf")
+	self.queue_free()
 

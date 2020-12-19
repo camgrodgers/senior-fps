@@ -1,0 +1,18 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://Enemies/Enemy.gd" type="Script" id=1]
+
+[sub_resource type="CylinderShape" id=1]
+height = 3.99672
+
+[node name="Enemy" type="KinematicBody"]
+script = ExtResource( 1 )
+
+[node name="CSGCylinder" type="CSGCylinder" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.17925, 0 )
+height = 3.8355
+sides = 20
+
+[node name="CollisionShape" type="CollisionShape" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.16971, 0 )
+shape = SubResource( 1 )

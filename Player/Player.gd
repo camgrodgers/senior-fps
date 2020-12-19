@@ -12,6 +12,7 @@ func _ready():
 		inverse_y_factor = 1
 
 func _physics_process(delta):
+	# Movement
 	var aiming = transform.basis
 	var direction: Vector3 = Vector3()
 	
@@ -27,6 +28,21 @@ func _physics_process(delta):
 	direction = direction.normalized()
 	direction = direction * 8
 	move_and_slide(direction)
+	
+	# Using items/weapons
+	if Input.is_action_just_pressed("use_item"):
+		print("pressed")
+		var ray: RayCast = $Camera/RayCast
+		
+		ray.force_raycast_update()
+		if !ray.is_colliding():
+			return
+			
+		print("colliding")
+		var obj = ray.get_collider()
+		print(obj)
+		if obj.has_method("take_damage"):
+			obj.take_damage()
 
 # Camera motion
 export var turn_speed = 50

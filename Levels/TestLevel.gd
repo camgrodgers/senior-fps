@@ -1,11 +1,18 @@
 extends Navigation
 
-onready var enemy = $Enemy
+
 
 func _ready():
-	enemy.nav = self
-	enemy.target = $Player
-	enemy.prep()
+	var enemies = []
+	enemies.append($Enemy)
+	enemies.append($Enemy2)
+#	enemies.append($Enemy3)
+	for e in enemies:
+		e.nav = self
+		e.target = $Player
+		e.prep()
+	
+	
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
