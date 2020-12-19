@@ -43,6 +43,5 @@ func _process(delta):
 	
 	
 func take_damage():
-	print("asdf")
 	self.queue_free()
 

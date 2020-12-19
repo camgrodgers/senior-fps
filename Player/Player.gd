@@ -31,14 +31,12 @@ func _physics_process(delta):
 	
 	# Using items/weapons
 	if Input.is_action_just_pressed("use_item"):
-		print("pressed")
 		var ray: RayCast = $Camera/RayCast
 		
 		ray.force_raycast_update()
 		if !ray.is_colliding():
 			return
 			
-		print("colliding")
 		var obj = ray.get_collider()
 		print(obj)
 		if obj.has_method("take_damage"):
