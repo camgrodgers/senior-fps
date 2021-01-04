@@ -24,7 +24,7 @@ func _physics_process(delta):
 		direction += aiming[0]
 	if Input.is_action_pressed("move_left"):
 		direction -= aiming[0]
-	direction.y = 0
+	direction.y = 0 if is_on_floor() else -1 
 	direction = direction.normalized()
 	direction = direction * 8
 	move_and_slide(direction)
