@@ -1,6 +1,7 @@
 extends KinematicBody
 
 export var speed: float = 4.0
+onready var PlayerStats = $PlayerStats
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -64,3 +65,11 @@ func _input(event):
 	aim_y = clamp(aim_y, -1.5, 1.5)
 	
 	set_rotation(Vector3(aim_y, aim_x, 0))
+
+
+## Enemy/hazard interactions ##
+func danger_increase(rate, spike):
+	PlayerStats.danger_increase(rate, spike)
+
+func enemy_killed(decrease_amount):
+	PlayerStats.danger_decrease(decrease_amount)
