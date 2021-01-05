@@ -11,6 +11,10 @@ func _ready():
 	if (inverse_y):
 		inverse_y_factor = 1
 
+var isGoingUp = false
+var isGoingDown = false
+
+
 func _physics_process(delta):
 	# Movement
 	var aiming = transform.basis
@@ -24,7 +28,52 @@ func _physics_process(delta):
 		direction += aiming[0]
 	if Input.is_action_pressed("move_left"):
 		direction -= aiming[0]
-	direction.y = 0
+		
+	#Controlling Jumps
+	#If the space is Pressed
+	if Input.is_action_just_pressed("jump"):
+		print("It is hitting the jump function")
+		isGoingUp = true
+		isGoingDown = false
+		
+	#Slowly go Up
+	if(isGoingUp):
+		print("It is increasing the direciton")
+		direction.y = 20
+	#Slowly go Down
+	if(isGoingDown):
+		print("It is decreasing the direction")
+		direction.y = -20		
+	#If it gets to bottom of jump
+	if((translation.y <= 2.75) && isGoingDown):
+		print("It has reached the bottom of the jump")
+		isGoingUp = false
+		isGoingDown = false
+		translation.y = 2.471701
+		direction.y = 0
+	#If it gets to top of jump
+	if(translation.y > 12):
+		print("It has reached the top of the jump")
+		isGoingUp = false
+		isGoingDown = true
+		
+	if(!isGoingUp && !isGoingDown):
+		translation.y = 2.741701
+		
+	if(translation.y < 2.741701):
+		translation.y = 2.741701
+		
+	print(translation.x)
+	
+	#Problem: When the player is in the air, it will follow his y direction up to infinity....
+	#Regardless of the directions.
+	#Solution: When building new translation coordinates, I need to disable camera from having any factor
+	#x, y direction are paused for some reason during the jump.... Perhaps they should be scaled accordingly during a jump....
+	
+	if(isGoingUp || isGoingDown):
+		direction.x *= 25
+		direction.z *= 25
+	
 	direction = direction.normalized()
 	direction = direction * 8
 	move_and_slide(direction)
