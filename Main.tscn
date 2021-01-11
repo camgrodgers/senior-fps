@@ -19,6 +19,9 @@ select_mode = 1
 auto_height = true
 max_columns = 3
 same_column_width = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="Button" type="Button" parent="Menu/ItemList"]
 margin_right = 12.0
