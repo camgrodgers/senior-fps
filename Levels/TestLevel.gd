@@ -7,9 +7,18 @@ func _ready():
 	enemies.append($Enemy)
 	enemies.append($Enemy2)
 #	enemies.append($Enemy3)
+	
+	var nodes = []
+	nodes.append($NavNode)
+	nodes.append($NavNode2)
+	nodes.append($NavNode3)
+	nodes.append($NavNode4)
+	
 	for e in enemies:
 		e.nav = self
 		e.target = $Player
+		e.navNodes = nodes
+		e.numNodes = nodes.size()
 		e.prep()
 	
 	
