@@ -1,6 +1,7 @@
 extends KinematicBody
 
 export var speed: float = 4.0
+onready var PlayerStats = $PlayerStats
 
 const GRAVITY = -24.8
 
@@ -38,7 +39,7 @@ func _physics_process(delta):
 		direction += aiming[0]
 	if Input.is_action_pressed("move_left"):
 		direction -= aiming[0]
-		
+	
 	direction = direction.normalized()
 	
 	if is_on_floor():
@@ -106,3 +107,11 @@ func _input(event):
 	aim_y = clamp(aim_y, -1.5, 1.5)
 	
 	set_rotation(Vector3(aim_y, aim_x, 0))
+
+
+## Enemy/hazard interactions ##
+func danger_increase(rate):
+	PlayerStats.danger_increase(rate)
+
+func enemy_killed(decrease_amount):
+	PlayerStats.danger_decrease(decrease_amount)
