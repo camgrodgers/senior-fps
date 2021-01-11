@@ -13,14 +13,8 @@ var DEACCEL = 16
 const MAX_SLOPE_ANGLE = 40
 var MOUSE_SENSITIVITY = 0.05
 
-var camera
-var rotation_helper
-
-
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	camera = $Rotation_Helper / Camera
-	rotation_helper = $Rotation_Helper
 	
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	
@@ -47,14 +41,12 @@ func _physics_process(delta):
 		
 	direction = direction.normalized()
 	
-
-	if translation.y <= 2.471701:
+	if is_on_floor():
 		if Input.is_action_just_pressed("jump"):
 			vel.y = JUMP_SPEED
 	
 	direction.y = 0
 	direction = direction.normalized()
-	
 	
 	vel.y += delta * GRAVITY
 	
@@ -66,7 +58,7 @@ func _physics_process(delta):
 
 	var accel
 	
-	if direction.dot(hvel) > 2.471701:
+	if direction.dot(hvel) > 0:
 		accel = ACCEL
 	else:
 		accel = DEACCEL
@@ -75,8 +67,7 @@ func _physics_process(delta):
 	vel.x = hvel.x
 	vel.z = hvel.z
 	
-
-	move_and_slide(vel)
+	move_and_slide(vel, Vector3(0, 1, 0), 0.05, 4, deg2rad(MAX_SLOPE_ANGLE))
 	
 	# Using items/weapons
 	if Input.is_action_just_pressed("use_item"):
