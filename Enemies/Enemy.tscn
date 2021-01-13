@@ -1,18 +1,50 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://Enemies/Enemy.gd" type="Script" id=1]
 
 [sub_resource type="CylinderShape" id=1]
+radius = 0.594677
 height = 3.99672
+
+[sub_resource type="BoxShape" id=2]
+extents = Vector3( 22.583, 10, 20.7913 )
 
 [node name="Enemy" type="KinematicBody"]
 script = ExtResource( 1 )
 
-[node name="CSGCylinder" type="CSGCylinder" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.17925, 0 )
-height = 3.8355
-sides = 20
-
-[node name="CollisionShape" type="CollisionShape" parent="."]
+[node name="Hitbox" type="CollisionShape" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.16971, 0 )
 shape = SubResource( 1 )
+
+[node name="CSGCombiner" type="CSGCombiner" parent="."]
+
+[node name="CSGSphere" type="CSGSphere" parent="CSGCombiner"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.78098, 0 )
+radius = 0.46917
+
+[node name="CSGCylinder" type="CSGCylinder" parent="CSGCombiner"]
+transform = Transform( -0.0744393, 0, 0.997226, 0, 1, 0, -0.997226, 0, -0.0744393, 0, 2.53918, 0 )
+radius = 0.545107
+height = 1.39943
+sides = 20
+
+[node name="CSGCylinder" type="CSGCylinder" parent="CSGCombiner/CSGCylinder"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.68078, 0.31424 )
+radius = 0.11247
+height = 1.65312
+
+[node name="CSGCylinder2" type="CSGCylinder" parent="CSGCombiner/CSGCylinder"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.68078, -0.31562 )
+radius = 0.11247
+height = 1.65312
+
+[node name="CSGCylinder" type="CSGCylinder" parent="."]
+transform = Transform( 2.65431e-14, 1.62921e-07, 1, 1, -1.62921e-07, 0, 1.62921e-07, 1, -1.62921e-07, 0.277625, 2.77943, -1.25177 )
+radius = 0.116782
+height = 1.26737
+
+[node name="VisionCone" type="Area" parent="."]
+transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0.0767746, 3.59069, -19.8842 )
+
+[node name="CollisionShape" type="CollisionShape" parent="VisionCone"]
+shape = SubResource( 2 )
