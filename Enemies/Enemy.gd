@@ -66,10 +66,8 @@ func aim_at_player(delta):
 	if collider != target:
 		return
 	
-	var lookattrans = target.translation
-	# How to prevent tilting
-	lookattrans.y  = translation.y
-	look_at(lookattrans, Vector3(0,1,0))
+	look_at(target.translation, Vector3(0,1,0))
+	rotation_degrees.x = 0
 	endanger_player(delta)
 
 func endanger_player(delta):	
