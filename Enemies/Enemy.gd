@@ -18,9 +18,7 @@ enum {
 
 var state = FIND
 
-func _ready():
-	pass
-	
+
 func prep():
 	path = nav.get_simple_path(translation, target.translation, true)
 	path = Array(path)
@@ -48,7 +46,53 @@ func get_shortest_node():
 		currentNodePathIndex += 1
 	return prep_node(navNodes[shortestNodePathIndex])
 
+func check_vision():
+	var collisions = $VisionCone.get_overlapping_bodies()
+	for collider in collisions:
+		if collider.has_method("danger_increase"):
+			target = collider
+			return
+
+func aim_at_player(delta):
+	var space_state = get_world().direct_space_state
+	var body_ray = space_state.intersect_ray($Hitbox.global_transform.origin, target.global_transform.origin, [self])
+	if body_ray.empty():
+		print("empty ray")
+		# Something very messed up must have happened
+		# return an error or something here
+		return
+	
+	var collider = body_ray.collider
+	print(collider)
+	if collider != target:
+		return
+	
+	look_at(target.translation, Vector3(0,1,0))
+	rotation_degrees.x = 0
+	endanger_player(delta)
+
+func endanger_player(delta):	
+	var distance = target.translation.distance_to(translation)
+	
+	var rate = 0
+	if distance > 50:
+		rate = 0
+	elif distance > 30:
+		rate = 5
+	elif distance > 20:
+		rate = 10
+	elif distance > 10:
+		rate = 15
+	elif distance > 5:
+		rate = 20
+	else:
+		rate = 30
+	
+	rate *= delta
+	target.danger_increase(rate)
+
 func _process(delta):
+	aim_at_player(delta)
 #	path = nav.get_simple_path(translation, target.translation, true)
 #	path = Array(path)
 #	print(path)
