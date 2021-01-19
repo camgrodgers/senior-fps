@@ -10,7 +10,7 @@ const MAX_SPEED = 20
 const JUMP_SPEED = 18
 const ACCEL = 4.5
 var DEACCEL = 16
-const MAX_SLOPE_ANGLE = 40
+const MAX_SLOPE_ANGLE = 50
 var MOUSE_SENSITIVITY = 0.05
 
 # Called when the node enters the scene tree for the first time.
@@ -41,6 +41,8 @@ func _physics_process(delta):
 		
 	direction = direction.normalized()
 	
+	var snap = Vector3(0,-0.05,0)
+	
 	if is_on_floor():
 		if Input.is_action_just_pressed("jump"):
 			vel.y = JUMP_SPEED
@@ -48,7 +50,12 @@ func _physics_process(delta):
 	direction.y = 0
 	direction = direction.normalized()
 	
-	vel.y += delta * GRAVITY
+	#Change the gravity if the player is on the ground and not jumping
+	
+	if((vel.y < 0.1) && is_on_floor()):
+		vel.y = vel.y
+	else:
+		vel.y += delta * GRAVITY
 	
 	var hvel = vel
 	hvel.y = 0
@@ -66,9 +73,12 @@ func _physics_process(delta):
 	hvel = hvel.linear_interpolate(target, accel * delta)
 	vel.x = hvel.x
 	vel.z = hvel.z
-	
-	move_and_slide(vel, Vector3(0, 1, 0), 0.05, 4, deg2rad(MAX_SLOPE_ANGLE))
-	
+
+	if (vel.y > 0.1):
+		snap = Vector3(0,0,0)
+
+	move_and_slide_with_snap(vel, snap, Vector3(0,1,0), 0.05, 4, deg2rad(MAX_SLOPE_ANGLE))
+
 	# Using items/weapons
 	if Input.is_action_just_pressed("use_item"):
 		var ray: RayCast = $Camera/RayCast
