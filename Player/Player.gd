@@ -118,8 +118,8 @@ func _input(event):
 
 
 ## Enemy/hazard interactions ##
-func danger_increase(rate):
-	PlayerStats.danger_increase(rate)
+func danger_increase(rate, distance):
+	PlayerStats.danger_increase(rate, distance)
 
 func enemy_killed(decrease_amount):
 	PlayerStats.danger_decrease(decrease_amount)

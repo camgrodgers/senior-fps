@@ -11,6 +11,16 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="ProgressBar" type="ProgressBar" parent="."]
+anchor_left = 0.02
+anchor_top = 0.92
+anchor_right = 0.3
+anchor_bottom = 0.95
+rounded = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="CenterContainer" type="CenterContainer" parent="."]
 margin_right = 1024.0
 margin_bottom = 600.0
@@ -24,13 +34,8 @@ margin_top = 250.0
 margin_right = 562.0
 margin_bottom = 350.0
 texture = ExtResource( 1 )
+stretch_mode = 3
 
-[node name="ProgressBar" type="ProgressBar" parent="."]
-margin_left = 15.4597
-margin_top = 558.927
-margin_right = 237.46
-margin_bottom = 582.927
-rounded = true
-__meta__ = {
-"_edit_use_anchors_": false
-}
+[node name="MarginContainer" type="MarginContainer" parent="."]
+margin_right = 40.0
+margin_bottom = 40.0

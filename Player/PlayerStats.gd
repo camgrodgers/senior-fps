@@ -19,7 +19,7 @@ func danger_update(delta):
 		danger_decrease_velocity = 0
 
 #Interaction with enemies
-func danger_increase(rate):
+func danger_increase(rate, distance):
 	danger_decrease_velocity = 0
 	
 	# Consider adding a factor for whether they're crouching... might be unneeded though
@@ -35,7 +35,7 @@ func danger_test(delta):
 	var test_danger = 0
 	if Input.is_action_pressed("danger_test"):
 		test_danger = 30
-		danger_increase(test_danger * delta)
+		danger_increase(test_danger * delta, 0)
 	
 	if Input.is_action_pressed("remove_danger"):
 		danger_decrease(5)
