@@ -89,7 +89,7 @@ func endanger_player(delta):
 		rate = 30
 	
 	rate *= delta
-	target.danger_increase(rate)
+	target.danger_increase(rate, distance)
 
 func _process(delta):
 	aim_at_player(delta)
