@@ -29,3 +29,17 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.591588 )
 enabled = true
 cast_to = Vector3( 0, 0, -1000 )
 collide_with_areas = true
+
+[node name="ItemHolder" type="Spatial" parent="Camera"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.438983, -0.238201, -0.790554 )
+
+[node name="CSGBox2" type="CSGBox" parent="Camera/ItemHolder"]
+transform = Transform( 1, 0, 0, 0, 0.952257, 0.305296, 0, -0.305296, 0.952257, 0, -0.18017, 0.128824 )
+width = 0.0673807
+height = 0.265639
+depth = 0.113797
+
+[node name="CSGBox" type="CSGBox" parent="Camera/ItemHolder"]
+width = 0.112515
+height = 0.168774
+depth = 1.44352
