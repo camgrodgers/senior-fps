@@ -28,7 +28,7 @@ func _ready():
 
 func _physics_process(delta):
 	# Movement
-	var aiming = transform.basis
+	var aiming = $Camera.transform.basis
 	var direction: Vector3 = Vector3()
 	
 	if Input.is_action_pressed("move_forward"):
@@ -114,7 +114,7 @@ func _input(event):
 	aim_y += event.relative.y * turn_factor * inverse_y_factor
 	aim_y = clamp(aim_y, -1.5, 1.5)
 	
-	set_rotation(Vector3(aim_y, aim_x, 0))
+	$Camera.set_rotation(Vector3(aim_y, aim_x, 0))
 
 
 ## Enemy/hazard interactions ##

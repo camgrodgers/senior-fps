@@ -22,7 +22,7 @@ shape = SubResource( 1 )
 script = ExtResource( 3 )
 
 [node name="Camera" type="Camera" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.3518, -0.456114 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.998, 0 )
 
 [node name="RayCast" type="RayCast" parent="Camera"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.591588 )
