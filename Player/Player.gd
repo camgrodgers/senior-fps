@@ -92,6 +92,7 @@ func _physics_process(delta):
 		
 		ray.force_raycast_update()
 		if !ray.is_colliding():
+#			print("asdf")
 			return
 			
 		var obj = ray.get_collider()
