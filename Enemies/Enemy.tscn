@@ -45,6 +45,8 @@ height = 1.26737
 
 [node name="VisionCone" type="Area" parent="."]
 transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0.0767746, 3.59069, -19.8842 )
+collision_layer = 0
+collision_mask = 3
 
 [node name="CollisionShape" type="CollisionShape" parent="VisionCone"]
 shape = SubResource( 2 )

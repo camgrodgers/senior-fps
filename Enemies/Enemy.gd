@@ -63,7 +63,7 @@ func aim_at_player(delta):
 		return
 	
 	var collider = body_ray.collider
-	print(collider)
+#	print(collider)
 	if collider != target:
 		return
 	

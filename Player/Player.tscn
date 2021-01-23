@@ -1,8 +1,9 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://Player/Player.gd" type="Script" id=1]
 [ext_resource path="res://Player/HUD.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Player/PlayerStats.gd" type="Script" id=3]
+[ext_resource path="res://Equippables/TestGun.tscn" type="PackedScene" id=4]
 
 [sub_resource type="CapsuleShape" id=1]
 radius = 0.612344
@@ -25,7 +26,6 @@ script = ExtResource( 3 )
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.998, 0 )
 
 [node name="RayCast" type="RayCast" parent="Camera"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.591588 )
 enabled = true
 cast_to = Vector3( 0, 0, -1000 )
 collide_with_areas = true
@@ -33,13 +33,4 @@ collide_with_areas = true
 [node name="ItemHolder" type="Spatial" parent="Camera"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.438983, -0.238201, -0.790554 )
 
-[node name="CSGBox2" type="CSGBox" parent="Camera/ItemHolder"]
-transform = Transform( 1, 0, 0, 0, 0.952257, 0.305296, 0, -0.305296, 0.952257, 0, -0.18017, 0.128824 )
-width = 0.0673807
-height = 0.265639
-depth = 0.113797
-
-[node name="CSGBox" type="CSGBox" parent="Camera/ItemHolder"]
-width = 0.112515
-height = 0.168774
-depth = 1.44352
+[node name="TestGun" parent="Camera/ItemHolder" instance=ExtResource( 4 )]
