@@ -23,12 +23,18 @@ margin_right = 562.0
 margin_bottom = 350.0
 texture = ExtResource( 1 )
 
+<<<<<<< Updated upstream
 [node name="ProgressBar" type="ProgressBar" parent="."]
 margin_left = 15.4597
 margin_top = 558.927
 margin_right = 237.46
 margin_bottom = 582.927
 rounded = true
+=======
+[node name="MarginContainer" type="MarginContainer" parent="."]
+margin_right = 40.0
+margin_bottom = 40.0
+>>>>>>> Stashed changes
 __meta__ = {
 "_edit_use_anchors_": false
 }

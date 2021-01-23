@@ -12,6 +12,7 @@ const ACCEL = 4.5
 var DEACCEL = 16
 const MAX_SLOPE_ANGLE = 50
 var MOUSE_SENSITIVITY = 0.05
+var isCrouching = false
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -38,10 +39,31 @@ func _physics_process(delta):
 		direction += aiming[0]
 	if Input.is_action_pressed("move_left"):
 		direction -= aiming[0]
+<<<<<<< Updated upstream
 		
+=======
+	if Input.is_action_just_pressed("crouch") && is_on_floor():
+		if (isCrouching):
+			$Camera.translation.y += 1
+			$HUD/CenterContainer/Crosshair.rect_scale *= 2
+			$HUD/CenterContainer/Crosshair.rect_position.x -= 25
+			$HUD/CenterContainer/Crosshair.rect_position.y += 0
+			
+		else:
+			$Camera.translation.y -= 1
+			$HUD/CenterContainer/Crosshair.rect_scale *= 0.5
+			$HUD/CenterContainer/Crosshair.rect_position.x += 25
+			$HUD/CenterContainer/Crosshair.rect_position.y -= 0
+		isCrouching = !isCrouching
+	
+	
+>>>>>>> Stashed changes
 	direction = direction.normalized()
 	
+	
+	
 	var snap = Vector3(0,-0.05,0)
+	
 	
 	if is_on_floor():
 		if Input.is_action_just_pressed("jump"):
