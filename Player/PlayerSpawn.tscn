@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=2]
+
+[sub_resource type="SpatialMaterial" id=1]
+albedo_color = Color( 0.0313726, 0.109804, 0.952941, 1 )
+
+[node name="PlayerSpawn" type="CSGBox"]
+material = SubResource( 1 )

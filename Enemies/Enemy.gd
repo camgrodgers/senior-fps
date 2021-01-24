@@ -9,7 +9,6 @@ var patrolNodes: Array = []
 var path: Array = []
 var progress: float = 0
 
-var numNodes = 0
 var nodeIndex = 0
 var patrolNodeIndex = 0
 
@@ -21,7 +20,7 @@ enum {
 	PATROL
 }
 
-var state = FIND
+var state = PATROL
 
 
 func prep():
@@ -155,8 +154,6 @@ func _process(delta):
 				var to = path[0]
 				var distance = translation.distance_to(to)
 				var total_distance = get_absolute_distance(target.translation)
-				look_at(to, Vector3.UP)
-				rotation_degrees.x = 0
 				
 #				if check_vision():
 #					state = FIND
@@ -165,9 +162,10 @@ func _process(delta):
 					path.pop_front()
 					return
 				
-				translation = translation.linear_interpolate(to, moving / distance)
 				look_at(to, Vector3.UP)
 				rotation_degrees.x = 0
+				translation = translation.linear_interpolate(to, moving / distance)
+				
 			
 	
 func take_damage():
