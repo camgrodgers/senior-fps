@@ -28,7 +28,7 @@ func _ready():
 
 func _physics_process(delta):
 	# Movement
-	var aiming = transform.basis
+	var aiming = $Camera.transform.basis
 	var direction: Vector3 = Vector3()
 	
 	if Input.is_action_pressed("move_forward"):
@@ -42,6 +42,8 @@ func _physics_process(delta):
 	
 	direction = direction.normalized()
 	
+	var snap = Vector3(0,-0.05,0)
+	
 	if is_on_floor():
 		if Input.is_action_just_pressed("jump"):
 			vel.y = JUMP_SPEED
@@ -49,7 +51,10 @@ func _physics_process(delta):
 	direction.y = 0
 	direction = direction.normalized()
 	
-	vel.y += delta * GRAVITY
+	if((vel.y < 0.1) && is_on_floor()):
+		vel.y = vel.y
+	else:
+		vel.y += delta * GRAVITY
 	
 	var hvel = vel
 	hvel.y = 0
@@ -68,14 +73,26 @@ func _physics_process(delta):
 	vel.x = hvel.x
 	vel.z = hvel.z
 	
-	move_and_slide(vel, Vector3(0, 1, 0), 0.05, 4, deg2rad(MAX_SLOPE_ANGLE))
+	if (vel.y > 0.1):
+		snap = Vector3(0,0,0)
+	
+	move_and_slide_with_snap(vel, snap, Vector3(0, 1, 0), 0.05, 4, deg2rad(MAX_SLOPE_ANGLE))
 	
 	# Using items/weapons
+	if Input.is_action_pressed("use_item_alt"):
+		$Camera/ItemHolder.visible = true
+	else:
+		$Camera/ItemHolder.visible = false
+
 	if Input.is_action_just_pressed("use_item"):
+		if not Input.is_action_pressed("use_item_alt"):
+			return
+		
 		var ray: RayCast = $Camera/RayCast
 		
 		ray.force_raycast_update()
 		if !ray.is_colliding():
+#			print("asdf")
 			return
 			
 		var obj = ray.get_collider()
@@ -106,12 +123,15 @@ func _input(event):
 	aim_y += event.relative.y * turn_factor * inverse_y_factor
 	aim_y = clamp(aim_y, -1.5, 1.5)
 	
-	set_rotation(Vector3(aim_y, aim_x, 0))
+	$Camera.set_rotation(Vector3(aim_y, aim_x, 0))
 
 
 ## Enemy/hazard interactions ##
-func danger_increase(rate):
-	PlayerStats.danger_increase(rate)
+func danger_increase(rate, distance):
+	PlayerStats.danger_increase(rate, distance)
 
 func enemy_killed(decrease_amount):
 	PlayerStats.danger_decrease(decrease_amount)
+
+func hitboxes():
+	return $Hitbox.get_children()
