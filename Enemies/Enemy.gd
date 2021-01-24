@@ -1,14 +1,18 @@
 extends KinematicBody
 
+var ENEMY_SPEED = 4.0
 
 var nav: Navigation = null
 var target = null
 var navNodes: Array = []
+var patrolNodes: Array = []
 var path: Array = []
 var progress: float = 0
 
-var numNodes = 0
 var nodeIndex = 0
+var patrolNodeIndex = 0
+
+var TestNodeIndex = 0
 
 enum {
 	FIND,
@@ -16,7 +20,7 @@ enum {
 	PATROL
 }
 
-var state = FIND
+var state = PATROL
 
 
 func prep():
@@ -51,7 +55,7 @@ func check_vision():
 	for collider in collisions:
 		if collider.has_method("danger_increase"):
 			target = collider
-			return
+			return true
 
 func aim_at_player(delta):
 	var space_state = get_world().direct_space_state
@@ -95,7 +99,7 @@ func endanger_player(delta):
 	target.danger_increase(rate, distance)
 
 func _process(delta):
-	aim_at_player(delta)
+	var moving = ENEMY_SPEED * delta
 #	path = nav.get_simple_path(translation, target.translation, true)
 #	path = Array(path)
 #	print(path)
@@ -111,16 +115,13 @@ func _process(delta):
 	
 	match state:
 		FIND:
-			if path.size() < 1:
+			aim_at_player(delta)
+			if path.size() < 1 || path[path.size() - 1].distance_to(target.translation) > 10:
 				prep()
-			var speed = 4.0
-			var moving = speed * delta
 			var to = path[0]
 			var distance = translation.distance_to(to)
-			var total_distance = 0
-			for point in path:
-				total_distance += translation.distance_to(point)
-			if total_distance <= 15:
+			var total_distance = get_absolute_distance(target.translation)
+			if total_distance <= 10:
 				state = HOLD
 				path.clear()
 			if distance < moving:
@@ -129,27 +130,52 @@ func _process(delta):
 			
 			translation = translation.linear_interpolate(to, moving / distance)
 		HOLD:
-			prep()
+			aim_at_player(delta)
+			if path.size() < 1 || path[path.size() - 1].distance_to(target.translation) > 10:
+				prep()
 			var to = path[0]
 			var distance = translation.distance_to(to)
-			var total_distance = 0
-			for point in path:
-				total_distance += translation.distance_to(point)
-			if total_distance > 25:
-				state = PATROL
+			var total_distance = get_absolute_distance(target.translation)
+			if total_distance > 15:
 				path.clear()
+				state = FIND
+				
 		PATROL:
-			if path.size() < 1:
-				get_shortest_node()
-			var speed = 4.0
-			var moving = speed * delta
-			var to = path[0]
-			var distance = translation.distance_to(to)
-			if distance < moving:
-				path.pop_front()
+			if $PatrolTimer.get_time_left() > 0:
 				return
-			translation = translation.linear_interpolate(to, moving / distance)
+			else:
+				if path.size() < 1:
+					prep_node(patrolNodes[patrolNodeIndex])
+					if patrolNodeIndex == patrolNodes.size() - 1:
+						patrolNodeIndex = 0
+					else:
+						patrolNodeIndex += 1
+					$PatrolTimer.start()
+				var to = path[0]
+				var distance = translation.distance_to(to)
+				var total_distance = get_absolute_distance(target.translation)
+				
+#				if check_vision():
+#					state = FIND
+				
+				if distance < moving:
+					path.pop_front()
+					return
+				
+				look_at(to, Vector3.UP)
+				rotation_degrees.x = 0
+				translation = translation.linear_interpolate(to, moving / distance)
+				
+			
 	
 func take_damage():
 	self.queue_free()
+	
+func get_absolute_distance(point):
+	return translation.distance_to(point)
 
+func get_path_distance():
+	var total_distance = path[0]
+	for i in range(path.size() - 1):
+		total_distance += path[i].distance_to(path[i + 1])
+	return total_distance
