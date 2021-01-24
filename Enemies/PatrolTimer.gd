@@ -1,8 +1,9 @@
-extends CSGSphere
+extends Timer
 
 
-var occupied = false
-var NodeType = null
+# Declare member variables here. Examples:
+# var a = 2
+# var b = "text"
 
 
 # Called when the node enters the scene tree for the first time.

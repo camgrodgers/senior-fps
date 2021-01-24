@@ -21,13 +21,13 @@ script = ExtResource( 2 )
 environment = ExtResource( 1 )
 
 [node name="Player" parent="." instance=ExtResource( 4 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 11.3374, -3.79462 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.04089, -3.79462 )
 
 [node name="Enemy" parent="." instance=ExtResource( 3 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -17.5712, 1.40267, -13.3543 )
+transform = Transform( 0.942909, 0, 0.33305, 0, 1, 0, -0.33305, 0, 0.942909, -35.4055, 1.40267, -13.3398 )
 
 [node name="Enemy2" parent="." instance=ExtResource( 3 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -14.4911, 1.47222, 13.0743 )
+transform = Transform( 0.415074, 0, -0.909788, 0, 1, 0, 0.909788, 0, 0.415074, -14.4911, 1.47222, 13.0743 )
 
 [node name="Target" type="CSGSphere" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.67025, 27.9919 )
@@ -147,13 +147,22 @@ transform = Transform( 0.818461, -0.361584, 0.446519, 0, 0.777146, 0.629321, -0.
 shadow_enabled = true
 
 [node name="NavNode" parent="." instance=ExtResource( 5 )]
-transform = Transform( 0.25, 0, 0, 0, 0.25, 0, 0, 0, 0.25, -2.70735, 2.37337, -8.0155 )
+transform = Transform( 0.25, 0, 0, 0, 0.25, 0, 0, 0, 0.25, -2.70735, 2.37337, 27.2198 )
 
 [node name="NavNode2" parent="." instance=ExtResource( 5 )]
-transform = Transform( 0.25, 0, 0, 0, 0.25, 0, 0, 0, 0.25, -3.03057, 2.14407, 0.0820894 )
+transform = Transform( 0.25, 0, 0, 0, 0.25, 0, 0, 0, 0.25, -3.03057, 2.14407, 0.507777 )
 
 [node name="NavNode3" parent="." instance=ExtResource( 5 )]
 transform = Transform( 0.25, 0, 0, 0, 0.25, 0, 0, 0, 0.25, -2.1968, 2.37966, 8.70826 )
 
 [node name="NavNode4" parent="." instance=ExtResource( 5 )]
 transform = Transform( 0.25, 0, 0, 0, 0.25, 0, 0, 0, 0.25, -12.1638, 2.28924, -0.156939 )
+
+[node name="PatrolNode1" parent="." instance=ExtResource( 5 )]
+transform = Transform( 0.25, 0, 0, 0, 0.25, 0, 0, 0, 0.25, -34.6567, 2.79768, -6.84819 )
+
+[node name="PatrolNode2" parent="." instance=ExtResource( 5 )]
+transform = Transform( 0.25, 0, 0, 0, 0.25, 0, 0, 0, 0.25, -20.2962, 2.44575, -6.94666 )
+
+[node name="PatrolNode3" parent="." instance=ExtResource( 5 )]
+transform = Transform( 0.25, 0, 0, 0, 0.25, 0, 0, 0, 0.25, -27.2172, 2.50884, -0.135872 )
