@@ -55,17 +55,20 @@ func check_vision():
 
 func aim_at_player(delta):
 	var space_state = get_world().direct_space_state
-	var body_ray = space_state.intersect_ray($Hitbox.global_transform.origin, target.global_transform.origin, [self])
-	if body_ray.empty():
-		print("empty ray")
-		# Something very messed up must have happened
-		# return an error or something here
-		return
-	
-	var collider = body_ray.collider
-#	print(collider)
-	if collider != target:
-		return
+	for h in target.hitboxes():
+		var body_ray = space_state.intersect_ray($Hitbox.global_transform.origin, h.global_transform.origin, [self])
+		if body_ray.empty():
+			print("empty ray")
+			# Something very messed up must have happened
+			# return an error or something here
+			return
+		
+		var collider = body_ray.collider
+		print(collider)
+		if collider != target:
+			return
+		else:
+			break
 	
 	look_at(target.translation, Vector3(0,1,0))
 	rotation_degrees.x = 0
