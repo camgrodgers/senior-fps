@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://Player/Player.gd" type="Script" id=1]
 [ext_resource path="res://Player/HUD.tscn" type="PackedScene" id=2]
@@ -8,6 +8,12 @@
 [sub_resource type="CapsuleShape" id=1]
 radius = 0.612344
 height = 2.0
+
+[sub_resource type="BoxShape" id=2]
+extents = Vector3( 0.25, 0.25, 0.25 )
+
+[sub_resource type="BoxShape" id=3]
+extents = Vector3( 0.4, 1, 0.4 )
 
 [node name="Player" type="KinematicBody"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.06338, 0 )
@@ -34,3 +40,13 @@ collide_with_areas = true
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.438983, -0.238201, -0.790554 )
 
 [node name="TestGun" parent="Camera/ItemHolder" instance=ExtResource( 4 )]
+
+[node name="Hitbox" type="Area" parent="."]
+
+[node name="Head" type="CollisionShape" parent="Hitbox"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.00905, 0 )
+shape = SubResource( 2 )
+
+[node name="Body" type="CollisionShape" parent="Hitbox"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.695323, 0 )
+shape = SubResource( 3 )

@@ -132,3 +132,6 @@ func danger_increase(rate, distance):
 
 func enemy_killed(decrease_amount):
 	PlayerStats.danger_decrease(decrease_amount)
+
+func hitboxes():
+	return $Hitbox.get_children()
