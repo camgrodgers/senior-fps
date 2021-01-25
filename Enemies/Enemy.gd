@@ -10,7 +10,7 @@ var path: Array = []
 var progress: float = 0
 
 var nodeIndex = 0
-var patrolNodeIndex = 0
+var patrolNodeIndex = 1
 
 var TestNodeIndex = 0
 
@@ -99,6 +99,8 @@ func endanger_player(delta):
 	target.danger_increase(rate, distance)
 
 func _process(delta):
+	if !is_on_floor():
+		pass
 	var moving = ENEMY_SPEED * delta
 #	path = nav.get_simple_path(translation, target.translation, true)
 #	path = Array(path)
