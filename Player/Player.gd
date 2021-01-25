@@ -15,6 +15,7 @@ const MAX_SLOPE_ANGLE = 40
 var MOUSE_SENSITIVITY = 0.05
 var isCrouching = false
 
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	
@@ -82,6 +83,17 @@ func _physics_process(delta):
 	hvel = hvel.linear_interpolate(target, accel * delta)
 	vel.x = hvel.x
 	vel.z = hvel.z
+	
+	if(isCrouching):
+		vel.x = vel.x * 0.75
+		vel.z = vel.z * 0.75
+		
+	if(isCrouching):
+		$StandingCollisionShape.disabled = true
+		$CrouchingCollisionShape.disabled = false
+	else:
+		$StandingCollisionShape.disabled = false
+		$CrouchingCollisionShape.disabled = true
 	
 	if (vel.y > 0.1):
 		snap = Vector3(0,0,0)

@@ -12,10 +12,6 @@ var player
 
 func _ready():
 	
-	
-	
-	
-	
 	player = load("res://Player/Player.tscn")
 	player = player.instance()
 	add_child(player)
