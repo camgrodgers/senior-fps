@@ -10,6 +10,15 @@ onready var DangerMeter = $ProgressBar
 func _ready():
 	DangerMeter.visible = false
 	
+func zoomIn():
+	$CenterContainer/Crosshair.rect_scale *= 0.5
+	$CenterContainer/Crosshair.rect_position.x += 25
+
+func zoomOut():
+	$CenterContainer/Crosshair.rect_scale *= 2
+	$CenterContainer/Crosshair.rect_position.x -= 25
+	
+	
 
 func _process(delta):
 	margin_right = get_viewport().size.x
