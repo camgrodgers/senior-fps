@@ -1,12 +1,5 @@
 extends Navigation
 
-enum {
-	FIND,
-	HOLD,
-	PATROL
-}
-##ENEMY ENUM INCLUDED FOR TESTING IN ORDER TO DIRECTLY ASSIGN STATE
-
 var enemies = []
 var player
 
@@ -29,12 +22,12 @@ func _ready():
 		enemy_instance.nav = self
 		enemy_instance.target = player
 		enemy_instance.navNodes = $NavNodes.get_children()
-		enemy_instance.translation = e.get_child(0).translation
+		enemy_instance.translation = get_closest_point(Vector3(e.get_child(0).translation.x, 0, e.get_child(0).translation.z))
 		enemy_instance.patrolNodes = e.get_children()
 	
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
-	for e in enemies:
-		var x = e.translation
+#func _process(delta):
+	#for e in enemies:
+	#	var x = e.translation

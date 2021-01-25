@@ -10,7 +10,7 @@ var path: Array = []
 var progress: float = 0
 
 var nodeIndex = 0
-var patrolNodeIndex = 0
+var patrolNodeIndex = 1
 
 var TestNodeIndex = 0
 
