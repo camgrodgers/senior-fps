@@ -64,6 +64,18 @@ func _physics_process(delta):
 	
 	var snap = Vector3(0,-0.05,0)
 	
+<<<<<<< Updated upstream
+=======
+	if(is_on_floor() && Input.is_action_just_pressed("crouch")):
+		if(isCrouching):
+			$Camera.translation.y += 1
+			$HUD.zoomOut()
+		else:
+			$Camera.translation.y -= 1
+			$HUD.zoomIn()
+		isCrouching = !isCrouching
+		
+>>>>>>> Stashed changes
 	
 	if is_on_floor():
 		if Input.is_action_just_pressed("jump"):

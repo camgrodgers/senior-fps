@@ -6,6 +6,18 @@ onready var PlayerStats = get_parent().get_node("PlayerStats")
 
 onready var DangerMeter = $ProgressBar
 
+<<<<<<< Updated upstream
+=======
+func zoomIn():
+	$CenterContainer/Crosshair.rect_scale *= 2
+	$CenterContainer/Crosshair.rect_position.x -= 25
+	
+func zoomOut():
+	$CenterContainer/Crosshair.rect_scale *= 0.5
+	$CenterContainer/Crosshair.rect_position.x += 25
+
+
+>>>>>>> Stashed changes
 func _ready():
 	DangerMeter.visible = false
 	
