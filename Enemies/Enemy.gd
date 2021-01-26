@@ -70,10 +70,12 @@ func aim_at_player(delta):
 		var collider = body_ray.collider
 		print(collider)
 		if collider != target:
+			can_see_player = false
 			return
 		else:
 			break
 	
+	can_see_player = true
 	look_at(target.translation, Vector3(0,1,0))
 	rotation_degrees.x = 0
 	endanger_player(delta)
@@ -95,10 +97,34 @@ func endanger_player(delta):
 	else:
 		rate = 30
 	
+	# Could change this to relative velocity later?
+	# TODO: find out why player velocity is >0 when standing still
+	var target_speed = target.vel.abs().length()
+	print(target_speed)
+	var speed_factor = 1
+	if target_speed < 4:
+		speed_factor = 3
+	else:
+		# speed_factor should be <1 when player is sprinting or dodging and jumping around
+		#add a timer or something for the speed factor so it doesn't immediately go up when 
+		#you change directions
+		pass
+	
+	rate *= speed_factor
+	
 	rate *= delta
+	player_danger = clamp(player_danger + rate, 0, 100)
 	target.danger_increase(rate, distance)
 
-func _process(delta):
+var can_see_player: bool = false
+var player_danger: float = 0.0
+
+func endanger_player_process(delta):
+	player_danger = clamp(player_danger, 0, 100)
+	
+	pass
+
+func _physics_process(delta):
 	var moving = ENEMY_SPEED * delta
 #	path = nav.get_simple_path(translation, target.translation, true)
 #	path = Array(path)
@@ -155,8 +181,8 @@ func _process(delta):
 				var distance = translation.distance_to(to)
 				var total_distance = get_absolute_distance(target.translation)
 				
-#				if check_vision():
-#					state = FIND
+				if check_vision():
+					state = FIND
 				
 				if distance < moving:
 					path.pop_front()
@@ -174,8 +200,9 @@ func take_damage():
 func get_absolute_distance(point):
 	return translation.distance_to(point)
 
-func get_path_distance():
-	var total_distance = path[0]
-	for i in range(path.size() - 1):
-		total_distance += path[i].distance_to(path[i + 1])
-	return total_distance
+# This code is incorrect, fix before uncommenting
+#func get_path_distance():
+#	var total_distance = path[0]
+#	for i in range(path.size() - 1):
+#		total_distance += path[i].distance_to(path[i + 1])
+#	return total_distance
