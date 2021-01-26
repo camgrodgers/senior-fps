@@ -1,33 +1,24 @@
 extends Navigation
 
-var enemies = []
-var player
+var enemies: Spatial = null
+var player: KinematicBody = null
 
 func _ready():
-	
-	player = load("res://Player/Player.tscn")
-	player = player.instance()
-	add_child(player)
+	var player_scn: Resource = load("res://Player/Player.tscn")
+	player = player_scn.instance()
+	self.add_child(player)
 	player.translation = $PlayerSpawn.translation
 	
-	
-	
+	enemies = Spatial.new()
+	self.add_child(enemies)
 	
 	for e in $PatrolRoutes.get_children():
-		var enemy = load("res://Enemies/Enemy.tscn")
-		var enemy_instance = enemy.instance()
-		add_child(enemy_instance)
-		enemies.append(enemy_instance)
+		var enemy: Resource = load("res://Enemies/Enemy.tscn")
+		var enemy_instance: KinematicBody = enemy.instance()
+		enemies.add_child(enemy_instance)
 		
 		enemy_instance.nav = self
 		enemy_instance.target = player
 		enemy_instance.navNodes = $NavNodes.get_children()
 		enemy_instance.translation = get_closest_point(Vector3(e.get_child(0).translation.x, 0, e.get_child(0).translation.z))
 		enemy_instance.patrolNodes = e.get_children()
-	
-
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta):
-	#for e in enemies:
-	#	var x = e.translation
