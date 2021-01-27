@@ -161,9 +161,9 @@ func _process(delta):
 				if distance < moving:
 					path.pop_front()
 					return
-				
-				look_at(to, Vector3.UP)
-				rotation_degrees.x = 0
+					
+				var velocity = translation.direction_to(path[0]).normalized() * ENEMY_SPEED
+				look_at(global_transform.origin + velocity, Vector3.UP)
 				translation = translation.linear_interpolate(to, moving / distance)
 				
 			
