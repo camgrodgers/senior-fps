@@ -185,6 +185,10 @@ func _physics_process(delta):
 			
 	
 func take_damage():
+	var corpse_scn: Resource = load("res://Enemies/DeadEnemy.tscn")
+	var corpse = corpse_scn.instance()
+	corpse.transform = self.transform
+	get_parent().add_child(corpse)
 	self.queue_free()
 	
 func get_absolute_distance(point):
