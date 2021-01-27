@@ -24,8 +24,7 @@ var state = PATROL
 
 
 func prep():
-	var target_location = Vector3(target.translation.x, target.y_of_floor, target.translation.z)
-	path = nav.get_simple_path(translation, target_location)
+	path = nav.get_simple_path(translation, target.translation, true)
 	path = Array(path)
 	for p in path:
 		p.y = translation.y
@@ -75,8 +74,7 @@ func aim_at_player(delta):
 		else:
 			break
 	
-	var velocity = translation.direction_to(target.translation).normalized() * ENEMY_SPEED
-	look_at(global_transform.origin + velocity, Vector3.UP)
+	look_at(target.translation, Vector3(0,1,0))
 	rotation_degrees.x = 0
 	endanger_player(delta)
 
@@ -118,7 +116,7 @@ func _process(delta):
 	match state:
 		FIND:
 			aim_at_player(delta)
-			if !path.size()|| path[path.size() - 1].distance_to(target.translation) > 10:
+			if path.size() < 1 || path[path.size() - 1].distance_to(target.translation) > 10:
 				prep()
 			var to = path[0]
 			var distance = translation.distance_to(to)
@@ -143,8 +141,6 @@ func _process(delta):
 				state = FIND
 				
 		PATROL:
-			if check_vision():
-				state = FIND
 			if $PatrolTimer.get_time_left() > 0:
 				return
 			else:
