@@ -50,7 +50,7 @@ func update_enemy_distance_indicator():
 	enemies.sort_custom(DistanceSorter, "sort_ascending")
 	var last_distance = -10
 	for e in enemies:
-		if e.player_danger == 0:
+		if e.player_danger == 0 or not e.can_see_player:
 			continue
 		
 		var label = Label.new()
