@@ -8,7 +8,6 @@ var navNodes: Array = []
 var patrolNodes: Array = []
 var path: Array = []
 var progress: float = 0
-var last_valid_vector_of_target = Vector3.ZERO
 
 var nodeIndex = 0
 var patrolNodeIndex = 1
@@ -24,14 +23,13 @@ enum {
 var state = PATROL
 
 
-func prep(location):
-	path = nav.get_simple_path(translation, location)
+func prep():
+	var target_location = Vector3(target.translation.x, target.y_of_floor, target.translation.z)
+	path = nav.get_simple_path(translation, target_location)
 	path = Array(path)
-	if path.empty():
-		path = nav.get_simple_path(translation, last_valid_vector_of_target)
-		path = Array(path)
 	for p in path:
 		p.y = translation.y
+		
 func prep_node(node):
 	path = nav.get_simple_path(translation, node.translation, true)
 	path = Array(path)
@@ -104,7 +102,6 @@ func endanger_player(delta):
 
 func _process(delta):
 	var moving = ENEMY_SPEED * delta
-	
 #	path = nav.get_simple_path(translation, target.translation, true)
 #	path = Array(path)
 #	print(path)
@@ -121,13 +118,9 @@ func _process(delta):
 	match state:
 		FIND:
 			aim_at_player(delta)
-			if path.empty() || path[path.size() - 1].distance_to(target.translation) > 10:
-				prep(target.translation)
-			if path.empty():
-				prep(last_valid_vector_of_target)
-				return
+			if !path.size()|| path[path.size() - 1].distance_to(target.translation) > 10:
+				prep()
 			var to = path[0]
-			last_valid_vector_of_target = target.translation
 			var distance = translation.distance_to(to)
 			var total_distance = get_absolute_distance(target.translation)
 			if total_distance <= 10:
@@ -141,12 +134,8 @@ func _process(delta):
 		HOLD:
 			aim_at_player(delta)
 			if path.size() < 1 || path[path.size() - 1].distance_to(target.translation) > 10:
-				prep(target.translation)
-			if path.empty():
-				prep(last_valid_vector_of_target)
-				return
+				prep()
 			var to = path[0]
-			last_valid_vector_of_target = target.translation
 			var distance = translation.distance_to(to)
 			var total_distance = get_absolute_distance(target.translation)
 			if total_distance > 15:

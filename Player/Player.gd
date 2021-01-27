@@ -14,6 +14,7 @@ var DEACCEL = 16
 const MAX_SLOPE_ANGLE = 40
 var MOUSE_SENSITIVITY = 0.05
 
+var y_of_floor = 0
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -25,6 +26,7 @@ func _ready():
 		inverse_x_factor = 1
 	if (inverse_y):
 		inverse_y_factor = 1
+	y_of_floor = translation.y
 
 func _physics_process(delta):
 	# Movement
@@ -45,6 +47,7 @@ func _physics_process(delta):
 	var snap = Vector3(0,-0.05,0)
 	
 	if is_on_floor():
+		y_of_floor = translation.y
 		if Input.is_action_just_pressed("jump"):
 			vel.y = JUMP_SPEED
 	
