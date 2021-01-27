@@ -80,19 +80,19 @@ func aim_at_player(delta):
 	rotation_degrees.x = 0
 	endanger_player(delta)
 
-func endanger_player(delta):	
-	var distance = target.translation.distance_to(translation)
+func endanger_player(delta):
+	player_distance = target.translation.distance_to(translation)
 	
 	var rate = 0
-	if distance > 50:
+	if player_distance > 50:
 		rate = 0
-	elif distance > 30:
+	elif player_distance > 30:
 		rate = 5
-	elif distance > 20:
+	elif player_distance > 20:
 		rate = 10
-	elif distance > 10:
+	elif player_distance > 10:
 		rate = 15
-	elif distance > 5:
+	elif player_distance > 5:
 		rate = 20
 	else:
 		rate = 30
@@ -114,8 +114,9 @@ func endanger_player(delta):
 	
 	rate *= delta
 	player_danger = clamp(player_danger + rate, 0, 100)
-	target.danger_increase(rate, distance)
+	target.danger_increase(rate, player_distance)
 
+var player_distance: float = 0.0
 var can_see_player: bool = false
 var player_danger: float = 0.0
 
