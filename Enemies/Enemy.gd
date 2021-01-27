@@ -120,25 +120,12 @@ var player_distance: float = 0.0
 var can_see_player: bool = false
 var player_danger: float = 0.0
 
+# TODO: rename/refactor this
 func endanger_player_process(delta):
 	player_danger = clamp(player_danger, 0, 100)
-	
-	pass
 
 func _physics_process(delta):
 	var moving = ENEMY_SPEED * delta
-#	path = nav.get_simple_path(translation, target.translation, true)
-#	path = Array(path)
-#	print(path)
-#	for p in path:
-#		var sphere: CSGSphere = CSGSphere.new()
-#		sphere.set_name("asdf")
-#		get_parent().add_child(sphere)
-#
-#		sphere.translation = p
-#	progress += delta * .5
-#	print(progress)
-#	self.translation = path[round(progress)]
 	
 	match state:
 		FIND:

@@ -1,8 +1,8 @@
 extends Node
 
-var danger_level = 0
-var danger_decrease_acceleration = 0.1
-var danger_decrease_velocity = 0
+var danger_level: float = 0
+var danger_decrease_acceleration: float = 0.1
+var danger_decrease_velocity: float = 0
 
 
 func _physics_process(delta):
@@ -15,7 +15,7 @@ func danger_update(delta):
 	danger_level = 0
 	# NOTE: This is turning into reference spaghetti, control of this stuff should
 	#		probably be centralized
-	var enemies = get_tree().get_nodes_in_group("enemies")
+	var enemies: Array = get_tree().get_nodes_in_group("enemies")
 	for e in enemies:
 		e.player_danger -= (danger_decrease_velocity / enemies.size())
 		danger_level += e.player_danger
