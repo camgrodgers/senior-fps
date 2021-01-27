@@ -49,6 +49,7 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.438983, -0.238201, -0.790554
 [node name="TestGun" parent="Camera/ItemHolder" instance=ExtResource( 4 )]
 
 [node name="Hitbox" type="Area" parent="."]
+collision_layer = 0
 
 [node name="Head" type="CollisionShape" parent="Hitbox"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.00905, 0 )

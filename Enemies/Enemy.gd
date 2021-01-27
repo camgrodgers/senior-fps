@@ -68,7 +68,7 @@ func aim_at_player(delta):
 			return
 		
 		var collider = body_ray.collider
-		print(collider)
+#		print(collider)
 		if collider != target:
 			can_see_player = false
 			return
@@ -100,7 +100,7 @@ func endanger_player(delta):
 	# Could change this to relative velocity later?
 	# TODO: find out why player velocity is >0 when standing still
 	var target_speed = target.vel.abs().length()
-	print(target_speed)
+#	print(target_speed)
 	var speed_factor = 1
 	if target_speed < 4:
 		speed_factor = 3
@@ -168,6 +168,8 @@ func _physics_process(delta):
 				
 		PATROL:
 			if $PatrolTimer.get_time_left() > 0:
+				if check_vision():
+					state = FIND
 				return
 			else:
 				if path.size() < 1:
