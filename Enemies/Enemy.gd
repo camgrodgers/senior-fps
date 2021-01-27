@@ -68,50 +68,64 @@ func aim_at_player(delta):
 			return
 		
 		var collider = body_ray.collider
-		print(collider)
+#		print(collider)
 		if collider != target:
+			can_see_player = false
 			return
 		else:
 			break
 	
+	can_see_player = true
 	look_at(target.translation, Vector3(0,1,0))
 	rotation_degrees.x = 0
 	endanger_player(delta)
 
-func endanger_player(delta):	
-	var distance = target.translation.distance_to(translation)
+func endanger_player(delta):
+	player_distance = target.translation.distance_to(translation)
 	
 	var rate = 0
-	if distance > 50:
+	if player_distance > 50:
 		rate = 0
-	elif distance > 30:
+	elif player_distance > 30:
 		rate = 5
-	elif distance > 20:
+	elif player_distance > 20:
 		rate = 10
-	elif distance > 10:
+	elif player_distance > 10:
 		rate = 15
-	elif distance > 5:
+	elif player_distance > 5:
 		rate = 20
 	else:
 		rate = 30
 	
+	# Could change this to relative velocity later?
+	# TODO: find out why player velocity is >0 when standing still
+	var target_speed = target.vel.abs().length()
+#	print(target_speed)
+	var speed_factor = 1
+	if target_speed < 4:
+		speed_factor = 3
+	else:
+		# speed_factor should be <1 when player is sprinting or dodging and jumping around
+		#add a timer or something for the speed factor so it doesn't immediately go up when 
+		#you change directions
+		pass
+	
+	rate *= speed_factor
+	
 	rate *= delta
-	target.danger_increase(rate, distance)
+	player_danger = clamp(player_danger + rate, 0, 100)
+	target.danger_increase(rate, player_distance)
 
-func _process(delta):
+var player_distance: float = 0.0
+var can_see_player: bool = false
+var player_danger: float = 0.0
+
+# TODO: rename/refactor this
+func endanger_player_process(delta):
+	player_danger = clamp(player_danger, 0, 100)
+
+func _physics_process(delta):
 	var moving = ENEMY_SPEED * delta
-#	path = nav.get_simple_path(translation, target.translation, true)
-#	path = Array(path)
-#	print(path)
-#	for p in path:
-#		var sphere: CSGSphere = CSGSphere.new()
-#		sphere.set_name("asdf")
-#		get_parent().add_child(sphere)
-#
-#		sphere.translation = p
-#	progress += delta * .5
-#	print(progress)
-#	self.translation = path[round(progress)]
 	
 	match state:
 		FIND:
@@ -142,6 +156,8 @@ func _process(delta):
 				
 		PATROL:
 			if $PatrolTimer.get_time_left() > 0:
+				if check_vision():
+					state = FIND
 				return
 			else:
 				if path.size() < 1:
@@ -155,8 +171,8 @@ func _process(delta):
 				var distance = translation.distance_to(to)
 				var total_distance = get_absolute_distance(target.translation)
 				
-#				if check_vision():
-#					state = FIND
+				if check_vision():
+					state = FIND
 				
 				if distance < moving:
 					path.pop_front()
@@ -174,8 +190,9 @@ func take_damage():
 func get_absolute_distance(point):
 	return translation.distance_to(point)
 
-func get_path_distance():
-	var total_distance = path[0]
-	for i in range(path.size() - 1):
-		total_distance += path[i].distance_to(path[i + 1])
-	return total_distance
+# This code is incorrect, fix before uncommenting
+#func get_path_distance():
+#	var total_distance = path[0]
+#	for i in range(path.size() - 1):
+#		total_distance += path[i].distance_to(path[i + 1])
+#	return total_distance
