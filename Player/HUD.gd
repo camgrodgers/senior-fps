@@ -51,7 +51,7 @@ func update_enemy_distance_indicator():
 	var last_distance = -10
 	for e in enemies:
 		if e.player_danger == 0:
-			return
+			continue
 		
 		var label = Label.new()
 		$ProgressBar.add_child(label)
