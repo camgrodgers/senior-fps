@@ -72,8 +72,7 @@ func aim_at_player(delta):
 		var body_ray = space_state.intersect_ray($Hitbox.global_transform.origin, h.global_transform.origin, [self])
 		if body_ray.empty():
 			print("empty ray")
-			# Something very messed up must have happened
-			# return an error or something here
+			# TODO: why does this keep printing?
 			return
 		
 		var collider = body_ray.collider
