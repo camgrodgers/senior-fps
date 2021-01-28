@@ -20,6 +20,9 @@ func zoomOut():
 	
 	
 
+func player_dead_message():
+	$CenterContainer/Label.visible = true
+
 func _process(delta):
 	margin_right = get_viewport().size.x
 	margin_bottom = get_viewport().size.y

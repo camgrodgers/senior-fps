@@ -32,6 +32,7 @@ func _ready():
 func _physics_process(delta):
 	if PlayerStats.danger_level >= 100:
 		is_dead = true
+		$HUD.player_dead_message()
 		set_process(false)
 		set_physics_process(false)
 		set_process_input(false)
