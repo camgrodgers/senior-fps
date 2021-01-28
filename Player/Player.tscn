@@ -37,6 +37,8 @@ script = ExtResource( 3 )
 
 [node name="Camera" type="Camera" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.998, 0 )
+fov = 90.0
+far = 1000.0
 
 [node name="RayCast" type="RayCast" parent="Camera"]
 enabled = true
