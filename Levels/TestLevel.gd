@@ -12,16 +12,15 @@ func _ready():
 
 func _physics_process(delta):
 	# NOTE: it might make sense to replace this bool flag with a signal
-	if not player.is_dead:
+	if not(player.is_dead and Input.is_action_pressed("jump")):
 		return
 	
 	# TODO: Prompt for input for respawn like hotline miami does 
 #	if not Input.
 #		return
 	
-	for e in enemies.get_children():
-		enemies.remove_child(e)
-		e.queue_free()
+	remove_child(enemies)
+	enemies.queue_free()
 	
 	remove_child(player)
 	player.queue_free()
