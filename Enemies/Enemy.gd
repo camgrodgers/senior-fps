@@ -8,6 +8,8 @@ var navNodes: Array = []
 var patrolNodes: Array = []
 var path: Array = []
 var progress: float = 0
+var last_valid_path_of_target: Array = []
+var last_valid_coordinate
 
 var nodeIndex = 0
 var patrolNodeIndex = 1
@@ -22,13 +24,20 @@ enum {
 
 var state = PATROL
 
+func update_path():
+	if path.empty() || path[path.size() - 1].distance_to(target.translation) > 10:
+		prep(target.translation)
+	if path.empty():
+		path.push_front(last_valid_coordinate)
+	if path[0] != null:
+		last_valid_coordinate = path[0]
 
-func prep():
-	path = nav.get_simple_path(translation, target.translation, true)
+func prep(location):
+	path = nav.get_simple_path(translation, location, true)
 	path = Array(path)
 	for p in path:
 		p.y = translation.y
-		
+	last_valid_path_of_target = path
 func prep_node(node):
 	path = nav.get_simple_path(translation, node.translation, true)
 	path = Array(path)
@@ -130,8 +139,7 @@ func _physics_process(delta):
 	match state:
 		FIND:
 			aim_at_player(delta)
-			if path.size() < 1 || path[path.size() - 1].distance_to(target.translation) > 10:
-				prep()
+			update_path()
 			var to = path[0]
 			var distance = translation.distance_to(to)
 			var total_distance = get_absolute_distance(target.translation)
@@ -145,8 +153,9 @@ func _physics_process(delta):
 			translation = translation.linear_interpolate(to, moving / distance)
 		HOLD:
 			aim_at_player(delta)
-			if path.size() < 1 || path[path.size() - 1].distance_to(target.translation) > 10:
-				prep()
+			update_path()
+			if path.empty():
+				return
 			var to = path[0]
 			var distance = translation.distance_to(to)
 			var total_distance = get_absolute_distance(target.translation)
@@ -155,6 +164,8 @@ func _physics_process(delta):
 				state = FIND
 				
 		PATROL:
+			if check_vision():
+				state = FIND
 			if $PatrolTimer.get_time_left() > 0:
 				if check_vision():
 					state = FIND
