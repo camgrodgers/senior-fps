@@ -24,6 +24,9 @@ script = ExtResource( 2 )
 [node name="Ball" parent="." instance=ExtResource( 4 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 31.4908, 9.83961, -24.757 )
 
+[node name="Ball2" parent="." instance=ExtResource( 4 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 31.4908, 9.83961, -17.483 )
+
 [node name="EnemySpawns" type="Spatial" parent="."]
 
 [node name="EnemySpawn" parent="EnemySpawns" instance=ExtResource( 8 )]

@@ -112,8 +112,6 @@ func _physics_process(delta):
 	
 	# Using items/weapons
 	var held_item = $Camera/ItemHolder.get_child(0)
-	held_item.ray = ray
-	
 	var use_item_pressed: bool = false
 	var use_item_alt_pressed: bool = false
 	if Input.is_action_just_pressed("use_item"):
@@ -121,10 +119,12 @@ func _physics_process(delta):
 	if Input.is_action_pressed("use_item_alt"):
 		use_item_alt_pressed = true
 	
-	held_item.use_item_pressed = use_item_pressed
-	held_item.use_item_alt_pressed = use_item_alt_pressed
-	if held_item.is_active:
-		return
+	if held_item != null:
+		held_item.ray = ray
+		held_item.use_item_pressed = use_item_pressed
+		held_item.use_item_alt_pressed = use_item_alt_pressed
+		if held_item.is_active:
+			return
 	
 	if use_item_pressed:
 		ray.force_raycast_update()
@@ -134,8 +134,8 @@ func _physics_process(delta):
 			
 		var obj = ray.get_collider()
 		print(obj)
-		if obj.has_method("equip"):
-			if $Camera/ItemHolder.get_child(0) != null:
+		if obj.has_method("equip") and obj.translation.distance_to(translation) < 4:
+			if held_item != null:
 				held_item.unequip()
 				$Camera/ItemHolder.remove_child(held_item)
 			
