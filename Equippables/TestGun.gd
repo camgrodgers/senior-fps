@@ -7,17 +7,23 @@ extends CSGCombiner
 var ray: RayCast
 onready var timer = $Timer
 
+var use_item_alt_pressed: bool = false
+var use_item_pressed: bool = false
+var is_active: bool = false
+
 
 func _physics_process(delta):
-	if Input.is_action_pressed("use_item_alt"):
+	is_active = false
+	
+	if use_item_alt_pressed:
+		is_active = true
 		self.visible = true
 	else:
 		self.visible = false
 		
-	if Input.is_action_just_pressed("use_item"):
-		if not Input.is_action_pressed("use_item_alt"):
+	if use_item_pressed:
+		if not use_item_alt_pressed:
 			return
-		
 		
 		ray.force_raycast_update()
 		if !ray.is_colliding():
@@ -29,7 +35,11 @@ func _physics_process(delta):
 		if obj.has_method("take_damage"):
 			obj.take_damage()
 
+func unequip():
+	self.queue_free()
 
+func equip():
+	pass
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
