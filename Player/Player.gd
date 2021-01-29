@@ -15,6 +15,7 @@ const MAX_SLOPE_ANGLE = 40
 var MOUSE_SENSITIVITY = 0.05
 var isCrouching = false
 
+var is_dead: bool = false
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -29,6 +30,13 @@ func _ready():
 	
 
 func _physics_process(delta):
+	if PlayerStats.danger_level >= 100:
+		is_dead = true
+		$HUD.player_dead_message()
+		set_process(false)
+		set_physics_process(false)
+		set_process_input(false)
+	
 	# Movement
 	var aiming = $Camera.transform.basis
 	var direction: Vector3 = Vector3()

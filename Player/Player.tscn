@@ -37,6 +37,8 @@ script = ExtResource( 3 )
 
 [node name="Camera" type="Camera" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.998, 0 )
+fov = 90.0
+far = 1000.0
 
 [node name="RayCast" type="RayCast" parent="Camera"]
 enabled = true
@@ -49,6 +51,7 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.438983, -0.238201, -0.790554
 [node name="TestGun" parent="Camera/ItemHolder" instance=ExtResource( 4 )]
 
 [node name="Hitbox" type="Area" parent="."]
+collision_layer = 0
 
 [node name="Head" type="CollisionShape" parent="Hitbox"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.00905, 0 )

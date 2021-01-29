@@ -8,6 +8,8 @@ var navNodes: Array = []
 var patrolNodes: Array = []
 var path: Array = []
 var progress: float = 0
+var last_valid_path_of_target: Array = []
+var last_valid_coordinate
 
 var nodeIndex = 0
 var patrolNodeIndex = 1
@@ -22,13 +24,20 @@ enum {
 
 var state = PATROL
 
+func update_path():
+	if path.empty() || path[path.size() - 1].distance_to(target.translation) > 10:
+		prep(target.translation)
+	if path.empty():
+		path.push_front(last_valid_coordinate)
+	if path[0] != null:
+		last_valid_coordinate = path[0]
 
-func prep():
-	path = nav.get_simple_path(translation, target.translation, true)
+func prep(location):
+	path = nav.get_simple_path(translation, location, true)
 	path = Array(path)
 	for p in path:
 		p.y = translation.y
-		
+	last_valid_path_of_target = path
 func prep_node(node):
 	path = nav.get_simple_path(translation, node.translation, true)
 	path = Array(path)
@@ -63,61 +72,73 @@ func aim_at_player(delta):
 		var body_ray = space_state.intersect_ray($Hitbox.global_transform.origin, h.global_transform.origin, [self])
 		if body_ray.empty():
 			print("empty ray")
-			# Something very messed up must have happened
-			# return an error or something here
+			# TODO: why does this keep printing?
 			return
 		
 		var collider = body_ray.collider
-		print(collider)
+#		print(collider)
 		if collider != target:
+			can_see_player = false
 			return
 		else:
 			break
 	
+	can_see_player = true
 	look_at(target.translation, Vector3(0,1,0))
 	rotation_degrees.x = 0
 	endanger_player(delta)
 
-func endanger_player(delta):	
-	var distance = target.translation.distance_to(translation)
+func endanger_player(delta):
+	player_distance = target.translation.distance_to(translation)
 	
 	var rate = 0
-	if distance > 50:
+	if player_distance > 50:
 		rate = 0
-	elif distance > 30:
+	elif player_distance > 30:
 		rate = 5
-	elif distance > 20:
+	elif player_distance > 20:
 		rate = 10
-	elif distance > 10:
+	elif player_distance > 10:
 		rate = 15
-	elif distance > 5:
+	elif player_distance > 5:
 		rate = 20
 	else:
 		rate = 30
 	
+	# Could change this to relative velocity later?
+	# TODO: find out why player velocity is >0 when standing still
+	var target_speed = target.vel.abs().length()
+#	print(target_speed)
+	var speed_factor = 1
+	if target_speed < 4:
+		speed_factor = 3
+	else:
+		# speed_factor should be <1 when player is sprinting or dodging and jumping around
+		#add a timer or something for the speed factor so it doesn't immediately go up when 
+		#you change directions
+		pass
+	
+	rate *= speed_factor
+	
 	rate *= delta
-	target.danger_increase(rate, distance)
+	player_danger = clamp(player_danger + rate, 0, 100)
+	target.danger_increase(rate, player_distance)
 
-func _process(delta):
+var player_distance: float = 0.0
+var can_see_player: bool = false
+var player_danger: float = 0.0
+
+# TODO: rename/refactor this
+func endanger_player_process(delta):
+	player_danger = clamp(player_danger, 0, 100)
+
+func _physics_process(delta):
 	var moving = ENEMY_SPEED * delta
-#	path = nav.get_simple_path(translation, target.translation, true)
-#	path = Array(path)
-#	print(path)
-#	for p in path:
-#		var sphere: CSGSphere = CSGSphere.new()
-#		sphere.set_name("asdf")
-#		get_parent().add_child(sphere)
-#
-#		sphere.translation = p
-#	progress += delta * .5
-#	print(progress)
-#	self.translation = path[round(progress)]
 	
 	match state:
 		FIND:
 			aim_at_player(delta)
-			if path.size() < 1 || path[path.size() - 1].distance_to(target.translation) > 10:
-				prep()
+			update_path()
 			var to = path[0]
 			var distance = translation.distance_to(to)
 			var total_distance = get_absolute_distance(target.translation)
@@ -131,8 +152,9 @@ func _process(delta):
 			translation = translation.linear_interpolate(to, moving / distance)
 		HOLD:
 			aim_at_player(delta)
-			if path.size() < 1 || path[path.size() - 1].distance_to(target.translation) > 10:
-				prep()
+			update_path()
+			if path.empty():
+				return
 			var to = path[0]
 			var distance = translation.distance_to(to)
 			var total_distance = get_absolute_distance(target.translation)
@@ -141,7 +163,11 @@ func _process(delta):
 				state = FIND
 				
 		PATROL:
+			if check_vision():
+				state = FIND
 			if $PatrolTimer.get_time_left() > 0:
+				if check_vision():
+					state = FIND
 				return
 			else:
 				if path.size() < 1:
@@ -155,27 +181,32 @@ func _process(delta):
 				var distance = translation.distance_to(to)
 				var total_distance = get_absolute_distance(target.translation)
 				
-#				if check_vision():
-#					state = FIND
+				if check_vision():
+					state = FIND
 				
 				if distance < moving:
 					path.pop_front()
 					return
-				
-				look_at(to, Vector3.UP)
-				rotation_degrees.x = 0
+					
+				var velocity = translation.direction_to(path[0]).normalized() * ENEMY_SPEED
+				look_at(global_transform.origin + velocity, Vector3.UP)
 				translation = translation.linear_interpolate(to, moving / distance)
 				
 			
 	
 func take_damage():
+	var corpse_scn: Resource = load("res://Enemies/DeadEnemy.tscn")
+	var corpse = corpse_scn.instance()
+	corpse.transform = self.transform
+	get_parent().add_child(corpse)
 	self.queue_free()
 	
 func get_absolute_distance(point):
 	return translation.distance_to(point)
 
-func get_path_distance():
-	var total_distance = path[0]
-	for i in range(path.size() - 1):
-		total_distance += path[i].distance_to(path[i + 1])
-	return total_distance
+# This code is incorrect, fix before uncommenting
+#func get_path_distance():
+#	var total_distance = path[0]
+#	for i in range(path.size() - 1):
+#		total_distance += path[i].distance_to(path[i + 1])
+#	return total_distance
