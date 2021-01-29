@@ -11,7 +11,7 @@ var progress: float = 0
 var last_valid_path_of_target: Array = []
 var last_valid_coordinate
 
-var nodeIndex = 0
+var currentNode = null
 var patrolNodeIndex = 1
 
 var TestNodeIndex = 0
@@ -19,7 +19,8 @@ var TestNodeIndex = 0
 enum {
 	FIND,
 	HOLD,
-	PATROL
+	PATROL,
+	COVER
 }
 
 var state = PATROL
@@ -38,26 +39,30 @@ func prep(location):
 	for p in path:
 		p.y = translation.y
 	last_valid_path_of_target = path
+
 func prep_node(node):
+	if currentNode != null:
+		currentNode.occupied = false
 	path = nav.get_simple_path(translation, node.translation, true)
 	path = Array(path)
 	for p in path:
 		p.y = translation.y
+	currentNode = node
 
 func get_shortest_node():
 	var shortestNodePathDistance = INF
 	var shortestNodePathIndex = 0
 	var currentNodePathIndex = 0
 	for n in navNodes:
-		path = nav.get_simple_path(translation, n.translation, true)
-		var total_distance = 0
-		for point in path:
-				total_distance += translation.distance_to(point)
+		if n.occupied:
+			continue
+		var path_to_node = nav.get_simple_path(translation, n.translation, true)
+		var total_distance = get_path_distance(path_to_node)
 		if total_distance < shortestNodePathDistance:
 			shortestNodePathIndex = currentNodePathIndex
 			shortestNodePathDistance = total_distance
 		currentNodePathIndex += 1
-	return prep_node(navNodes[shortestNodePathIndex])
+	prep_node(navNodes[shortestNodePathIndex])
 
 func check_vision():
 	var collisions = $VisionCone.get_overlapping_bodies()
@@ -151,7 +156,7 @@ func _process(delta):
 				
 		PATROL:
 			if check_vision():
-				state = FIND
+				state = COVER
 			if $PatrolTimer.get_time_left() > 0:
 				return
 			else:
@@ -166,9 +171,6 @@ func _process(delta):
 				var distance = translation.distance_to(to)
 				var total_distance = get_absolute_distance(target.translation)
 				
-#				if check_vision():
-#					state = FIND
-				
 				if distance < moving:
 					path.pop_front()
 					return
@@ -177,16 +179,26 @@ func _process(delta):
 				look_at(global_transform.origin + velocity, Vector3.UP)
 				translation = translation.linear_interpolate(to, moving / distance)
 				
+		COVER:
+			if path.size() < 1:
+				get_shortest_node()
+			aim_at_player(delta)
 			
-	
+			var to = path[0]
+			var distance = translation.distance_to(to)
+			
+			if distance < moving:
+				path.pop_front()
+				return
+			translation = translation.linear_interpolate(to, moving / distance)
 func take_damage():
 	self.queue_free()
 	
 func get_absolute_distance(point):
 	return translation.distance_to(point)
 
-func get_path_distance():
-	var total_distance = path[0]
-	for i in range(path.size() - 1):
-		total_distance += path[i].distance_to(path[i + 1])
+func get_path_distance(path_array):
+	var total_distance = translation.distance_to(path_array[0])
+	for i in range(path_array.size() - 1):
+		total_distance += path_array[i].distance_to(path_array[i + 1])
 	return total_distance

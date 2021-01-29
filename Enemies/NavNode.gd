@@ -2,7 +2,7 @@ extends CSGSphere
 
 
 var occupied = false
-var NodeType = null
+var NODE_TYPE = null
 
 
 # Called when the node enters the scene tree for the first time.

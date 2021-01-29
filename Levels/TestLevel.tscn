@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://default_env.tres" type="Environment" id=1]
 [ext_resource path="res://Levels/TestLevel.gd" type="Script" id=2]
@@ -15,6 +15,9 @@ polygons = [ PoolIntArray( 2, 1, 0 ), PoolIntArray( 5, 4, 3 ), PoolIntArray( 7, 
 
 [sub_resource type="SpatialMaterial" id=2]
 albedo_color = Color( 0.235294, 0.647059, 0.290196, 1 )
+
+[sub_resource type="SpatialMaterial" id=3]
+albedo_color = Color( 0.937255, 0.964706, 0.0431373, 1 )
 
 [node name="Navigation" type="Navigation"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.00009, -4.84877 )
@@ -178,13 +181,17 @@ script = ExtResource( 6 )
 [node name="NavNodes" type="Spatial" parent="."]
 
 [node name="NavNode" parent="NavNodes" instance=ExtResource( 5 )]
-transform = Transform( 0.25, 0, 0, 0, 0.25, 0, 0, 0, 0.25, -2.70735, 2.37337, 27.2198 )
+transform = Transform( 0.25, 0, 0, 0, 0.25, 0, 0, 0, 0.25, -5.51188, 2, -18.3178 )
+material = SubResource( 3 )
 
 [node name="NavNode2" parent="NavNodes" instance=ExtResource( 5 )]
-transform = Transform( 0.25, 0, 0, 0, 0.25, 0, 0, 0, 0.25, -3.03057, 2.14407, 0.507777 )
+transform = Transform( 0.25, 0, 0, 0, 0.25, 0, 0, 0, 0.25, 3.75833, 2, -18.7304 )
+material = SubResource( 3 )
 
 [node name="NavNode3" parent="NavNodes" instance=ExtResource( 5 )]
-transform = Transform( 0.25, 0, 0, 0, 0.25, 0, 0, 0, 0.25, -2.1968, 2.37966, 8.70826 )
+transform = Transform( 0.25, 0, 0, 0, 0.25, 0, 0, 0, 0.25, -0.550678, 2, -23.4981 )
+material = SubResource( 3 )
 
 [node name="NavNode4" parent="NavNodes" instance=ExtResource( 5 )]
-transform = Transform( 0.25, 0, 0, 0, 0.25, 0, 0, 0, 0.25, -12.1638, 2.28924, -0.156939 )
+transform = Transform( 0.25, 0, 0, 0, 0.25, 0, 0, 0, 0.25, -17.8867, 2, -22.9276 )
+material = SubResource( 3 )
