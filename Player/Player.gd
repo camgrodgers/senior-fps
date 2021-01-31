@@ -17,9 +17,7 @@ var isCrouching = false
 
 var is_dead: bool = false
 
-# Called when the node enters the scene tree for the first time.
 func _ready():
-	
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	
 	turn_factor = turn_speed / 10000.0
@@ -27,7 +25,6 @@ func _ready():
 		inverse_x_factor = 1
 	if (inverse_y):
 		inverse_y_factor = 1
-	
 
 func _physics_process(delta):
 	if PlayerStats.danger_level >= 100:
@@ -130,8 +127,6 @@ func _physics_process(delta):
 		if obj.has_method("take_damage"):
 			obj.take_damage()
 
-
-
 # Camera motion
 export var turn_speed = 50
 export var inverse_x = false
@@ -144,7 +139,6 @@ var turn_factor
 var inverse_x_factor = -1
 var inverse_y_factor = -1
 
-
 func _input(event):
 	if !event is InputEventMouseMotion:
 		return
@@ -155,13 +149,6 @@ func _input(event):
 	
 	$Camera.set_rotation(Vector3(aim_y, aim_x, 0))
 
-
 ## Enemy/hazard interactions ##
-func danger_increase(rate, distance):
-	PlayerStats.danger_increase(rate, distance)
-
-func enemy_killed(decrease_amount):
-	PlayerStats.danger_decrease(decrease_amount)
-
-func hitboxes():
+func hitboxes() -> Array:
 	return $Hitbox.get_children()
