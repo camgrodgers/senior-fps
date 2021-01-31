@@ -16,6 +16,11 @@ var patrolNodeIndex = 1
 
 var TestNodeIndex = 0
 
+# Relations to player
+var player_distance: float = 0.0
+var can_see_player: bool = false
+var player_danger: float = 0.0
+
 enum {
 	FIND,
 	HOLD,
@@ -62,14 +67,14 @@ func get_shortest_node():
 func check_vision():
 	var collisions = $VisionCone.get_overlapping_bodies()
 	for collider in collisions:
-		if collider.has_method("danger_increase"):
+		if collider.is_in_group("player"):
 			target = collider
 			return true
 
 func aim_at_player(delta):
 	var space_state = get_world().direct_space_state
 	for h in target.hitboxes():
-		var body_ray = space_state.intersect_ray($Hitbox.global_transform.origin, h.global_transform.origin, [self])
+		var body_ray = space_state.intersect_ray($Gun.global_transform.origin, h.global_transform.origin, [self])
 		if body_ray.empty():
 			print("empty ray")
 			# TODO: why does this keep printing?
@@ -84,53 +89,13 @@ func aim_at_player(delta):
 			break
 	
 	can_see_player = true
+	player_distance = target.translation.distance_to(translation)
+		# Could change this to relative velocity later?
+	# TODO: find out why player velocity is >0 when standing still
+#	target_speed = target.vel.abs().length()
+	
 	look_at(target.translation, Vector3(0,1,0))
 	rotation_degrees.x = 0
-	endanger_player(delta)
-
-func endanger_player(delta):
-	player_distance = target.translation.distance_to(translation)
-	
-	var rate = 0
-	if player_distance > 50:
-		rate = 0
-	elif player_distance > 30:
-		rate = 5
-	elif player_distance > 20:
-		rate = 10
-	elif player_distance > 10:
-		rate = 15
-	elif player_distance > 5:
-		rate = 20
-	else:
-		rate = 30
-	
-	# Could change this to relative velocity later?
-	# TODO: find out why player velocity is >0 when standing still
-	var target_speed = target.vel.abs().length()
-#	print(target_speed)
-	var speed_factor = 1
-	if target_speed < 4:
-		speed_factor = 3
-	else:
-		# speed_factor should be <1 when player is sprinting or dodging and jumping around
-		#add a timer or something for the speed factor so it doesn't immediately go up when 
-		#you change directions
-		pass
-	
-	rate *= speed_factor
-	
-	rate *= delta
-	player_danger = clamp(player_danger + rate, 0, 100)
-	target.danger_increase(rate, player_distance)
-
-var player_distance: float = 0.0
-var can_see_player: bool = false
-var player_danger: float = 0.0
-
-# TODO: rename/refactor this
-func endanger_player_process(delta):
-	player_danger = clamp(player_danger, 0, 100)
 
 func _physics_process(delta):
 	var moving = ENEMY_SPEED * delta
@@ -191,11 +156,9 @@ func _physics_process(delta):
 				var velocity = translation.direction_to(path[0]).normalized() * ENEMY_SPEED
 				look_at(global_transform.origin + velocity, Vector3.UP)
 				translation = translation.linear_interpolate(to, moving / distance)
-				
-			
-	
+
 func take_damage():
-	var corpse_scn: Resource = load("res://Enemies/DeadEnemy.tscn")
+	var corpse_scn: Resource = preload("res://Enemies/DeadEnemy.tscn")
 	var corpse = corpse_scn.instance()
 	corpse.transform = self.transform
 	get_parent().add_child(corpse)

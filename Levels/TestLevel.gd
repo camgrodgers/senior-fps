@@ -3,21 +3,16 @@ extends Navigation
 var enemies: Spatial = null
 var player: KinematicBody = null
 
-var player_scn: Resource = null
-var enemy_scn: Resource = null
+onready var player_scn: Resource = preload("res://Player/Player.tscn")
+onready var enemy_scn: Resource = preload("res://Enemies/Enemy.tscn")
 
 func _ready():
-	load_scenes()
 	add_instances()
 
 func _physics_process(delta):
 	# NOTE: it might make sense to replace this bool flag with a signal
 	if not(player.is_dead and Input.is_action_pressed("jump")):
 		return
-	
-	# TODO: Prompt for input for respawn like hotline miami does 
-#	if not Input.
-#		return
 	
 	remove_child(enemies)
 	enemies.queue_free()
@@ -26,10 +21,6 @@ func _physics_process(delta):
 	player.queue_free()
 	
 	add_instances()
-
-func load_scenes():
-	enemy_scn = load("res://Enemies/Enemy.tscn")
-	player_scn = load("res://Player/Player.tscn")
 
 func add_instances():
 	player = player_scn.instance()
