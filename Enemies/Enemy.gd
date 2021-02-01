@@ -6,6 +6,7 @@ var nav: Navigation = null
 var target = null
 var navNodes: Array = []
 var patrolNodes: Array = []
+var coverNodes: Array = []
 var path: Array = []
 var progress: float = 0
 var last_valid_path_of_target: Array = []
@@ -48,12 +49,13 @@ func prep_node(node):
 	for p in path:
 		p.y = translation.y
 	currentNode = node
+	currentNode.occupied = true
 
 func get_shortest_node():
 	var shortestNodePathDistance = INF
 	var shortestNodePathIndex = 0
 	var currentNodePathIndex = 0
-	for n in navNodes:
+	for n in coverNodes:
 		if n.occupied:
 			continue
 		var path_to_node = nav.get_simple_path(translation, n.translation, true)
@@ -62,7 +64,7 @@ func get_shortest_node():
 			shortestNodePathIndex = currentNodePathIndex
 			shortestNodePathDistance = total_distance
 		currentNodePathIndex += 1
-	prep_node(navNodes[shortestNodePathIndex])
+	prep_node(coverNodes[shortestNodePathIndex])
 
 func check_vision():
 	var collisions = $VisionCone.get_overlapping_bodies()
@@ -180,7 +182,7 @@ func _process(delta):
 				translation = translation.linear_interpolate(to, moving / distance)
 				
 		COVER:
-			if path.size() < 1:
+			if path.size() < 1 || currentNode.visible_to_player:
 				get_shortest_node()
 			aim_at_player(delta)
 			

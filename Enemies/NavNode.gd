@@ -2,6 +2,7 @@ extends CSGSphere
 
 
 var occupied = false
+var visible_to_player = false
 var NODE_TYPE = null
 
 
