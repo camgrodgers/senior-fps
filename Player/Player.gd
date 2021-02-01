@@ -14,6 +14,7 @@ var DEACCEL = 16
 const MAX_SLOPE_ANGLE = 40
 var MOUSE_SENSITIVITY = 0.05
 var isCrouching = false
+var stamina = 100
 
 var is_dead: bool = false
 
@@ -88,6 +89,16 @@ func _physics_process(delta):
 	hvel = hvel.linear_interpolate(target, accel * delta)
 	vel.x = hvel.x
 	vel.z = hvel.z
+	
+	if(Input.is_action_pressed("sprint") && !isCrouching && (stamina > 0)):
+		vel.x *= 1.025
+		vel.z *= 1.025
+		stamina -= 0.2
+	else:
+		if(stamina < 100):
+			stamina += 0.2
+			
+	print(stamina)
 	
 	if(isCrouching):
 		vel.x = vel.x * 0.75
