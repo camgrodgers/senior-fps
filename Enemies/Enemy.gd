@@ -21,7 +21,9 @@ enum {
 	FIND,
 	HOLD,
 	PATROL,
-	COVER
+	FIND_COVER,
+	TAKE_COVER,
+	SHOOT
 }
 
 var state = PATROL
@@ -158,7 +160,8 @@ func _process(delta):
 				
 		PATROL:
 			if check_vision():
-				state = COVER
+				state = FIND_COVER
+				clear_node_data()
 			if $PatrolTimer.get_time_left() > 0:
 				return
 			else:
@@ -181,11 +184,22 @@ func _process(delta):
 				look_at(global_transform.origin + velocity, Vector3.UP)
 				translation = translation.linear_interpolate(to, moving / distance)
 				
-		COVER:
-			if path.size() < 1 || currentNode.visible_to_player:
-				get_shortest_node()
+		FIND_COVER:
+			
+			get_shortest_node()
+			aim_at_player(delta)
+			state = TAKE_COVER
+			
+		TAKE_COVER:
+			if currentNode.visible_to_player:
+				state = FIND_COVER
+				clear_node_data()
+				return
 			aim_at_player(delta)
 			
+			if path.empty():
+				state = SHOOT
+				return
 			var to = path[0]
 			var distance = translation.distance_to(to)
 			
@@ -193,6 +207,14 @@ func _process(delta):
 				path.pop_front()
 				return
 			translation = translation.linear_interpolate(to, moving / distance)
+			
+		SHOOT:
+			if currentNode.visible_to_player:
+				state = FIND_COVER
+				clear_node_data()
+				return
+			###TO DO: ADD POPPING OUT OF COVER###
+			aim_at_player(delta)
 func take_damage():
 	self.queue_free()
 	
@@ -204,3 +226,9 @@ func get_path_distance(path_array):
 	for i in range(path_array.size() - 1):
 		total_distance += path_array[i].distance_to(path_array[i + 1])
 	return total_distance
+
+func clear_node_data():
+	path.clear()
+	if currentNode != null:
+		currentNode.occupied = false
+		currentNode = null

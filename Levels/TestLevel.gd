@@ -31,26 +31,34 @@ func _ready():
 	
 	for node in $NavNodes.get_children():
 		node.NODE_TYPE = 'nav'
+	
 
 func _process(delta):
 	coverNodes.clear()
 	var space_state = get_world().direct_space_state
+	var actors = [player]
+	actors += enemies
 	for n in $NavNodes.get_children():
-		var body_ray = space_state.intersect_ray(player.global_transform.origin, n.global_transform.origin, [player])
-		if body_ray.empty():
-			print("empty ray")
-			# Something very messed up must have happened
-			# return an error or something here
-			continue
-		
-		var collider = body_ray.collider
-		print(collider)
-		if collider == n:
-			n.visible_to_player = true
+		for h in player.hitboxes():
+			var body_ray = space_state.intersect_ray(h.global_transform.origin, n.global_transform.origin, actors)
+			print(n)
+			if body_ray.empty():
+				print("empty ray")
+				# Something very messed up must have happened
+				# return an error or something here
+				#WHY IS IT EMPTY??? It seems to only be empty when the player can see the node
+				#setting it as true until I figure out what is happening
+				n.visible_to_player = true
+				continue
 			
-		else:
-			coverNodes.append(n)
-			n.visible_to_player = false
-			
+			var collider = body_ray.collider
+			print(collider)
+			if collider == n:
+				n.visible_to_player = true
+				
+			else:
+				coverNodes.append(n)
+				n.visible_to_player = false
+				
 	for e in enemies:
 		e.coverNodes = coverNodes
