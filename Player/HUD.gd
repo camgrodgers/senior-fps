@@ -2,7 +2,7 @@ extends Control
 
 
 onready var PlayerStats = get_parent().get_node("PlayerStats")
-
+onready var known_cover_label = $KnownCover
 
 onready var DangerMeter = $ProgressBar
 
@@ -30,6 +30,8 @@ func _process(delta):
 	$CenterContainer.margin_bottom = get_viewport().size.y
 	update_danger_meter()
 	update_enemy_distance_indicator()
+	
+	known_cover_label.visible = PlayerStats.known_cover_position
 
 func update_danger_meter():
 	DangerMeter.value = PlayerStats.danger_level

@@ -4,38 +4,65 @@ var danger_level: float = 0
 var danger_decrease_acceleration: float = 0.1
 # NOTE: This could be changed to a per-enemy value
 var danger_decrease_velocity: float = 0
+var last_known_position = null
+var known_cover_position: bool = false
+var hidden_from_enemies: bool = true
 
 func _physics_process(delta):
 	danger_update(delta)
 
 # Handles enemy and player data
 func danger_update(delta):
-	danger_level = 0
+	var new_danger_level: float = 0
+	var new_hidden_from_enemies: bool = true
 	
 	var enemies: Array = get_tree().get_nodes_in_group("enemies")
-	
+	if enemies.size() == 0:
+		last_known_position = null
+		hidden_from_enemies == true
+		new_hidden_from_enemies == true
+		known_cover_position == false
 	for e in enemies:
 		if e.can_see_player:
+			new_hidden_from_enemies = false
 			danger_decrease_velocity = 0
 			break
 	
+	if new_hidden_from_enemies == false and hidden_from_enemies == true:
+		last_known_position = null
+	if new_hidden_from_enemies == true and hidden_from_enemies == false:
+		last_known_position = get_parent().translation
+	
+	hidden_from_enemies = new_hidden_from_enemies
+
+	if last_known_position != null and last_known_position.distance_to(get_parent().translation) < 6:
+		danger_decrease_velocity = 0.05
+		known_cover_position = true
+	else:
+		known_cover_position = false
+	
 	for e in enemies:
-		var rate = rate_of_danger_increase(e) if e.can_see_player else 0
+		var rate = rate_of_danger_increase(e)
 		e.player_danger = clamp(e.player_danger + (rate * delta), 0, 100)
 #		print("rate: {%f} danger: {%f}" % [rate, e.player_danger])
-		if danger_decrease_velocity != 0:
+		if hidden_from_enemies:
 			e.player_danger -= (danger_decrease_velocity / enemies.size())
-		danger_level += e.player_danger
+		new_danger_level += e.player_danger
 	
-	danger_level = clamp(danger_level, 0, 100)
+	new_danger_level = clamp(new_danger_level, 0, 100)
 	danger_decrease_velocity += (danger_decrease_acceleration * delta)
 	
-	if danger_level == 0:
+	if new_danger_level == 0:
 		danger_decrease_velocity = 0
+	
+	danger_level = new_danger_level
 
 func rate_of_danger_increase(enemy) -> float:
 	var player_distance: float = enemy.player_distance
 	var player_speed: float = get_parent().vel.abs().length()
+	
+	if not enemy.can_see_player:
+		return 0.0
 	
 	var rate: float = 0
 	if player_distance > 50:
