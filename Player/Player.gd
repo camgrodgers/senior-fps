@@ -14,11 +14,11 @@ var DEACCEL = 16
 const MAX_SLOPE_ANGLE = 40
 var MOUSE_SENSITIVITY = 0.05
 var isCrouching = false
+var stamina = 100
 
+var is_dead: bool = false
 
-# Called when the node enters the scene tree for the first time.
 func _ready():
-	
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	
 	turn_factor = turn_speed / 10000.0
@@ -26,9 +26,15 @@ func _ready():
 		inverse_x_factor = 1
 	if (inverse_y):
 		inverse_y_factor = 1
-	
 
 func _physics_process(delta):
+	if PlayerStats.danger_level >= 100:
+		is_dead = true
+		$HUD.player_dead_message()
+		set_process(false)
+		set_physics_process(false)
+		set_process_input(false)
+	
 	# Movement
 	var aiming = $Camera.transform.basis
 	var direction: Vector3 = Vector3()
@@ -84,6 +90,16 @@ func _physics_process(delta):
 	vel.x = hvel.x
 	vel.z = hvel.z
 	
+	if(Input.is_action_pressed("sprint") && !isCrouching && (stamina > 0)):
+		vel.x *= 1.025
+		vel.z *= 1.025
+		stamina -= 0.2
+	else:
+		if(stamina < 100):
+			stamina += 0.2
+			
+	print(stamina)
+	
 	if(isCrouching):
 		vel.x = vel.x * 0.75
 		vel.z = vel.z * 0.75
@@ -101,8 +117,10 @@ func _physics_process(delta):
 	move_and_slide_with_snap(vel, snap, Vector3(0, 1, 0), 0.05, 4, deg2rad(MAX_SLOPE_ANGLE))
 	
 	# Using items/weapons
+
 	
 	$Camera/ItemHolder/TestGun.ray = $Camera/RayCast
+
 
 # Camera motion
 export var turn_speed = 50
@@ -116,7 +134,6 @@ var turn_factor
 var inverse_x_factor = -1
 var inverse_y_factor = -1
 
-
 func _input(event):
 	if !event is InputEventMouseMotion:
 		return
@@ -127,13 +144,6 @@ func _input(event):
 	
 	$Camera.set_rotation(Vector3(aim_y, aim_x, 0))
 
-
 ## Enemy/hazard interactions ##
-func danger_increase(rate, distance):
-	PlayerStats.danger_increase(rate, distance)
-
-func enemy_killed(decrease_amount):
-	PlayerStats.danger_decrease(decrease_amount)
-
-func hitboxes():
+func hitboxes() -> Array:
 	return $Hitbox.get_children()
