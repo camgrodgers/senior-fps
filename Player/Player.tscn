@@ -37,20 +37,22 @@ shape = SubResource( 2 )
 [node name="PlayerStats" type="Node" parent="."]
 script = ExtResource( 3 )
 
-[node name="Camera" type="Camera" parent="."]
+[node name="CameraHolder" type="Spatial" parent="."]
+
+[node name="Camera" type="Camera" parent="CameraHolder"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.998, 0 )
 fov = 90.0
 far = 1000.0
 
-[node name="RayCast" type="RayCast" parent="Camera"]
+[node name="RayCast" type="RayCast" parent="CameraHolder/Camera"]
 enabled = true
 cast_to = Vector3( 0, 0, -1000 )
 collide_with_areas = true
 
-[node name="ItemHolder" type="Spatial" parent="Camera"]
+[node name="ItemHolder" type="Spatial" parent="CameraHolder/Camera"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.438983, -0.238201, -0.790554 )
 
-[node name="TestGun" parent="Camera/ItemHolder" instance=ExtResource( 4 )]
+[node name="TestGun" parent="CameraHolder/Camera/ItemHolder" instance=ExtResource( 4 )]
 
 [node name="Hitbox" type="Area" parent="."]
 collision_layer = 0

@@ -36,7 +36,7 @@ func _physics_process(delta):
 		set_process_input(false)
 	
 	# Movement
-	var aiming = $Camera.transform.basis
+	var aiming = $CameraHolder.transform.basis
 	var direction: Vector3 = Vector3()
 	
 	if Input.is_action_pressed("move_forward"):
@@ -58,10 +58,10 @@ func _physics_process(delta):
 			
 	if(Input.is_action_just_pressed("crouch") && is_on_floor()):
 		if(isCrouching):
-			$Camera.translation.y += 1
+			$CameraHolder.translation.y += 1
 			$HUD.zoomOut()
 		else:
-			$Camera.translation.y -= 1
+			$CameraHolder.translation.y -= 1
 			$HUD.zoomIn()
 		isCrouching = !isCrouching
 	
@@ -98,7 +98,7 @@ func _physics_process(delta):
 		if(stamina < 100):
 			stamina += 0.2
 			
-	print(stamina)
+#	print(stamina)
 	
 	if(isCrouching):
 		vel.x = vel.x * 0.75
@@ -118,15 +118,15 @@ func _physics_process(delta):
 	
 	# Using items/weapons
 	if Input.is_action_pressed("use_item_alt"):
-		$Camera/ItemHolder.visible = true
+		$CameraHolder/Camera/ItemHolder.visible = true
 	else:
-		$Camera/ItemHolder.visible = false
+		$CameraHolder/Camera/ItemHolder.visible = false
 
 	if Input.is_action_just_pressed("use_item"):
 		if not Input.is_action_pressed("use_item_alt"):
 			return
 		
-		var ray: RayCast = $Camera/RayCast
+		var ray: RayCast = $CameraHolder/Camera/RayCast
 		
 		ray.force_raycast_update()
 		if !ray.is_colliding():
@@ -137,6 +137,9 @@ func _physics_process(delta):
 		print(obj)
 		if obj.has_method("take_damage"):
 			obj.take_damage()
+	
+	# Screen shake
+	screen_shake(delta)
 
 # Camera motion
 export var turn_speed = 50
@@ -150,6 +153,16 @@ var turn_factor
 var inverse_x_factor = -1
 var inverse_y_factor = -1
 
+var screen_shake_width: float = .005
+var screen_shake_counter: float = 0
+
+func screen_shake(delta: float):
+	if screen_shake_counter == INF:
+		screen_shake_counter = 0
+	var offset_x = sin(screen_shake_counter) * screen_shake_width
+	screen_shake_counter += delta * 1
+	$CameraHolder/Camera.set_rotation(Vector3(0, offset_x, 0))
+
 func _input(event):
 	if !event is InputEventMouseMotion:
 		return
@@ -158,7 +171,7 @@ func _input(event):
 	aim_y += event.relative.y * turn_factor * inverse_y_factor
 	aim_y = clamp(aim_y, -1.5, 1.5)
 	
-	$Camera.set_rotation(Vector3(aim_y, aim_x, 0))
+	$CameraHolder.set_rotation(Vector3(aim_y, aim_x, 0))
 
 ## Enemy/hazard interactions ##
 func hitboxes() -> Array:
