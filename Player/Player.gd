@@ -153,21 +153,15 @@ var turn_factor
 var inverse_x_factor = -1
 var inverse_y_factor = -1
 
-var screen_shake_width: float = 2
-var screen_shake_angle: float = 0
-var screen_shake_radius: float = 0
+var screen_shake_width: float = .005
+var screen_shake_counter: float = 0
 
 func screen_shake(delta: float):
-	screen_shake_radius = screen_shake_width * sqrt(cos(2 * deg2rad(screen_shake_angle)))
-	var offset_x = screen_shake_radius * cos(deg2rad(screen_shake_angle))
-	var offset_y = screen_shake_radius * sin(deg2rad(screen_shake_angle))
-	$CameraHolder/Camera.translation = Vector3(offset_x, offset_y, 0)
-	print(screen_shake_angle)
-	
-	screen_shake_angle += delta * 10
-	if screen_shake_angle > 359.9:
-		screen_shake_angle = 0
-	pass
+	if screen_shake_counter == INF:
+		screen_shake_counter = 0
+	var offset_x = sin(screen_shake_counter) * screen_shake_width
+	screen_shake_counter += delta * 1
+	$CameraHolder/Camera.set_rotation(Vector3(0, offset_x, 0))
 
 func _input(event):
 	if !event is InputEventMouseMotion:
