@@ -18,7 +18,9 @@ extents = Vector3( 0.25, 0.25, 0.25 )
 [sub_resource type="BoxShape" id=4]
 extents = Vector3( 0.4, 1, 0.4 )
 
-[node name="Player" type="KinematicBody"]
+[node name="Player" type="KinematicBody" groups=[
+"player",
+]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.06338, 0 )
 script = ExtResource( 1 )
 

@@ -11,6 +11,16 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="KnownCover" type="Label" parent="."]
+anchor_left = 0.02
+anchor_top = 0.954
+anchor_right = 0.029
+anchor_bottom = 0.977
+text = "Enemies know where you are"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="ProgressBar" type="ProgressBar" parent="."]
 anchor_left = 0.02
 anchor_top = 0.92
