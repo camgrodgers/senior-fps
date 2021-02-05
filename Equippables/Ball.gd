@@ -14,8 +14,8 @@ func _ready():
 func unequip():
 	$CollisionShape.disabled = false
 	pass
-func interact():
-	translation = Vector3(0, 0, -1)
+func pick_up():
+	translation = Vector3(0, 0, 0)
 	$CollisionShape.disabled = true
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):

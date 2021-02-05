@@ -1,6 +1,6 @@
 extends CSGBox
 
-var is_white: bool = false
+var is_white: bool = true
 
 func interact():
 	if is_white:

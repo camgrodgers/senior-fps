@@ -100,7 +100,7 @@ func _physics_process(delta):
 		if(stamina < 100):
 			stamina += 0.2
 			
-	print(stamina)
+#	print(stamina)
 	
 	if(isCrouching):
 		vel.x = vel.x * 0.75
@@ -120,25 +120,28 @@ func _physics_process(delta):
 	
 	# Using items/weapons
 	var held_weapon = $Camera/WeaponHolder.get_child(0)
-
 	var held_item = $Camera/ItemHolder.get_child(0)
-	var use_item_pressed: bool = false
-	var use_item_alt_pressed: bool = false
+	var use_item_pressed: bool = Input.is_action_pressed("use_item")
+	var use_item_alt_pressed: bool = Input.is_action_pressed("use_item_alt")
+	var interact_pressed: bool = Input.is_action_just_pressed("interact")
 	
-	if Input.is_action_just_pressed("use_item"):
-		use_item_pressed = true
-	if Input.is_action_pressed("use_item_alt"):
-		use_item_alt_pressed = true
-		
+	if held_item != null:
+		if use_item_pressed or interact_pressed:
+			held_item.unequip()
+			$Camera/ItemHolder.remove_child(held_item)
+			held_item.translation = translation - aiming[2]
+			held_item.translation.y += 1
+			get_parent().add_child(held_item)
+		return
+	
 	if held_weapon != null:
 		held_weapon.ray = ray
 		held_weapon.use_item_pressed = use_item_pressed
 		held_weapon.use_item_alt_pressed = use_item_alt_pressed
-		if held_item.is_active:
+		if held_weapon.is_active:
 			return
 	
-	
-	if Input.is_action_just_pressed("interact"):
+	if interact_pressed:
 		ray.force_raycast_update()
 		if !ray.is_colliding():
 	#			print("asdf")
@@ -146,14 +149,18 @@ func _physics_process(delta):
 			
 		var obj = ray.get_collider()
 		print(obj)
-		if obj.has_method("interact") and obj.translation.distance_to(translation) < 4:
-			if held_item != null:
-				held_item.unequip()
-				$Camera/ItemHolder.remove_child(held_item)
-			
+		if obj.translation.distance_to(translation) > 4:
+			return
+		
+		if obj.has_method("interact"):
+			obj.interact()
+		elif obj.has_method("pick_up"):
 			obj.get_parent().remove_child(obj)
 			$Camera/ItemHolder.add_child(obj)
-			obj.equip()
+			obj.pick_up()
+
+
+
 
 # Camera motion
 export var turn_speed = 50
