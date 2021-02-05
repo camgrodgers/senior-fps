@@ -47,10 +47,13 @@ enabled = true
 cast_to = Vector3( 0, 0, -1000 )
 collide_with_areas = true
 
-[node name="ItemHolder" type="Spatial" parent="Camera"]
+[node name="WeaponHolder" type="Spatial" parent="Camera"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.438983, -0.238201, -0.790554 )
 
-[node name="TestGun" parent="Camera/ItemHolder" instance=ExtResource( 4 )]
+[node name="TestGun" parent="Camera/WeaponHolder" instance=ExtResource( 4 )]
+
+[node name="ItemHolder" type="Spatial" parent="Camera"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.632482, -2.1756 )
 
 [node name="Hitbox" type="Area" parent="."]
 collision_layer = 0

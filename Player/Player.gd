@@ -18,6 +18,8 @@ var stamina = 100
 
 var is_dead: bool = false
 
+onready var ray = $Camera/RayCast
+
 func _ready():
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	
@@ -117,10 +119,41 @@ func _physics_process(delta):
 	move_and_slide_with_snap(vel, snap, Vector3(0, 1, 0), 0.05, 4, deg2rad(MAX_SLOPE_ANGLE))
 	
 	# Using items/weapons
+	var held_weapon = $Camera/WeaponHolder.get_child(0)
 
+	var held_item = $Camera/ItemHolder.get_child(0)
+	var use_item_pressed: bool = false
+	var use_item_alt_pressed: bool = false
 	
-	$Camera/ItemHolder/TestGun.ray = $Camera/RayCast
-
+	if Input.is_action_just_pressed("use_item"):
+		use_item_pressed = true
+	if Input.is_action_pressed("use_item_alt"):
+		use_item_alt_pressed = true
+		
+	if held_weapon != null:
+		held_weapon.ray = ray
+		held_weapon.use_item_pressed = use_item_pressed
+		held_weapon.use_item_alt_pressed = use_item_alt_pressed
+		if held_item.is_active:
+			return
+	
+	
+	if Input.is_action_just_pressed("interact"):
+		ray.force_raycast_update()
+		if !ray.is_colliding():
+	#			print("asdf")
+			return
+			
+		var obj = ray.get_collider()
+		print(obj)
+		if obj.has_method("interact") and obj.translation.distance_to(translation) < 4:
+			if held_item != null:
+				held_item.unequip()
+				$Camera/ItemHolder.remove_child(held_item)
+			
+			obj.get_parent().remove_child(obj)
+			$Camera/ItemHolder.add_child(obj)
+			obj.equip()
 
 # Camera motion
 export var turn_speed = 50
