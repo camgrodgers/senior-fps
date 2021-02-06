@@ -20,6 +20,7 @@ func _physics_process(delta):
 		set_process(false)
 		set_physics_process(false)
 #		set_process_input(false)
+		return
 	
 	# Movement
 	process_movement(delta)
@@ -40,9 +41,9 @@ const ACCEL: float = 4.5
 const DEACCEL: float = 16.0
 const MAX_SLOPE_ANGLE: int = 40
 
-enum PlayerStance{CROUCHING, STANDING}
+#enum PlayerStance{CROUCHING, STANDING}
+#var stance: int = PlayerStance.STANDING
 
-var stance: int = PlayerStance.STANDING
 var is_crouching = false
 var stamina = 100
 
@@ -85,19 +86,14 @@ func process_movement(delta: float) -> void:
 	var hvel: Vector3 = vel
 	hvel.y = 0
 
-	var target = direction
+	var target: Vector3 = direction
 	if (is_on_floor()):
 		target *= MAX_SPEED
 	else:
 		target *= AIR_CONTROL_SPEED
 		target += hvel
 
-	var accel
-	
-	if direction.dot(hvel) > 0:
-		accel = ACCEL
-	else:
-		accel = DEACCEL
+	var accel: float = ACCEL if direction.dot(hvel) > 0 else DEACCEL
 
 	hvel = hvel.linear_interpolate(target, accel * delta)
 	vel.x = hvel.x
@@ -185,4 +181,4 @@ func _input(event: InputEvent) -> void:
 
 ## Enemy/hazard interactions ##
 func hitboxes() -> Array:
-	return $Hitbox.get_children()
+	return $Hitboxes.get_children()

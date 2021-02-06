@@ -27,6 +27,7 @@ enum {
 	PATROL
 }
 
+
 var state = PATROL
 
 func update_path():

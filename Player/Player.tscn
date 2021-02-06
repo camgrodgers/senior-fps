@@ -6,11 +6,11 @@
 [ext_resource path="res://Equippables/TestGun.tscn" type="PackedScene" id=4]
 
 [sub_resource type="CapsuleShape" id=1]
-radius = 0.612344
+radius = 0.6
 height = 2.0
 
 [sub_resource type="CapsuleShape" id=2]
-radius = 0.5
+radius = 0.6
 
 [sub_resource type="BoxShape" id=3]
 extents = Vector3( 0.25, 0.25, 0.25 )
@@ -54,13 +54,13 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.438983, -0.238201, -0.790554
 
 [node name="TestGun" parent="CameraHolder/Camera/ItemHolder" instance=ExtResource( 4 )]
 
-[node name="Hitbox" type="Area" parent="."]
+[node name="Hitboxes" type="Area" parent="."]
 collision_layer = 0
 
-[node name="Head" type="CollisionShape" parent="Hitbox"]
+[node name="Head" type="CollisionShape" parent="Hitboxes"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.00905, 0 )
 shape = SubResource( 3 )
 
-[node name="Body" type="CollisionShape" parent="Hitbox"]
+[node name="Body" type="CollisionShape" parent="Hitboxes"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.695323, 0 )
 shape = SubResource( 4 )
