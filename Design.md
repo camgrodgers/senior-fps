@@ -3,7 +3,16 @@ This is a hitscan FPS action game with a focus on advanced enemy AI and a unique
 
 # Table of contents
 1. [Artificial Intelligence](#artificial-intelligence)
+    * Goal-Oriented Action Planning
+    * Path-finding
+2. [Health System](health-system)
+    * Danger meter
+        * Depth of danger meter mechanic
+        * Design and balance concerns
 3. [Design Goals](#design-goals)
+    * Inspirations
+4. [Other game mechanics](#other-game-mechanics)
+
 ## Artificial Intelligence <a name="#artificial-intelligence"></a>
 Our goal for the game is to implement Goal-Oriented Action Planning for the enemy AI, and to have them carry out a variety of unique behaviors, such as:
 
@@ -27,7 +36,7 @@ https://github.com/TheSHEEEP/godotdetour
 
 https://github.com/MilosLukic/Godot-Navigation-Lite
 
-## Health system
+## Health system<a name="health-system"></a>
 The experimental health system in the game is intended to achieve two goals:
 
 1. Resolve the problem of realism in single-player hitscan FPS games, where the player can be shot by enemies thousands of times without dying. This problem arises from regenerating health or health pickup items.
@@ -65,12 +74,37 @@ The danger meter mechanic simulates the process of enemies aiming at the player.
 Asymmetry in game design is well-suited to single-player games, but not to multi-player games, which demand a level playing field. There is a trend in big-studio FPS game design to include a multi-player mode even though most of these multi-player modes never become popular or quickly lose their player base. The multi-player FPS market is dominated by major titles like Counter-Strike, Call of Duty, and Fortnite, many of which are released as stand-alone multiplayer modes. The danger meter mechanic makes this game more comparable to a game in the action-stealth genre, which is also highly asymmetrical and does not translate well into multi-player. The exclusion of multi-player considerations from this game design is not a major loss due to the low likelihood that any new multi-player game would be widely adopted, and due to the benefits of exploring a new single-player game design space.
 
 ## Design goals <a name="design-goals"></a>
-The rest of the game's design should play to the strengths of its GOAP AI and the danger bar mechanic. These two aspects of the game could be sufficient in a variety of design styles. For example, they likely would not prevent a fast-paced, arcade-style shooter from being fun. However, the player would not get a chance to see much of the AI planning and behaviors if the enemies were short-lived, so in order to show off the depth of the AI to the player, the danger meter, enemy placements and groupings, level design, enemy health, and player aim (screen shake, weapon recoil) should be tuned so that the enemies live long enough to exhibit a variety of behaviors. Likewise, the danger bar mechanic exhibits depth when the player is frequently moving to and from cover, engaging enemies at a variety of distances, and moving at different speeds, so the game should also be balanced to require an average player to engage in these behaviors. Notably, balancing for medium to long-lived enemies (they are more dangerous) naturally balances for the desired player behaviors. GOAP AI and good level design can have synergy with the danger meter mechanic that pushes the game design towards a tactical style, either fast-paced or slow-paced.
+The rest of the game's design should play to the strengths of its GOAP AI and the danger bar mechanic. These two aspects of the game could be sufficient in a variety of design styles. For example, they likely would not prevent an arcade-style shooter from being fun. However, the player would not get a chance to see much of the AI planning and behaviors if the enemies were short-lived, so in order to show off the depth of the AI to the player, the danger meter, enemy placements and groupings, level design, enemy health, and player aim (screen shake, weapon recoil) should be tuned so that the enemies live long enough to exhibit a variety of behaviors. Likewise, the danger bar mechanic exhibits depth when the player is frequently moving to and from cover, engaging enemies at a variety of distances, and moving at different speeds, so the game should also be balanced to require an average player to engage in these behaviors. Balancing for medium to long-lived enemies (who are more dangerous) naturally balances for the desired player behaviors. GOAP AI and good level design can have synergy with the danger meter mechanic that pushes the game design towards a tactical style, either fast-paced or slow-paced.
 
-A tactical style of gameplay emphasizes positioning, player movement, and player choice between tradeoffs. It deemphasizes some aspects common in the FPS genre that are associated with power fantasy. The player should not feel invulnerable or overpowered, and the enemies should not appear to be stupid or incapable.
+A tactical style of gameplay emphasizes positioning, player movement, and player choice between tradeoffs. It deemphasizes some aspects common in the FPS genre that are associated with power fantasy. The player should not feel invulnerable, and the enemies should not appear to be stupid or incapable.
 
 ### Inspirations
-Well-known examples of tactical-feeling single-player FPS games include FEAR, STALKER, Half-life 1, and Crysis.
-FEAR, STALKER, Half-life, Devil Daggers, MGSV, Crysis, 
+FEAR is a major inspiration for this game because the AI and level design of this game are going to be similar to those in FEAR. This blog post describes some reasons why FEAR's game design was successful:
 
-## Other game mechanics
+https://critpoints.net/2019/11/20/why-fear-1-is-the-most-important-hitscan-shooter-ft-durandal/
+
+FEAR's AI worked well in level designs that had circular routes to allow them to flank the player. There was also a small amount of information warfare involved, akin to stealth mechanics, where they player would attempt to hide their position from enemies and vice versa. It is worth noting that FEAR was a difficult game on hard difficulty, but provided an escape hatch to players through its bullet time mechanic. Players who wanted a serious challenge were able to abstain from using bullet time to gain a big advantage against enemies, but it was always an option if the challenge felt un-fun. While bullet time is not curently a planned feature for our game, we could choose to allow the option of a similar superpowered technique to players. Perhaps x-ray vision, super speed, double jumping, or something else along those lines. These types of super powers are more satisfying to players when they are used to overcome a significant challenge.
+
+Due to the constraints involved in making an FPS game with a small team comprised solely of programmers, re-playability is a major priority in any level designs that are created for the game. Ideally, the player could spend hours re-playing the same content while approaching the content from new angles and seeing new enemy behavior. 
+
+Devil Daggers is a very different game from our game as it is a projectile-dodging shooter, but could inform a basic approach to level designs. In Devil Daggers, the player spends all of their time in the same combat arena, and faces waves of enemies that increase in difficulty and complexity the longer they play. Enemy spawns are procedurally generated. This style of content generation could work for our game. We could design one good level, and then place the player under a progressively-mounting seige by the enemy. The player would need to improve their own performance to progress through the seige and encounter new enemy types, enemy combinations, and enemy positions, and could also unlock new weapons as they progressed. The player would develop a deep understanding of the level design and enemy behavior. Their score is primarily based on how long they can survive, but also on number of enemies killed and other statistics. 
+
+Metal Gear Solid V: Ground Zeroes is a stealth-action game that also had very high replayability. While it does not feature a progressively increasing number of enemies and has definite end-goals, many players reported that they spent dozens of hours re-playing six different scenarios that were set in a single, re-used level design. The re-playability of Ground Zeroes arose from its detailed and responsive AI behavior, and an open level design that allowed the player to try different approaches to see new responses from enemies. Rather than design a complex sequence of simple levels, we should aim to aim to design one or a small amount of complex levels that can be re-played in this manner.
+
+## Other game mechanics <a name="other-game-mechanics"></a>
+The game should have other systems that are standard in FPS games, including:
+
+* Sprinting, crouching, and jumping
+* Leaning
+* Weapon ammo
+* Multiple weapons (EG: pistol, automatic rifle, sniper rifle, melee, grenades)
+* The ability to pick up and throw objects in the level
+* Interaction with things like doors and buttons
+
+
+
+
+
+
+
+
