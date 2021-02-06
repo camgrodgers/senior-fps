@@ -46,19 +46,22 @@ func prep(location):
 func prep_node(node):
 	if currentNode != null:
 		currentNode.occupied = false
+		currentNode.occupied_by = null
 	path = nav.get_simple_path(translation, node.translation, true)
 	path = Array(path)
 	for p in path:
 		p.y = translation.y
 	currentNode = node
 	currentNode.occupied = true
+	currentNode.occupied_by = self
 
 func get_shortest_node():
 	var shortestNodePathDistance = INF
-	var shortestNodePathIndex = 0
+	var shortestNodePathIndex = null
 	var currentNodePathIndex = 0
 	for n in coverNodes:
-		if n.occupied:
+		if n.occupied == true:
+			currentNodePathIndex += 1
 			continue
 		var path_to_node = nav.get_simple_path(translation, n.translation, true)
 		var total_distance = get_path_distance(path_to_node)
@@ -66,6 +69,10 @@ func get_shortest_node():
 			shortestNodePathIndex = currentNodePathIndex
 			shortestNodePathDistance = total_distance
 		currentNodePathIndex += 1
+	if shortestNodePathIndex == null:
+		print("no free nodes")
+		prep_node(currentNode)
+		return
 	prep_node(coverNodes[shortestNodePathIndex])
 
 func check_vision():
@@ -191,9 +198,9 @@ func _process(delta):
 			state = TAKE_COVER
 			
 		TAKE_COVER:
-			if currentNode.visible_to_player:
+			if currentNode.visible_to_player || currentNode.occupied_by != self:
 				state = FIND_COVER
-				clear_node_data()
+				path.clear()
 				return
 			aim_at_player(delta)
 			
@@ -211,7 +218,7 @@ func _process(delta):
 		SHOOT:
 			if currentNode.visible_to_player:
 				state = FIND_COVER
-				clear_node_data()
+				path.clear()
 				return
 			###TO DO: ADD POPPING OUT OF COVER###
 			aim_at_player(delta)

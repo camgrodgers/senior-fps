@@ -4,7 +4,7 @@ extends CSGSphere
 var occupied = false
 var visible_to_player = false
 var NODE_TYPE = null
-
+var occupied_by = null
 
 # Called when the node enters the scene tree for the first time.
 func _ready():

@@ -25,6 +25,7 @@ func _ready():
 		enemy_instance.navNodes = $NavNodes.get_children()
 		enemy_instance.translation = get_closest_point(Vector3(patrol_route.get_child(0).translation.x, 0, patrol_route.get_child(0).translation.z))
 		enemy_instance.patrolNodes = patrol_route.get_children()
+		enemy_instance.coverNodes = coverNodes
 		
 		for node in patrol_route.get_children():
 			node.NODE_TYPE = 'patrol'
@@ -60,5 +61,3 @@ func _process(delta):
 				coverNodes.append(n)
 				n.visible_to_player = false
 				
-	for e in enemies:
-		e.coverNodes = coverNodes
