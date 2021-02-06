@@ -90,6 +90,16 @@ transform = Transform( 1, 0, 0, 0, 0.865702, -0.500559, 0, 0.500559, 0.865702, 3
 width = 4.91803
 depth = 14.8888
 
+[node name="CSGBox9" type="CSGBox" parent="NavigationMeshInstance/CSGCombiner/Walls"]
+transform = Transform( -0.00991845, 0.663483, 0.748125, 0.00202352, 0.748174, -0.663499, -0.999949, -0.00506704, -0.00876329, 38.7789, 1.79414, 19.4835 )
+width = 4.91803
+depth = 14.8888
+
+[node name="CSGBox10" type="CSGBox" parent="NavigationMeshInstance/CSGCombiner/Walls"]
+transform = Transform( -0.00997111, 0.343749, 0.939008, -0.00174562, 0.939047, -0.343782, -0.999949, -0.00506704, -0.00876329, 44.4206, 2.61506, 11.177 )
+width = 4.91803
+depth = 23.1281
+
 [node name="CSGBox2" type="CSGBox" parent="NavigationMeshInstance/CSGCombiner/Walls"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 27.3901, 1.26255, 0 )
 width = 3.0

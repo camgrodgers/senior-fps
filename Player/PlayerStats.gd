@@ -19,9 +19,9 @@ func danger_update(delta):
 	var enemies: Array = get_tree().get_nodes_in_group("enemies")
 	if enemies.size() == 0:
 		last_known_position = null
-		hidden_from_enemies == true
-		new_hidden_from_enemies == true
-		known_cover_position == false
+		hidden_from_enemies = true
+		new_hidden_from_enemies = true
+		known_cover_position = false
 	for e in enemies:
 		if e.can_see_player:
 			new_hidden_from_enemies = false

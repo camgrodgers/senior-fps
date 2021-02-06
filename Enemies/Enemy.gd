@@ -71,7 +71,7 @@ func check_vision():
 			target = collider
 			return true
 
-func aim_at_player(delta):
+func aim_at_player(_delta):
 	var space_state = get_world().direct_space_state
 	for h in target.hitboxes():
 		var body_ray = space_state.intersect_ray($Gun.global_transform.origin, h.global_transform.origin, [self])

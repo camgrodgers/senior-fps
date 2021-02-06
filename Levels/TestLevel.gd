@@ -9,7 +9,7 @@ onready var enemy_scn: Resource = preload("res://Enemies/Enemy.tscn")
 func _ready():
 	add_instances()
 
-func _physics_process(delta):
+func _physics_process(_delta):
 	# NOTE: it might make sense to replace this bool flag with a signal
 	if not(player.is_dead and Input.is_action_pressed("jump")):
 		return
