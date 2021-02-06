@@ -6,13 +6,14 @@ var nav: Navigation = null
 var target = null
 var navNodes: Array = []
 var patrolNodes: Array = []
+var coverNodes: Array = []
 var path: Array = []
 var progress: float = 0
 var last_valid_path_of_target: Array = []
 var last_valid_coordinate
 
-var nodeIndex = 0
 var patrolNodeIndex = 1
+var currentNode = null
 
 var TestNodeIndex = 0
 
@@ -24,7 +25,10 @@ var player_danger: float = 0.0
 enum {
 	FIND,
 	HOLD,
-	PATROL
+	PATROL,
+	FIND_COVER,
+	TAKE_COVER,
+	SHOOT
 }
 
 var state = PATROL
@@ -44,25 +48,34 @@ func prep(location):
 		p.y = translation.y
 	last_valid_path_of_target = path
 func prep_node(node):
+	clear_node_data()
 	path = nav.get_simple_path(translation, node.translation, true)
 	path = Array(path)
 	for p in path:
 		p.y = translation.y
+	currentNode = node
+	currentNode.occupied = true
+	currentNode.occupied_by = self
 
 func get_shortest_node():
 	var shortestNodePathDistance = INF
-	var shortestNodePathIndex = 0
+	var shortestNodePathIndex = null
 	var currentNodePathIndex = 0
-	for n in navNodes:
-		path = nav.get_simple_path(translation, n.translation, true)
-		var total_distance = 0
-		for point in path:
-				total_distance += translation.distance_to(point)
+	for n in coverNodes:
+		if n.occupied:
+			currentNodePathIndex += 1
+			continue
+		var path_to_node = nav.get_simple_path(translation, n.translation, true)
+		var total_distance = get_path_distance(path_to_node)
 		if total_distance < shortestNodePathDistance:
 			shortestNodePathIndex = currentNodePathIndex
 			shortestNodePathDistance = total_distance
 		currentNodePathIndex += 1
-	return prep_node(navNodes[shortestNodePathIndex])
+	if shortestNodePathIndex == null:
+		print("no free nodes")
+		prep_node(currentNode)
+		return
+	prep_node(coverNodes[shortestNodePathIndex])
 
 func check_vision():
 	var collisions = $VisionCone.get_overlapping_bodies()
@@ -129,10 +142,9 @@ func _physics_process(delta):
 				
 		PATROL:
 			if check_vision():
-				state = FIND
+				state = FIND_COVER
+				clear_node_data()
 			if $PatrolTimer.get_time_left() > 0:
-				if check_vision():
-					state = FIND
 				return
 			else:
 				if path.size() < 1:
@@ -146,9 +158,6 @@ func _physics_process(delta):
 				var distance = translation.distance_to(to)
 				var total_distance = get_absolute_distance(target.translation)
 				
-				if check_vision():
-					state = FIND
-				
 				if distance < moving:
 					path.pop_front()
 					return
@@ -156,20 +165,61 @@ func _physics_process(delta):
 				var velocity = translation.direction_to(path[0]).normalized() * ENEMY_SPEED
 				look_at(global_transform.origin + velocity, Vector3.UP)
 				translation = translation.linear_interpolate(to, moving / distance)
+				
+		FIND_COVER:
+			
+			get_shortest_node()
+			aim_at_player(delta)
+			state = TAKE_COVER
+			
+		TAKE_COVER:
+			if currentNode.visible_to_player || currentNode.occupied_by != self:
+				state = FIND_COVER
+				path.clear()
+				return
+			
+			aim_at_player(delta)
+			if path.empty():
+				state = SHOOT
+				return
+			
+			var to = path[0]
+			var distance = translation.distance_to(to)
+			
+			if distance < moving:
+				path.pop_front()
+				return
+			var velocity = translation.direction_to(path[0]).normalized() * ENEMY_SPEED
+			move_and_slide(velocity, Vector3.UP)
+			
+		SHOOT:
+			if currentNode.visible_to_player:
+				state = FIND_COVER
+				path.clear()
+				return
+			###TO DO: ADD POPPING OUT OF COVER###
+			aim_at_player(delta)
 
 func take_damage():
 	var corpse_scn: Resource = preload("res://Enemies/DeadEnemy.tscn")
 	var corpse = corpse_scn.instance()
 	corpse.transform = self.transform
 	get_parent().add_child(corpse)
+	clear_node_data()
 	self.queue_free()
 	
 func get_absolute_distance(point):
 	return translation.distance_to(point)
 
-# This code is incorrect, fix before uncommenting
-#func get_path_distance():
-#	var total_distance = path[0]
-#	for i in range(path.size() - 1):
-#		total_distance += path[i].distance_to(path[i + 1])
-#	return total_distance
+func get_path_distance(path_array):
+	var total_distance = translation.distance_to(path_array[0])
+	for i in range(path_array.size() - 1):
+		total_distance += path_array[i].distance_to(path_array[i + 1])
+	return total_distance
+
+func clear_node_data():
+	path.clear()
+	if currentNode != null:
+		currentNode.occupied = false
+		currentNode.occupied_by = null
+		currentNode = null
