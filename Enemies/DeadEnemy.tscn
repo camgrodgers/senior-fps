@@ -1,0 +1,28 @@
+[gd_scene format=2]
+
+[node name="DeadEnemy" type="CSGCombiner"]
+
+[node name="CSGSphere" type="CSGSphere" parent="."]
+transform = Transform( 1, 0, 0, 0, 0.0101227, -0.999949, 0, 0.999949, 0.0101227, 0, 0.136494, 0.0550756 )
+radius = 0.46917
+
+[node name="gun" type="CSGCylinder" parent="."]
+transform = Transform( 0.0100166, -0.989488, -0.14427, -0.00146038, 0.144262, -0.989538, 0.999949, 0.0101225, -1.6492e-09, 1.11113, 0.409759, -0.957995 )
+radius = 0.116782
+height = 1.26737
+
+[node name="CSGCylinder" type="CSGCylinder" parent="."]
+transform = Transform( -0.0744393, 0, 0.997226, 0.997175, 0.0101227, 0.0744355, -0.0100946, 0.999949, -0.000753525, 0, 0.123924, -1.18666 )
+radius = 0.545107
+height = 1.39943
+sides = 20
+
+[node name="CSGCylinder" type="CSGCylinder" parent="CSGCylinder"]
+transform = Transform( 0.999965, 0.00828544, -0.000663987, -0.00816186, 0.993879, 0.110173, 0.00157275, -0.110163, 0.993912, 0, -1.68078, 0.31424 )
+radius = 0.11247
+height = 1.65312
+
+[node name="CSGCylinder2" type="CSGCylinder" parent="CSGCylinder"]
+transform = Transform( 0.999936, 0.0113176, -0.000678075, -0.0110877, 0.988611, 0.150085, 0.00236893, -0.150068, 0.988673, -0.00953472, -1.68078, -0.187888 )
+radius = 0.11247
+height = 1.65312

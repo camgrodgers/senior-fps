@@ -13,10 +13,12 @@ const ACCEL = 4.5
 var DEACCEL = 16
 const MAX_SLOPE_ANGLE = 40
 var MOUSE_SENSITIVITY = 0.05
+var isCrouching = false
+var stamina = 100
 
-# Called when the node enters the scene tree for the first time.
+var is_dead: bool = false
+
 func _ready():
-	
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	
 	turn_factor = turn_speed / 10000.0
@@ -24,11 +26,17 @@ func _ready():
 		inverse_x_factor = 1
 	if (inverse_y):
 		inverse_y_factor = 1
-	
 
 func _physics_process(delta):
+	if PlayerStats.danger_level >= 100:
+		is_dead = true
+		$HUD.player_dead_message()
+		set_process(false)
+		set_physics_process(false)
+		set_process_input(false)
+	
 	# Movement
-	var aiming = $Camera.transform.basis
+	var aiming = $CameraHolder.transform.basis
 	var direction: Vector3 = Vector3()
 	
 	if Input.is_action_pressed("move_forward"):
@@ -47,6 +55,15 @@ func _physics_process(delta):
 	if is_on_floor():
 		if Input.is_action_just_pressed("jump"):
 			vel.y = JUMP_SPEED
+			
+	if(Input.is_action_just_pressed("crouch") && is_on_floor()):
+		if(isCrouching):
+			$CameraHolder.translation.y += 1
+			$HUD.zoomOut()
+		else:
+			$CameraHolder.translation.y -= 1
+			$HUD.zoomIn()
+		isCrouching = !isCrouching
 	
 	direction.y = 0
 	direction = direction.normalized()
@@ -73,6 +90,27 @@ func _physics_process(delta):
 	vel.x = hvel.x
 	vel.z = hvel.z
 	
+	if(Input.is_action_pressed("sprint") && !isCrouching && (stamina > 0)):
+		vel.x *= 1.025
+		vel.z *= 1.025
+		stamina -= 0.2
+	else:
+		if(stamina < 100):
+			stamina += 0.2
+			
+#	print(stamina)
+	
+	if(isCrouching):
+		vel.x = vel.x * 0.75
+		vel.z = vel.z * 0.75
+		
+	if(isCrouching):
+		$StandingCollisionShape.disabled = true
+		$CrouchingCollisionShape.disabled = false
+	else:
+		$StandingCollisionShape.disabled = false
+		$CrouchingCollisionShape.disabled = true
+	
 	if (vel.y > 0.1):
 		snap = Vector3(0,0,0)
 	
@@ -80,15 +118,15 @@ func _physics_process(delta):
 	
 	# Using items/weapons
 	if Input.is_action_pressed("use_item_alt"):
-		$Camera/ItemHolder.visible = true
+		$CameraHolder/Camera/ItemHolder.visible = true
 	else:
-		$Camera/ItemHolder.visible = false
+		$CameraHolder/Camera/ItemHolder.visible = false
 
 	if Input.is_action_just_pressed("use_item"):
 		if not Input.is_action_pressed("use_item_alt"):
 			return
 		
-		var ray: RayCast = $Camera/RayCast
+		var ray: RayCast = $CameraHolder/Camera/RayCast
 		
 		ray.force_raycast_update()
 		if !ray.is_colliding():
@@ -99,8 +137,9 @@ func _physics_process(delta):
 		print(obj)
 		if obj.has_method("take_damage"):
 			obj.take_damage()
-
-
+	
+	# Screen shake
+	screen_shake(delta)
 
 # Camera motion
 export var turn_speed = 50
@@ -114,6 +153,15 @@ var turn_factor
 var inverse_x_factor = -1
 var inverse_y_factor = -1
 
+var screen_shake_width: float = .005
+var screen_shake_counter: float = 0
+
+func screen_shake(delta: float):
+	if screen_shake_counter == INF:
+		screen_shake_counter = 0
+	var offset_x = sin(screen_shake_counter) * screen_shake_width
+	screen_shake_counter += delta * 1
+	$CameraHolder/Camera.set_rotation(Vector3(0, offset_x, 0))
 
 func _input(event):
 	if !event is InputEventMouseMotion:
@@ -123,15 +171,8 @@ func _input(event):
 	aim_y += event.relative.y * turn_factor * inverse_y_factor
 	aim_y = clamp(aim_y, -1.5, 1.5)
 	
-	$Camera.set_rotation(Vector3(aim_y, aim_x, 0))
-
+	$CameraHolder.set_rotation(Vector3(aim_y, aim_x, 0))
 
 ## Enemy/hazard interactions ##
-func danger_increase(rate, distance):
-	PlayerStats.danger_increase(rate, distance)
-
-func enemy_killed(decrease_amount):
-	PlayerStats.danger_decrease(decrease_amount)
-
-func hitboxes():
+func hitboxes() -> Array:
 	return $Hitbox.get_children()
