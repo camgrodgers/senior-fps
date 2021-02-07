@@ -4,7 +4,7 @@ onready var PlayerStats: Node = $PlayerStats
 
 var is_dead: bool = false
 
-func _ready():
+func _ready() -> void:
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	
 	turn_factor = turn_speed / 10000.0
@@ -13,7 +13,7 @@ func _ready():
 	if (inverse_y):
 		inverse_y_factor = 1
 
-func _physics_process(delta):
+func _physics_process(delta) -> void:
 	if PlayerStats.danger_level >= 100:
 		is_dead = true
 		$HUD.player_dead_message()
@@ -30,13 +30,13 @@ func _physics_process(delta):
 	screen_shake(delta)
 
 # Movement
-const GRAVITY: float = -24.8
+const GRAVITY: float = -40.0
 
 var vel: Vector3 = Vector3()
 
-const MAX_SPEED: int = 20
+const WALK_SPEED: int = 13
 const AIR_CONTROL_SPEED: int = 5
-const JUMP_HEIGHT: int = 18
+const JUMP_HEIGHT: int = 15
 const ACCEL: float = 4.5
 const DEACCEL: float = 16.0
 const MAX_SLOPE_ANGLE: int = 40
@@ -44,12 +44,16 @@ const MAX_SLOPE_ANGLE: int = 40
 #enum PlayerStance{CROUCHING, STANDING}
 #var stance: int = PlayerStance.STANDING
 
-var is_crouching = false
-var stamina = 100
+var is_crouching: bool = false
+var stamina: float = 100.0
 
+# NOTE: Much of movement code is boilerplate and based on tutorials
+#		such as this one: 
+#		https://docs.godotengine.org/en/3.2/tutorials/3d/fps_tutorial/part_one.html#making-the-fps-movement-logic
 func process_movement(delta: float) -> void:
 	var aiming: Basis = $CameraHolder.transform.basis
 	var direction: Vector3 = Vector3()
+	var target_speed: float = WALK_SPEED
 	
 	if Input.is_action_pressed("move_forward"):
 		direction -= aiming[2]
@@ -61,65 +65,49 @@ func process_movement(delta: float) -> void:
 		direction -= aiming[0]
 	
 	direction = direction.normalized()
-	
+	var hvel: Vector3 = vel
+	hvel.y = 0
+	var target: Vector3 = direction
+	var accel: float = ACCEL if direction.dot(hvel) > 0 else DEACCEL
+
 	if is_on_floor():
 		if Input.is_action_just_pressed("jump"):
 			vel.y = JUMP_HEIGHT
-	
-	if(Input.is_action_just_pressed("crouch") && is_on_floor()):
-		if(is_crouching):
-			$CameraHolder.translation.y += 1
-			$HUD.zoomOut()
 		else:
-			$CameraHolder.translation.y -= 1
-			$HUD.zoomIn()
-		is_crouching = !is_crouching
-	
-	direction.y = 0
-	direction = direction.normalized()
-	
-	if((vel.y < 0.1) && is_on_floor()):
-		vel.y = 0
+			vel.y = 0
+		
+		if Input.is_action_just_pressed("crouch"):
+			if is_crouching:
+				$CameraHolder.translation.y += 1
+				$HUD.zoomOut()
+				$StandingCollisionShape.disabled = false
+				$CrouchingCollisionShape.disabled = true
+			else:
+				$CameraHolder.translation.y -= 1
+				$HUD.zoomIn()
+				$StandingCollisionShape.disabled = true
+				$CrouchingCollisionShape.disabled = false
+			is_crouching = !is_crouching
+		if is_crouching:
+			target_speed *= 0.75
+		if Input.is_action_pressed("sprint") and stamina > 0 and not is_crouching:
+			target_speed *= 1.75
+			accel *= 1.5
+			stamina -= 10 * delta
+		elif stamina < 100:
+			stamina = clamp(stamina + 20 * delta, 0, 100)
+		
+		target *= target_speed
 	else:
 		vel.y += delta * GRAVITY
+		target = hvel
+#		target *= AIR_CONTROL_SPEED
 	
-	var hvel: Vector3 = vel
-	hvel.y = 0
-
-	var target: Vector3 = direction
-	if (is_on_floor()):
-		target *= MAX_SPEED
-	else:
-		target *= AIR_CONTROL_SPEED
-		target += hvel
-
-	var accel: float = ACCEL if direction.dot(hvel) > 0 else DEACCEL
-
 	hvel = hvel.linear_interpolate(target, accel * delta)
 	vel.x = hvel.x
 	vel.z = hvel.z
 	
-	if(Input.is_action_pressed("sprint") && !is_crouching && (stamina > 0)):
-		vel.x *= 1.025
-		vel.z *= 1.025
-		stamina -= 0.2
-	else:
-		if(stamina < 100):
-			stamina += 0.2
-			
-	
-	if(is_crouching):
-		vel.x = vel.x * 0.75
-		vel.z = vel.z * 0.75
-		
-	if(is_crouching):
-		$StandingCollisionShape.disabled = true
-		$CrouchingCollisionShape.disabled = false
-	else:
-		$StandingCollisionShape.disabled = false
-		$CrouchingCollisionShape.disabled = true
-	
-	print(vel)
+	print(vel.abs().length())
 	print(is_on_floor())
 	var snap = Vector3.DOWN if is_on_floor() and vel.y == 0 else Vector3.ZERO
 	move_and_slide_with_snap(vel, snap, Vector3(0, 1, 0), 0.05, 4, deg2rad(MAX_SLOPE_ANGLE))
