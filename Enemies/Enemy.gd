@@ -31,6 +31,7 @@ enum {
 	SHOOT
 }
 
+
 var state = PATROL
 
 func update_path():
@@ -84,7 +85,7 @@ func check_vision():
 			target = collider
 			return true
 
-func aim_at_player(delta):
+func aim_at_player(_delta):
 	var space_state = get_world().direct_space_state
 	for h in target.hitboxes():
 		var body_ray = space_state.intersect_ray($Gun.global_transform.origin, h.global_transform.origin, [self])
@@ -193,12 +194,13 @@ func _physics_process(delta):
 			move_and_slide(velocity, Vector3.UP)
 			
 		SHOOT:
+			###TO DO: ADD POPPING OUT OF COVER###
+			aim_at_player(delta)
+			if currentNode == null: return
 			if currentNode.visible_to_player:
 				state = FIND_COVER
 				path.clear()
 				return
-			###TO DO: ADD POPPING OUT OF COVER###
-			aim_at_player(delta)
 
 func take_damage():
 	var corpse_scn: Resource = preload("res://Enemies/DeadEnemy.tscn")
