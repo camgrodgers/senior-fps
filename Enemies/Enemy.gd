@@ -194,12 +194,13 @@ func _physics_process(delta):
 			move_and_slide(velocity, Vector3.UP)
 			
 		SHOOT:
+			###TO DO: ADD POPPING OUT OF COVER###
+			aim_at_player(delta)
+			if currentNode == null: return
 			if currentNode.visible_to_player:
 				state = FIND_COVER
 				path.clear()
 				return
-			###TO DO: ADD POPPING OUT OF COVER###
-			aim_at_player(delta)
 
 func take_damage():
 	var corpse_scn: Resource = preload("res://Enemies/DeadEnemy.tscn")
