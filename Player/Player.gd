@@ -107,8 +107,8 @@ func process_movement(delta: float) -> void:
 	vel.x = hvel.x
 	vel.z = hvel.z
 	
-	print(vel.abs().length())
-	print(is_on_floor())
+#	print(vel.abs().length())
+#	print(is_on_floor())
 	var snap = Vector3.DOWN if is_on_floor() and vel.y == 0 else Vector3.ZERO
 	move_and_slide_with_snap(vel, snap, Vector3(0, 1, 0), 0.05, 4, deg2rad(MAX_SLOPE_ANGLE))
 
