@@ -1,9 +1,8 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://default_env.tres" type="Environment" id=1]
 [ext_resource path="res://Player/PlayerSpawn.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Levels/TestLevel.gd" type="Script" id=3]
-[ext_resource path="res://Enemies/EnemySpawn.tscn" type="PackedScene" id=4]
 [ext_resource path="res://Enemies/NavNode.tscn" type="PackedScene" id=5]
 [ext_resource path="res://Enemies/PatrolRoute.tscn" type="PackedScene" id=6]
 
@@ -302,98 +301,25 @@ shadow_enabled = true
 environment = ExtResource( 1 )
 
 [node name="PlayerSpawn" parent="." instance=ExtResource( 2 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -4.71008, 8.08945, -97.1849 )
-
-[node name="EnemySpawns" type="Spatial" parent="."]
-
-[node name="EnemySpawn" parent="EnemySpawns" instance=ExtResource( 4 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 52.9644, 5.6012, -196.427 )
-
-[node name="EnemySpawn2" parent="EnemySpawns" instance=ExtResource( 4 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 233.375, -8.96888, -173.257 )
-
-[node name="EnemySpawn3" parent="EnemySpawns" instance=ExtResource( 4 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 171.601, 6.2296, 129.55 )
-
-[node name="EnemySpawn4" parent="EnemySpawns" instance=ExtResource( 4 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 151.507, 5.68598, 35.4281 )
-
-[node name="EnemySpawn5" parent="EnemySpawns" instance=ExtResource( 4 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 47.6723, 5.75688, 183.274 )
-
-[node name="EnemySpawn6" parent="EnemySpawns" instance=ExtResource( 4 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -96.2525, 5.69759, 136.58 )
-
-[node name="EnemySpawn7" parent="EnemySpawns" instance=ExtResource( 4 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -155.657, 5.7426, 44.3233 )
-
-[node name="EnemySpawn8" parent="EnemySpawns" instance=ExtResource( 4 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -155.657, 5.7426, -88.4404 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -4.71008, 8.08945, -120.478 )
 
 [node name="PatrolRoutes" type="Spatial" parent="."]
 
 [node name="PatrolRoute1" parent="PatrolRoutes" instance=ExtResource( 6 )]
 
 [node name="NavNode" parent="PatrolRoutes/PatrolRoute1" instance=ExtResource( 5 )]
-transform = Transform( 0.25, 0, 0, 0, 0.25, 0, 0, 0, 0.25, 0, 5, -0.136 )
+transform = Transform( 0.25, 0, 0, 0, 0.25, 0, 0, 0, 0.25, 0, 5.74016, -0.135872 )
 
 [node name="NavNode2" parent="PatrolRoutes/PatrolRoute1" instance=ExtResource( 5 )]
-transform = Transform( 0.25, 0, 0, 0, 0.25, 0, 0, 0, 0.25, 0, 5, 46.6562 )
+transform = Transform( 0.25, 0, 0, 0, 0.25, 0, 0, 0, 0.25, 6.89944, 5.74016, -0.135872 )
 
-[node name="PatrolRoute2" parent="PatrolRoutes" instance=ExtResource( 6 )]
-
-[node name="NavNode" parent="PatrolRoutes/PatrolRoute2" instance=ExtResource( 5 )]
-transform = Transform( 0.25, 0, 0, 0, 0.25, 0, 0, 0, 0.25, 81.9237, 5, -44.8153 )
-
-[node name="NavNode2" parent="PatrolRoutes/PatrolRoute2" instance=ExtResource( 5 )]
-transform = Transform( 0.25, 0, 0, 0, 0.25, 0, 0, 0, 0.25, 81.6497, 5, 48.5868 )
-
-[node name="PatrolRoute3" parent="PatrolRoutes" instance=ExtResource( 6 )]
-
-[node name="NavNode" parent="PatrolRoutes/PatrolRoute3" instance=ExtResource( 5 )]
-transform = Transform( 0.25, 0, 0, 0, 0.25, 0, 0, 0, 0.25, 5.29025, 10.9672, -41.3877 )
-
-[node name="NavNode2" parent="PatrolRoutes/PatrolRoute3" instance=ExtResource( 5 )]
-transform = Transform( 0.25, 0, 0, 0, 0.25, 0, 0, 0, 0.25, 0, 5, -0.135872 )
-
-[node name="PatrolRoute4" parent="PatrolRoutes" instance=ExtResource( 6 )]
-
-[node name="NavNode" parent="PatrolRoutes/PatrolRoute4" instance=ExtResource( 5 )]
-transform = Transform( 0.25, 0, 0, 0, 0.25, 0, 0, 0, 0.25, -39.9543, 5.31452, 45.6655 )
-
-[node name="NavNode2" parent="PatrolRoutes/PatrolRoute4" instance=ExtResource( 5 )]
-transform = Transform( 0.25, 0, 0, 0, 0.25, 0, 0, 0, 0.25, -76.1373, 4.89483, -67.2537 )
-
-[node name="PatrolRoute5" parent="PatrolRoutes" instance=ExtResource( 6 )]
-
-[node name="NavNode" parent="PatrolRoutes/PatrolRoute5" instance=ExtResource( 5 )]
-transform = Transform( 0.25, 0, 0, 0, 0.25, 0, 0, 0, 0.25, 35.205, 5, 2.30178 )
-
-[node name="NavNode2" parent="PatrolRoutes/PatrolRoute5" instance=ExtResource( 5 )]
-transform = Transform( 0.25, 0, 0, 0, 0.25, 0, 0, 0, 0.25, -19.7638, 5, -0.135872 )
+[node name="NavNode3" parent="PatrolRoutes/PatrolRoute1" instance=ExtResource( 5 )]
+transform = Transform( 0.25, 0, 0, 0, 0.25, 0, 0, 0, 0.25, 0, 5.74016, -8.17008 )
 
 [node name="NavNodes" type="Spatial" parent="."]
 
 [node name="NavNode" parent="NavNodes" instance=ExtResource( 5 )]
-transform = Transform( 0.25, 0, 0, 0, 0.25, 0, 0, 0, 0.25, -10.2815, 4.97, 0.700552 )
+transform = Transform( 0.25, 0, 0, 0, 0.25, 0, 0, 0, 0.25, -8.30982, 5.78007, 1.24532 )
 
 [node name="NavNode2" parent="NavNodes" instance=ExtResource( 5 )]
-transform = Transform( 0.25, 0, 0, 0, 0.25, 0, 0, 0, 0.25, -16.5899, 4.97, 14.2191 )
-
-[node name="NavNode3" parent="NavNodes" instance=ExtResource( 5 )]
-transform = Transform( 0.25, 0, 0, 0, 0.25, 0, 0, 0, 0.25, -31.2718, 4.97, 9.17214 )
-
-[node name="NavNode4" parent="NavNodes" instance=ExtResource( 5 )]
-transform = Transform( 0.25, 0, 0, 0, 0.25, 0, 0, 0, 0.25, -28.0123, 4.97, -7.14479 )
-
-[node name="NavNode5" parent="NavNodes" instance=ExtResource( 5 )]
-transform = Transform( 0.25, 0, 0, 0, 0.25, 0, 0, 0, 0.25, 21.7083, 4.97, 9.7771 )
-
-[node name="NavNode6" parent="NavNodes" instance=ExtResource( 5 )]
-transform = Transform( 0.25, 0, 0, 0, 0.25, 0, 0, 0, 0.25, -9.81454, 5, -46.2823 )
-
-[node name="NavNode7" parent="NavNodes" instance=ExtResource( 5 )]
-transform = Transform( 0.25, 0, 0, 0, 0.25, 0, 0, 0, 0.25, -9.77989, 5, -80.4108 )
-
-[node name="NavNode8" parent="NavNodes" instance=ExtResource( 5 )]
-transform = Transform( 0.25, 0, 0, 0, 0.25, 0, 0, 0, 0.25, -27.1434, 5, 58.7642 )
+transform = Transform( 0.25, 0, 0, 0, 0.25, 0, 0, 0, 0.25, -17.0303, 5.78007, 16.6251 )
