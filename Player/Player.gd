@@ -5,6 +5,8 @@ onready var PlayerStats: Node = $PlayerStats
 var is_dead: bool = false
 var debug: bool = false
 
+onready var ray = $CameraHolder/Camera/RayCast
+
 func _ready() -> void:
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	
@@ -112,33 +114,55 @@ func process_movement(delta: float) -> void:
 	vel.x = hvel.x
 	vel.z = hvel.z
 	
-#	print(vel.abs().length())
-#	print(is_on_floor())
 	var snap = Vector3.DOWN if is_on_floor() and vel.y == 0 else Vector3.ZERO
 	move_and_slide_with_snap(vel, snap, Vector3(0, 1, 0), 0.05, 4, deg2rad(MAX_SLOPE_ANGLE))
 
 # Weapons/item use
 func process_item_use(_delta: float) -> void:
-	if Input.is_action_pressed("use_item_alt"):
-		$CameraHolder/Camera/ItemHolder.visible = true
-	else:
-		$CameraHolder/Camera/ItemHolder.visible = false
-
-	if Input.is_action_just_pressed("use_item"):
-		if not Input.is_action_pressed("use_item_alt"):
+	# Using items/weapons
+	var held_weapon = $CameraHolder/Camera/WeaponHolder.get_child(0)
+	var held_item = $CameraHolder/Camera/ItemHolder.get_child(0)
+	var use_item_pressed: bool = Input.is_action_pressed("use_item")
+	var use_item_alt_pressed: bool = Input.is_action_pressed("use_item_alt")
+	var interact_pressed: bool = Input.is_action_just_pressed("interact")
+	var aiming: Basis = $CameraHolder.transform.basis
+	
+	if held_item != null:
+		if use_item_pressed or interact_pressed:
+			held_item.unequip()
+			$CameraHolder/Camera/ItemHolder.remove_child(held_item)
+			held_item.translation = translation - aiming[2]
+			held_item.translation.y += 1
+			get_parent().add_child(held_item)
+		return
+	
+	if held_weapon != null:
+		held_weapon.ray = ray
+		held_weapon.use_item_pressed = use_item_pressed
+		held_weapon.use_item_alt_pressed = use_item_alt_pressed
+		if held_weapon.is_active:
 			return
-		
-		var ray: RayCast = $CameraHolder/Camera/RayCast
-		
+	
+	if interact_pressed:
 		ray.force_raycast_update()
 		if !ray.is_colliding():
-#			print("asdf")
+	#			print("asdf")
 			return
 			
 		var obj = ray.get_collider()
 		print(obj)
-		if obj.has_method("take_damage"):
-			obj.take_damage()
+		if obj.translation.distance_to(translation) > 4:
+			return
+		
+		if obj.has_method("interact"):
+			obj.interact()
+		elif obj.has_method("pick_up"):
+			obj.get_parent().remove_child(obj)
+			$CameraHolder/Camera/ItemHolder.add_child(obj)
+			obj.pick_up()
+
+
+
 
 # Camera motion
 export var turn_speed: int = 50
