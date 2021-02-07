@@ -2,15 +2,11 @@ extends CSGSphere
 
 
 var occupied = false
-var NodeType = null
+var NODE_TYPE = null
+var occupied_by = null
+var visible_to_player = false
 
-
-# Called when the node enters the scene tree for the first time.
 func _ready():
 	visible = false
 	use_collision = false
 
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta):
-#	pass
