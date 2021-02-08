@@ -30,7 +30,7 @@ enum {
 	SHOOT
 }
 
-var state = FIND
+var state = PATROL
 
 func update_path(goal: Vector3) -> void:
 	var new_path_pool: PoolVector3Array = nav.get_simple_path(translation, goal, true)
@@ -64,7 +64,7 @@ func get_shortest_node():
 	var shortestNodePathIndex = null
 	var currentNodePathIndex = 0
 	for n in coverNodes:
-		if n.occupied:
+		if n.occupied == true:
 			currentNodePathIndex += 1
 			continue
 		var path_to_node = nav.get_simple_path(translation, n.translation, true)
@@ -75,12 +75,12 @@ func get_shortest_node():
 		currentNodePathIndex += 1
 	if shortestNodePathIndex == null:
 		print("no free nodes")
-		prep_node(currentNode)
-		return
-	prep_node(coverNodes[shortestNodePathIndex])
+		return currentNode
+	return coverNodes[shortestNodePathIndex]
 
 func prep_node(node):
-	clear_node_data()
+	if currentNode != node:
+		clear_node_data()
 	update_path(node.translation)
 	currentNode = node
 	currentNode.occupied = true
@@ -140,67 +140,47 @@ func _physics_process(delta):
 			var distance = translation.distance_to(player.translation)
 			if distance > 10:
 				state = FIND
-#		PATROL:
-#			if check_vision():
-#				state = FIND_COVER
-#				clear_node_data()
-#				return
-#			if $PatrolTimer.get_time_left() > 0:
-#				return
-#			else:
-#				if path.size() < 1:
-#					prep_node(patrolNodes[patrolNodeIndex])
-#					if patrolNodeIndex == patrolNodes.size() - 1:
-#						patrolNodeIndex = 0
-#					else:
-#						patrolNodeIndex += 1
-#					$PatrolTimer.start()
-#				var to = path[0]
-#				var distance = translation.distance_to(to)
-#				var total_distance = get_absolute_distance(target.translation)
-#
-#				if distance < moving:
-#					path.pop_front()
-#					return
-#
-#				var velocity = translation.direction_to(path[0]).normalized() * ENEMY_SPEED
-#				look_at(global_transform.origin + velocity, Vector3.UP)
-#				translation = translation.linear_interpolate(to, moving / distance)
-#
-#		FIND_COVER:
-#
-#			get_shortest_node()
-#			aim_at_player(delta)
-#			state = TAKE_COVER
-#
-#		TAKE_COVER:
-#			if currentNode.visible_to_player || currentNode.occupied_by != self:
-#				state = FIND_COVER
-#				path.clear()
-#				return
-#
-#			aim_at_player(delta)
-#			if path.empty():
-#				state = SHOOT
-#				return
-#
-#			var to = path[0]
-#			var distance = translation.distance_to(to)
-#
-#			if distance < moving:
-#				path.pop_front()
-#				return
-#			var velocity = translation.direction_to(path[0]).normalized() * ENEMY_SPEED
-#			move_and_slide(velocity, Vector3.UP)
-#
-#		SHOOT:
-#			###TO DO: ADD POPPING OUT OF COVER###
-#			aim_at_player(delta)
-#			if currentNode == null: return
-#			if currentNode.visible_to_player:
-#				state = FIND_COVER
-#				path.clear()
-#				return
+		PATROL:
+			if check_vision():
+				state = FIND_COVER
+				clear_node_data()
+				return
+			if $PatrolTimer.get_time_left() > 0:
+				return
+			else:
+				prep_node(patrolNodes[patrolNodeIndex])
+				move_along_path(delta, true)
+				if path.size() < 1:
+					prep_node(patrolNodes[patrolNodeIndex])
+					if patrolNodeIndex == patrolNodes.size() - 1:
+						patrolNodeIndex = 0
+					else:
+						patrolNodeIndex += 1
+					$PatrolTimer.start()
+
+
+		FIND_COVER:
+			prep_node(get_shortest_node())
+			
+			state = TAKE_COVER
+
+		TAKE_COVER:
+			if currentNode.visible_to_player:
+				state = FIND_COVER
+				return
+			move_along_path(delta)
+			aim_at_player(delta)
+			if path.empty():
+				state = SHOOT
+				return
+
+
+		SHOOT:
+			###TO DO: ADD POPPING OUT OF COVER###
+			aim_at_player(delta)
+			if currentNode.visible_to_player:
+				state = FIND_COVER
+				return
 
 func get_path_distance_to(goal: Vector3) -> float:
 	var temp_path_pool: PoolVector3Array = nav.get_simple_path(translation, goal, true)
@@ -218,7 +198,6 @@ func clear_node_data():
 	if currentNode != null:
 		currentNode.occupied = false
 		currentNode.occupied_by = null
-		currentNode = null
 
 func take_damage():
 	var corpse_scn: Resource = preload("res://Enemies/DeadEnemy.tscn")
