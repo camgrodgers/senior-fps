@@ -1,29 +1,30 @@
 extends CSGCombiner
 
-
-# Declare member variables here. Examples:
-# var a = 2
-# var b = "text"
 var ray: RayCast
 onready var timer = $Timer
 
 var use_item_alt_pressed: bool = false
 var use_item_pressed: bool = false
 var is_active: bool = false
-
+export var raised = false
+export var chambered = true
 
 func _physics_process(delta):
 	is_active = false
 	
 	if use_item_alt_pressed:
 		is_active = true
-		self.visible = true
+		if not raised:
+			$AnimationPlayer.play("Raise")
 	else:
-		self.visible = false
+		if raised:
+			$AnimationPlayer.play_backwards("Raise")
 		
 	if use_item_pressed:
-		if not use_item_alt_pressed:
+		if not use_item_alt_pressed and raised and chambered:
 			return
+		
+		$AnimationPlayer.play("Fire")
 		
 		ray.force_raycast_update()
 		if !ray.is_colliding():
@@ -44,11 +45,5 @@ func unequip():
 func equip():
 	pass
 
-# Called when the node enters the scene tree for the first time.
 func _ready():
-	pass # Replace with function body.
-
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta):
-#	pass
+	$AnimationPlayer.play_backwards("Raise")
