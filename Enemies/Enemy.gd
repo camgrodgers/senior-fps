@@ -33,7 +33,7 @@ enum {
 var state = PATROL
 
 func update_path(goal: Vector3) -> void:
-	var new_path_pool: PoolVector3Array = nav.get_simple_path(translation, goal, true)
+	var new_path_pool: PoolVector3Array = nav.get_simple_path(translation, nav.get_closest_point(goal), true)
 	var new_path: Array = Array(new_path_pool)
 	if new_path == null or new_path.empty():
 		print("got null path")
@@ -129,7 +129,7 @@ func _physics_process(delta):
 	match state:
 		FIND:
 			aim_at_player(delta)
-			update_path(nav.get_closest_point(player.translation))
+			update_path(player.translation)
 			move_along_path(delta)
 			var distance = translation.distance_to(player.translation)
 			if distance <= 10:
