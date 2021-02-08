@@ -9,6 +9,7 @@ onready var enemy_scn: Resource = preload("res://Enemies/Enemy.tscn")
 
 func _ready():
 	add_instances()
+	update_cover()
 
 func _physics_process(delta):
 	update_cover()
@@ -23,11 +24,13 @@ func _physics_process(delta):
 	player.queue_free()
 	
 	add_instances()
+	update_cover()
 
 func add_instances():
 	player = player_scn.instance()
 	self.add_child(player)
 	player.translation = $PlayerSpawn.translation
+	
 	
 	enemies = Spatial.new()
 	self.add_child(enemies)
@@ -38,15 +41,17 @@ func add_instances():
 		
 		enemy_instance.nav = self
 		enemy_instance.target = player
-		enemy_instance.navNodes = $NavNodes.get_children()
+		enemy_instance.player = player
 		enemy_instance.translation = get_closest_point(Vector3(patrol_route.get_child(0).translation.x, 0, patrol_route.get_child(0).translation.z))
 		enemy_instance.patrolNodes = patrol_route.get_children()
 		enemy_instance.coverNodes = coverNodes
 		
 	for node in $NavNodes.get_children():
 		node.NODE_TYPE = 'nav'
-		
+		node.occupied = false
 	
+	update_cover()
+
 func update_cover():
 	coverNodes.clear()
 	var space_state = get_world().direct_space_state
@@ -72,5 +77,7 @@ func update_cover():
 				n.visible_to_player = true
 				
 			else:
+				if coverNodes.has(n):
+					continue
 				coverNodes.append(n)
 				n.visible_to_player = false
