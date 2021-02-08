@@ -32,6 +32,7 @@ enum {
 
 var state = PATROL
 
+# Updates the path variable to lead to a new destination
 func update_path(goal: Vector3) -> void:
 	var new_path_pool: PoolVector3Array = nav.get_simple_path(translation, nav.get_closest_point(goal), true)
 	var new_path: Array = Array(new_path_pool)
@@ -40,6 +41,7 @@ func update_path(goal: Vector3) -> void:
 		return
 	path = new_path
 
+# Moves the enemy along the path held in 'path'
 func move_along_path(delta: float, lookat: bool = false) -> void:
 	if path == null or path.empty():
 		print("null or empty path")
@@ -59,6 +61,7 @@ func move_along_path(delta: float, lookat: bool = false) -> void:
 #	translation = translation.linear_interpolate(to, moving / distance)
 	move_and_slide(velocity, Vector3.UP)
 
+# Find the nearest node to take cover at
 func get_shortest_node():
 	var shortestNodePathDistance = INF
 	var shortestNodePathIndex = null
@@ -86,6 +89,7 @@ func prep_node(node):
 	currentNode.occupied = true
 	currentNode.occupied_by = self
 
+# Check if player is visible inside the enemy's vision cone
 func check_vision() -> bool:
 	var collisions = $VisionCone.get_overlapping_bodies()
 	for collider in collisions:
@@ -114,6 +118,7 @@ func cast_to_player_hitboxes() -> bool:
 			
 	return false
 
+# If can see player, turn to look at the player
 func aim_at_player(_delta):
 	can_see_player = cast_to_player_hitboxes()
 	if not can_see_player: return
@@ -182,11 +187,14 @@ func _physics_process(delta):
 				state = FIND_COVER
 				return
 
+# Length of path to a point
 func get_path_distance_to(goal: Vector3) -> float:
+	# TODO: What if this is null?
 	var temp_path_pool: PoolVector3Array = nav.get_simple_path(translation, goal, true)
 	var temp_path: Array = Array(temp_path_pool)
 	return get_path_distance(temp_path)
 
+# Length of a path
 func get_path_distance(path_array: Array) -> float:
 	var total_distance: float = translation.distance_to(path_array[0])
 	for i in range(path_array.size() - 2):
@@ -199,6 +207,7 @@ func clear_node_data() -> void:
 		currentNode.occupied = false
 		currentNode.occupied_by = null
 
+# Respond to player attacks
 func take_damage() -> void:
 	var corpse_scn: Resource = preload("res://Enemies/DeadEnemy.tscn")
 	var corpse = corpse_scn.instance()
