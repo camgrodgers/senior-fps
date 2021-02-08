@@ -187,19 +187,19 @@ func get_path_distance_to(goal: Vector3) -> float:
 	var temp_path: Array = Array(temp_path_pool)
 	return get_path_distance(temp_path)
 
-func get_path_distance(path_array: Array)-> float:
-	var total_distance = translation.distance_to(path_array[0])
+func get_path_distance(path_array: Array) -> float:
+	var total_distance: float = translation.distance_to(path_array[0])
 	for i in range(path_array.size() - 2):
 		total_distance += path_array[i].distance_to(path_array[i + 1])
 	return total_distance
 
-func clear_node_data():
+func clear_node_data() -> void:
 	path.clear()
 	if currentNode != null:
 		currentNode.occupied = false
 		currentNode.occupied_by = null
 
-func take_damage():
+func take_damage() -> void:
 	var corpse_scn: Resource = preload("res://Enemies/DeadEnemy.tscn")
 	var corpse = corpse_scn.instance()
 	corpse.transform = self.transform

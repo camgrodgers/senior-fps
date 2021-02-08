@@ -1,14 +1,11 @@
 extends Control
 
-
-onready var PlayerStats = get_parent().get_node("PlayerStats")
-onready var known_cover_label = $KnownCover
-
-onready var DangerMeter = $ProgressBar
-
+onready var player_stats = get_parent().get_node("PlayerStats")
+onready var known_cover_label: Label = $KnownCover
+onready var danger_meter: ProgressBar = $ProgressBar
 
 func _ready():
-	DangerMeter.visible = false
+	danger_meter.visible = false
 	
 func zoomIn():
 	$CenterContainer/Crosshair.rect_scale *= 0.5
@@ -17,8 +14,6 @@ func zoomIn():
 func zoomOut():
 	$CenterContainer/Crosshair.rect_scale *= 2
 	$CenterContainer/Crosshair.rect_position.x -= 25
-	
-	
 
 func player_dead_message():
 	$CenterContainer/Label.visible = true
@@ -31,15 +26,15 @@ func _process(_delta):
 	update_danger_meter()
 	update_enemy_distance_indicator()
 	
-	known_cover_label.visible = PlayerStats.known_cover_position
+	known_cover_label.visible = player_stats.known_cover_position
 
 func update_danger_meter():
-	DangerMeter.value = PlayerStats.danger_level
+	danger_meter.value = player_stats.danger_level
 	
-	if PlayerStats.danger_level > 0:
-		DangerMeter.visible = true
+	if player_stats.danger_level > 0:
+		danger_meter.visible = true
 	else:
-		DangerMeter.visible = false
+		danger_meter.visible = false
 
 class DistanceSorter:
 	static func sort_ascending(a, b):
@@ -48,17 +43,17 @@ class DistanceSorter:
 		return false
 
 func update_enemy_distance_indicator():
-	for l in $ProgressBar.get_children():
-		l.queue_free()
+	for label in $ProgressBar.get_children():
+		label.queue_free()
 
-	var enemies = get_tree().get_nodes_in_group("enemies")
+	var enemies: Array = get_tree().get_nodes_in_group("enemies")
 	enemies.sort_custom(DistanceSorter, "sort_ascending")
-	var last_distance = -10
+	var last_distance: float = -10.0
 	for e in enemies:
 		if e.player_danger == 0 or not e.can_see_player:
 			continue
 		
-		var label = Label.new()
+		var label: Label = Label.new()
 		$ProgressBar.add_child(label)
 		label.margin_top = -12
 		if abs(e.player_distance - last_distance) < 10:
@@ -67,7 +62,4 @@ func update_enemy_distance_indicator():
 		label.text = "%3.1fm" % e.player_distance
 		
 		last_distance = e.player_distance
-		
-
-	
 
