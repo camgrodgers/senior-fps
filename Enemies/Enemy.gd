@@ -129,7 +129,7 @@ func _physics_process(delta):
 	match state:
 		FIND:
 			aim_at_player(delta)
-			update_path(player.translation)
+			update_path(nav.get_closest_point(player.translation))
 			move_along_path(delta)
 			var distance = translation.distance_to(player.translation)
 			if distance <= 10:
