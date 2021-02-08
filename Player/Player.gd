@@ -6,6 +6,8 @@ var is_dead: bool = false
 var debug: bool = false
 
 onready var ray = $CameraHolder/Camera/RayCast
+onready	var weapon_holder = $CameraHolder/Camera/WeaponHolder
+onready var item_holder = $CameraHolder/Camera/ItemHolder
 
 func _ready() -> void:
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
@@ -32,7 +34,7 @@ func _physics_process(delta) -> void:
 	# Screen shake
 	screen_shake(delta)
 	
-	if Input.is_action_pressed("debug"):
+	if Input.is_action_just_pressed("debug"):
 		debug = !debug
 
 # Movement
@@ -57,7 +59,6 @@ var stamina: float = 100.0
 #		such as this one: 
 #		https://docs.godotengine.org/en/3.2/tutorials/3d/fps_tutorial/part_one.html#making-the-fps-movement-logic
 func process_movement(delta: float) -> void:
-	
 	var aiming: Basis = $CameraHolder.transform.basis
 	var direction: Vector3 = Vector3()
 	var target_speed: float = WALK_SPEED
@@ -120,8 +121,8 @@ func process_movement(delta: float) -> void:
 # Weapons/item use
 func process_item_use(_delta: float) -> void:
 	# Using items/weapons
-	var held_weapon = $CameraHolder/Camera/WeaponHolder.get_child(0)
-	var held_item = $CameraHolder/Camera/ItemHolder.get_child(0)
+	var held_weapon = weapon_holder.get_child(0) if weapon_holder.get_child_count() > 0 else null
+	var held_item = item_holder.get_child(0) if item_holder.get_child_count() > 0 else null
 	var use_item_pressed: bool = Input.is_action_pressed("use_item")
 	var use_item_alt_pressed: bool = Input.is_action_pressed("use_item_alt")
 	var interact_pressed: bool = Input.is_action_just_pressed("interact")

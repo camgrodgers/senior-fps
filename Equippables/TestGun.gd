@@ -34,6 +34,9 @@ func _physics_process(delta):
 		print(obj)
 		if obj.has_method("take_damage"):
 			obj.take_damage()
+		if obj is RigidBody:
+			var force = global_transform.origin.direction_to(obj.translation)
+			obj.apply_central_impulse(force)
 
 func unequip():
 	self.queue_free()
