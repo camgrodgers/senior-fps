@@ -57,9 +57,9 @@ func update_cover():
 	for n in $NavNodes.get_children():
 		for h in player.hitboxes():
 			var body_ray = space_state.intersect_ray(h.global_transform.origin, n.global_transform.origin, actors)
-			print(n)
+#			print(n)
 			if body_ray.empty():
-				print("empty ray")
+#				print("empty ray")
 				# Something very messed up must have happened
 				# return an error or something here
 				#WHY IS IT EMPTY??? It seems to only be empty when the player can see the node
@@ -69,7 +69,7 @@ func update_cover():
 				continue
 				
 			var collider = body_ray.collider
-			print(collider)
+#			print(collider)
 			if collider == n:
 				n.visible_to_player = true
 				

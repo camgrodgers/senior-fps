@@ -32,7 +32,7 @@ func _physics_process(delta) -> void:
 	# Screen shake
 	screen_shake(delta)
 	
-	if Input.is_action_pressed("debug"):
+	if Input.is_action_just_pressed("debug"):
 		debug = !debug
 
 # Movement
@@ -57,7 +57,6 @@ var stamina: float = 100.0
 #		such as this one: 
 #		https://docs.godotengine.org/en/3.2/tutorials/3d/fps_tutorial/part_one.html#making-the-fps-movement-logic
 func process_movement(delta: float) -> void:
-	
 	var aiming: Basis = $CameraHolder.transform.basis
 	var direction: Vector3 = Vector3()
 	var target_speed: float = WALK_SPEED

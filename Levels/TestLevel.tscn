@@ -26,7 +26,6 @@ albedo_color = Color( 0.235294, 0.647059, 0.290196, 1 )
 albedo_color = Color( 0.937255, 0.964706, 0.0431373, 1 )
 
 [node name="Navigation" type="Navigation"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.00009, -4.84877 )
 script = ExtResource( 2 )
 
 [node name="Ball" parent="." instance=ExtResource( 4 )]
