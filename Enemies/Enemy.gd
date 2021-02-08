@@ -140,32 +140,32 @@ func _physics_process(delta):
 			var distance = translation.distance_to(player.translation)
 			if distance > 10:
 				state = FIND
-		PATROL:
-			if check_vision():
-				state = FIND_COVER
-				clear_node_data()
-				return
-			if $PatrolTimer.get_time_left() > 0:
-				return
-			else:
-				if path.size() < 1:
-					prep_node(patrolNodes[patrolNodeIndex])
-					if patrolNodeIndex == patrolNodes.size() - 1:
-						patrolNodeIndex = 0
-					else:
-						patrolNodeIndex += 1
-					$PatrolTimer.start()
-				var to = path[0]
-				var distance = translation.distance_to(to)
-				var total_distance = get_absolute_distance(target.translation)
-
-				if distance < moving:
-					path.pop_front()
-					return
-
-				var velocity = translation.direction_to(path[0]).normalized() * ENEMY_SPEED
-				look_at(global_transform.origin + velocity, Vector3.UP)
-				translation = translation.linear_interpolate(to, moving / distance)
+#		PATROL:
+#			if check_vision():
+#				state = FIND_COVER
+#				clear_node_data()
+#				return
+#			if $PatrolTimer.get_time_left() > 0:
+#				return
+#			else:
+#				if path.size() < 1:
+#					prep_node(patrolNodes[patrolNodeIndex])
+#					if patrolNodeIndex == patrolNodes.size() - 1:
+#						patrolNodeIndex = 0
+#					else:
+#						patrolNodeIndex += 1
+#					$PatrolTimer.start()
+#				var to = path[0]
+#				var distance = translation.distance_to(to)
+#				var total_distance = get_absolute_distance(target.translation)
+#
+#				if distance < moving:
+#					path.pop_front()
+#					return
+#
+#				var velocity = translation.direction_to(path[0]).normalized() * ENEMY_SPEED
+#				look_at(global_transform.origin + velocity, Vector3.UP)
+#				translation = translation.linear_interpolate(to, moving / distance)
 #
 #		FIND_COVER:
 #
