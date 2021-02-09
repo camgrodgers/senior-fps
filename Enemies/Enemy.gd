@@ -130,15 +130,23 @@ func aim_at_player(_delta):
 	look_at(player.translation, Vector3(0,1,0))
 	rotation_degrees.x = 0
 
+var path_timer:float = 0.1
+var rng = RandomNumberGenerator.new()
+
 func _physics_process(delta):
 	match state:
 		FIND:
 			aim_at_player(delta)
-			update_path(player.translation)
+			if path_timer < 0:
+				update_path(player.translation)
+				rng.randomize()
+				path_timer = rng.randf_range(0.1, 0.5)
+			else:
+				path_timer -= delta
 			move_along_path(delta)
 			var distance = translation.distance_to(player.translation)
 			if distance <= 10:
-				state = HOLD
+				state = FIND_COVER
 #				path.clear()
 		HOLD:
 			aim_at_player(delta)
@@ -212,6 +220,6 @@ func take_damage() -> void:
 	var corpse_scn: Resource = preload("res://Enemies/DeadEnemy.tscn")
 	var corpse = corpse_scn.instance()
 	corpse.transform = self.transform
-	get_parent().add_child(corpse)
+	get_parent().get_parent().add_child(corpse)
 	clear_node_data()
 	self.queue_free()

@@ -12,6 +12,9 @@ func _ready():
 	update_cover()
 
 func _physics_process(delta):
+#	print(enemies.get_child_count())
+	if enemies.get_child_count() < 1:
+		spawn_enemies()
 	update_cover()
 	# NOTE: it might make sense to replace this bool flag with a signal
 	if not(player.is_dead and Input.is_action_pressed("jump")):
@@ -25,6 +28,19 @@ func _physics_process(delta):
 	
 	add_instances()
 	update_cover()
+	
+func spawn_enemies():
+	for spawn in $EnemySpawns.get_children():
+		var enemy_instance: KinematicBody = enemy_scn.instance()
+		enemies.add_child(enemy_instance)
+		
+		enemy_instance.nav = self
+		enemy_instance.state = 0
+		enemy_instance.target = player
+		enemy_instance.player = player
+		enemy_instance.translation = get_closest_point(Vector3(spawn.translation.x, 0, spawn.translation.z))
+		enemy_instance.patrolNodes = $PatrolRoutes.get_child(0).get_children()
+		enemy_instance.coverNodes = coverNodes
 
 func add_instances():
 	player = player_scn.instance()
