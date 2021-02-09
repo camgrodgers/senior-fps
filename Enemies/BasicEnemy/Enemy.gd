@@ -202,7 +202,7 @@ func clear_node_data() -> void:
 
 # Respond to player attacks
 func take_damage() -> void:
-	var corpse_scn: Resource = preload("res://Enemies/DeadEnemy.tscn")
+	var corpse_scn: Resource = preload("res://Enemies/BasicEnemy/DeadEnemy.tscn")
 	var corpse = corpse_scn.instance()
 	corpse.transform = self.transform
 	get_parent().add_child(corpse)

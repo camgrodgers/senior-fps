@@ -5,7 +5,7 @@ var player: KinematicBody = null
 var coverNodes = []
 
 onready var player_scn: Resource = preload("res://Player/Player.tscn")
-onready var enemy_scn: Resource = preload("res://Enemies/Enemy.tscn")
+onready var enemy_scn: Resource = preload("res://Enemies/BasicEnemy/Enemy.tscn")
 
 func _ready():
 	add_instances()

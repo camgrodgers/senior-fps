@@ -1,16 +1,16 @@
 [gd_scene load_steps=31 format=2]
 
-[ext_resource path="res://textures/PNG/Red/texture_10.png" type="Texture" id=1]
-[ext_resource path="res://textures/PNG/Orange/texture_09.png" type="Texture" id=2]
-[ext_resource path="res://textures/PNG/Purple/texture_04.png" type="Texture" id=3]
-[ext_resource path="res://textures/PNG/Light/texture_03.png" type="Texture" id=4]
-[ext_resource path="res://textures/PNG/Purple/texture_06.png" type="Texture" id=5]
-[ext_resource path="res://textures/PNG/Purple/texture_11.png" type="Texture" id=6]
-[ext_resource path="res://textures/PNG/Light/texture_04.png" type="Texture" id=7]
-[ext_resource path="res://textures/PNG/Light/texture_06.png" type="Texture" id=8]
-[ext_resource path="res://textures/PNG/Orange/texture_10.png" type="Texture" id=9]
-[ext_resource path="res://textures/PNG/Dark/texture_04.png" type="Texture" id=10]
-[ext_resource path="res://Player/Player.tscn" type="PackedScene" id=11]
+[ext_resource path="res://Player/Player.tscn" type="PackedScene" id=1]
+[ext_resource path="res://textures/PNG/Purple/texture_11.png" type="Texture" id=2]
+[ext_resource path="res://textures/PNG/Light/texture_04.png" type="Texture" id=3]
+[ext_resource path="res://textures/PNG/Purple/texture_06.png" type="Texture" id=4]
+[ext_resource path="res://textures/PNG/Orange/texture_09.png" type="Texture" id=5]
+[ext_resource path="res://textures/PNG/Purple/texture_04.png" type="Texture" id=6]
+[ext_resource path="res://textures/PNG/Red/texture_10.png" type="Texture" id=7]
+[ext_resource path="res://textures/PNG/Light/texture_03.png" type="Texture" id=8]
+[ext_resource path="res://textures/PNG/Dark/texture_04.png" type="Texture" id=9]
+[ext_resource path="res://textures/PNG/Orange/texture_10.png" type="Texture" id=10]
+[ext_resource path="res://textures/PNG/Light/texture_06.png" type="Texture" id=11]
 
 [sub_resource type="CubeMesh" id=1]
 size = Vector3( 90, 0.5, 90 )
@@ -25,54 +25,54 @@ extents = Vector3( 44.9795, 0.327744, 45.0353 )
 albedo_color = Color( 0.992157, 0.0196078, 0.0196078, 1 )
 
 [sub_resource type="SpatialMaterial" id=5]
-albedo_texture = ExtResource( 1 )
+albedo_texture = ExtResource( 7 )
 
 [sub_resource type="SpatialMaterial" id=6]
-albedo_texture = ExtResource( 10 )
+albedo_texture = ExtResource( 9 )
 
 [sub_resource type="SpatialMaterial" id=7]
-albedo_texture = ExtResource( 10 )
+albedo_texture = ExtResource( 9 )
 
 [sub_resource type="SpatialMaterial" id=8]
 albedo_color = Color( 0.996078, 0.956863, 0, 1 )
-albedo_texture = ExtResource( 4 )
+albedo_texture = ExtResource( 8 )
 
 [sub_resource type="SpatialMaterial" id=9]
 albedo_color = Color( 0.996078, 0.956863, 0, 1 )
-albedo_texture = ExtResource( 7 )
+albedo_texture = ExtResource( 3 )
 
 [sub_resource type="SpatialMaterial" id=10]
-albedo_texture = ExtResource( 6 )
-
-[sub_resource type="SpatialMaterial" id=11]
-albedo_texture = ExtResource( 5 )
-
-[sub_resource type="SpatialMaterial" id=12]
 albedo_texture = ExtResource( 2 )
 
+[sub_resource type="SpatialMaterial" id=11]
+albedo_texture = ExtResource( 4 )
+
+[sub_resource type="SpatialMaterial" id=12]
+albedo_texture = ExtResource( 5 )
+
 [sub_resource type="SpatialMaterial" id=13]
-albedo_texture = ExtResource( 8 )
+albedo_texture = ExtResource( 11 )
 
 [sub_resource type="SpatialMaterial" id=14]
 flags_world_triplanar = true
-albedo_texture = ExtResource( 2 )
+albedo_texture = ExtResource( 5 )
 
 [sub_resource type="SpatialMaterial" id=15]
-albedo_texture = ExtResource( 9 )
+albedo_texture = ExtResource( 10 )
 
 [sub_resource type="SpatialMaterial" id=16]
-albedo_texture = ExtResource( 3 )
+albedo_texture = ExtResource( 6 )
 
 [sub_resource type="SpatialMaterial" id=17]
 albedo_color = Color( 0.00392157, 0.0196078, 0.180392, 1 )
-albedo_texture = ExtResource( 3 )
+albedo_texture = ExtResource( 6 )
 
 [sub_resource type="SpatialMaterial" id=18]
 albedo_color = Color( 0.976471, 0.964706, 0.964706, 1 )
-albedo_texture = ExtResource( 1 )
+albedo_texture = ExtResource( 7 )
 
 [sub_resource type="SpatialMaterial" id=19]
-albedo_texture = ExtResource( 8 )
+albedo_texture = ExtResource( 11 )
 
 [node name="MainScene" type="Spatial"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.435333, 0.225521, -0.140871 )
@@ -200,5 +200,5 @@ operation = 2
 transform = Transform( 7.08036, 0, 0, 0, 3.70962, 0, 0, 0, 0.618458, 29.0149, 4.01343, -27.746 )
 material = SubResource( 19 )
 
-[node name="Player" parent="." instance=ExtResource( 11 )]
+[node name="Player" parent="." instance=ExtResource( 1 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -5.48341, 1.38579, 1.23492 )
