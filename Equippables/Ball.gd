@@ -7,6 +7,7 @@ var is_active: bool = false
 var ray: RayCast = null
 
 func unequip():
+	# Shouldn't collide with player
 	$CollisionShape.disabled = false
 	
 func pick_up():
