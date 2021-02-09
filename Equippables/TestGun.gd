@@ -32,7 +32,7 @@ func _physics_process(delta):
 			return
 			
 		var obj = ray.get_collider()
-		print(obj)
+#		print(obj)
 		if obj.has_method("take_damage"):
 			obj.take_damage()
 		if obj is RigidBody:

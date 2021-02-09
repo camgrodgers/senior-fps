@@ -139,7 +139,6 @@ func _physics_process(delta):
 			var distance = translation.distance_to(player.translation)
 			if distance <= 10:
 				state = HOLD
-#				path.clear()
 		HOLD:
 			aim_at_player(delta)
 			var distance = translation.distance_to(player.translation)
@@ -162,13 +161,9 @@ func _physics_process(delta):
 					else:
 						patrolNodeIndex += 1
 					$PatrolTimer.start()
-
-
 		FIND_COVER:
 			prep_node(get_shortest_node())
-			
 			state = TAKE_COVER
-
 		TAKE_COVER:
 			if currentNode.visible_to_player:
 				state = FIND_COVER
@@ -178,8 +173,6 @@ func _physics_process(delta):
 			if path.empty():
 				state = SHOOT
 				return
-
-
 		SHOOT:
 			###TO DO: ADD POPPING OUT OF COVER###
 			aim_at_player(delta)
