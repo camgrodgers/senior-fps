@@ -1,13 +1,13 @@
 extends CSGCombiner
 
 var ray: RayCast
-onready var timer = $Timer
+onready var timer: Timer = $Timer
 
 var use_item_alt_pressed: bool = false
 var use_item_pressed: bool = false
 var is_active: bool = false
-export var raised = false
-export var chambered = true
+export var raised: bool = false
+export var chambered: bool = true
 
 func _physics_process(delta):
 	is_active = false
