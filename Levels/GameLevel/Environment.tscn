@@ -304,7 +304,7 @@ environment = ExtResource( 1 )
 [node name="PlayerSpawn" parent="." instance=ExtResource( 2 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -4.71008, 8.08945, -97.1849 )
 
-[node name="EnemySpawns" type="Spatial" parent="."]
+[node name="EnemySpawns" type="Node" parent="."]
 
 [node name="EnemySpawn" parent="EnemySpawns" instance=ExtResource( 4 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 52.9644, 5.6012, -196.427 )
@@ -330,7 +330,7 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -155.657, 5.7426, 44.3233 )
 [node name="EnemySpawn8" parent="EnemySpawns" instance=ExtResource( 4 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -155.657, 5.7426, -88.4404 )
 
-[node name="PatrolRoutes" type="Spatial" parent="."]
+[node name="PatrolRoutes" type="Node" parent="."]
 
 [node name="PatrolRoute1" parent="PatrolRoutes" instance=ExtResource( 6 )]
 
@@ -372,7 +372,7 @@ transform = Transform( 0.25, 0, 0, 0, 0.25, 0, 0, 0, 0.25, 35.205, 5, 2.30178 )
 [node name="NavNode2" parent="PatrolRoutes/PatrolRoute5" instance=ExtResource( 5 )]
 transform = Transform( 0.25, 0, 0, 0, 0.25, 0, 0, 0, 0.25, -19.7638, 5, -0.135872 )
 
-[node name="NavNodes" type="Spatial" parent="."]
+[node name="NavNodes" type="Node" parent="."]
 
 [node name="NavNode" parent="NavNodes" instance=ExtResource( 5 )]
 transform = Transform( 0.25, 0, 0, 0, 0.25, 0, 0, 0, 0.25, -10.2815, 4.97, 0.700552 )
