@@ -25,6 +25,12 @@ operation = 2
 height = 6.0
 depth = 6.1649
 
+[node name="Door2" type="CSGBox" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -9.31859, -6.63605, 12.6469 )
+operation = 2
+height = 6.0
+depth = 6.1649
+
 [node name="window" type="CSGBox" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 9.66373, 4.30782, -3.34719 )
 operation = 2
@@ -46,6 +52,12 @@ depth = 12.9525
 
 [node name="CSGBox" type="CSGBox" parent="."]
 transform = Transform( 1, 0, -2.98023e-08, 0, 0.866025, -0.5, 0, 0.5, 0.866026, -5.09283, -5.81641, -3.5637 )
+width = 4.06949
+height = 0.477646
+depth = 22.7752
+
+[node name="CSGBox3" type="CSGBox" parent="."]
+transform = Transform( -1.62921e-07, -0.5, -0.866026, 0, 0.866025, -0.5, 1, -8.14603e-08, -1.41094e-07, -15.4377, -5.80913, 25.051 )
 width = 4.06949
 height = 0.477646
 depth = 22.7752

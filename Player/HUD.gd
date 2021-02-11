@@ -3,17 +3,20 @@ extends Control
 onready var player_stats = get_parent().get_node("PlayerStats")
 onready var known_cover_label: Label = $KnownCover
 onready var danger_meter: ProgressBar = $ProgressBar
+var crosshair_coordinates = Vector2.ZERO
 
 func _ready():
 	danger_meter.visible = false
 	
 func zoomIn():
-	$CenterContainer/Crosshair.rect_scale *= 0.5
-	$CenterContainer/Crosshair.rect_position.x += 25
+#	$CenterContainer/Crosshair.rect_scale *= 0.5
+#	$CenterContainer/Crosshair.rect_position.x += 25
+	pass
 
 func zoomOut():
-	$CenterContainer/Crosshair.rect_scale *= 2
-	$CenterContainer/Crosshair.rect_position.x -= 25
+#	$CenterContainer/Crosshair.rect_scale *= 2
+#	$CenterContainer/Crosshair.rect_position.x -= 25
+	pass
 
 func player_dead_message():
 	$CenterContainer/Label.visible = true
@@ -23,6 +26,8 @@ func _process(_delta):
 	margin_bottom = get_viewport().size.y
 	$CenterContainer.margin_right = get_viewport().size.x
 	$CenterContainer.margin_bottom = get_viewport().size.y
+	$Crosshair.margin_top = crosshair_coordinates.y - $Crosshair.rect_size.y / 2
+	$Crosshair.margin_left = crosshair_coordinates.x - $Crosshair.rect_size.x / 2
 	update_danger_meter()
 	update_enemy_distance_indicator()
 	

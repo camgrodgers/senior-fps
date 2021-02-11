@@ -8,7 +8,7 @@ var last_known_position = null
 var known_cover_position: bool = false
 var hidden_from_enemies: bool = true
 
-func _physics_process(delta):
+func _process(delta):
 	danger_update(delta)
 
 # Handles enemy and player data
@@ -65,24 +65,24 @@ func rate_of_danger_increase(enemy) -> float:
 		return 0.0
 	
 	var rate: float = 0
-	if player_distance > 50:
+	if player_distance > 150:
 		rate = 0
-	elif player_distance > 30:
-		rate = 5
-	elif player_distance > 20:
+	elif player_distance > 100:
+		rate = 2
+	elif player_distance > 50:
 		rate = 10
-	elif player_distance > 10:
+	elif player_distance > 30:
 		rate = 15
-	elif player_distance > 5:
+	elif player_distance > 10:
 		rate = 20
 	else:
 		rate = 30
 	
 	var speed_factor: float = 1
 	if player_speed < 4:
-		speed_factor = 3
-	else:
-		# speed_factor should be <1 when player is sprinting or dodging and jumping around
+		speed_factor = 2
+	elif player_speed > 15:
+		speed_factor = 0.75
 		#add a timer or something for the speed factor so it doesn't immediately go up when 
 		#you change directions
 		pass

@@ -1,4 +1,5 @@
 extends KinematicBody
+class_name Enemy
 
 var ENEMY_SPEED: int = 6
 
@@ -31,6 +32,10 @@ enum {
 }
 
 var state = PATROL
+
+func _ready():
+	rng.randomize()
+	cover_timer_limit = rng.randf_range(1, 10)
 
 # Updates the path variable to lead to a new destination
 func update_path(goal: Vector3) -> void:
@@ -133,14 +138,21 @@ func aim_at_player(_delta):
 var path_timer:float = 0.1
 var rng = RandomNumberGenerator.new()
 
-func _physics_process(delta):
+func _process(delta):
 	match state:
 		FIND:
+			if can_see_player:
+				cover_timer += delta
+			if cover_timer > 2:
+				cover_timer = 0
+				state = TAKE_COVER
+				return
 			aim_at_player(delta)
+#			update_path(player.translation)
 			if path_timer < 0:
 				update_path(player.translation)
 				rng.randomize()
-				path_timer = rng.randf_range(0.1, 0.5)
+				path_timer = rng.randf_range(0.1, 1)
 			else:
 				path_timer -= delta
 			move_along_path(delta)
@@ -155,6 +167,7 @@ func _physics_process(delta):
 				state = FIND
 		PATROL:
 			if check_vision():
+				alert_comrades()
 				state = FIND_COVER
 				clear_node_data()
 				return
@@ -191,9 +204,17 @@ func _physics_process(delta):
 		SHOOT:
 			###TO DO: ADD POPPING OUT OF COVER###
 			aim_at_player(delta)
+			cover_timer += delta
+			if cover_timer > cover_timer_limit:
+				state = FIND
+				cover_timer = 0
+				return
 			if currentNode.visible_to_player:
 				state = FIND_COVER
 				return
+
+var cover_timer = 0
+var cover_timer_limit = 3
 
 # Length of path to a point
 func get_path_distance_to(goal: Vector3) -> float:
@@ -216,10 +237,23 @@ func clear_node_data() -> void:
 		currentNode.occupied_by = null
 
 # Respond to player attacks
+var HP: int = 2
+
 func take_damage() -> void:
+	alert_comrades()
+	HP -= 1
+	if HP > 0:
+		$CSGCombiner/CSGCylinder.visible = false
+		$CSGCombiner/CSGCylinder2.visible = true
+		return
 	var corpse_scn: Resource = preload("res://Enemies/DeadEnemy.tscn")
 	var corpse = corpse_scn.instance()
 	corpse.transform = self.transform
 	get_parent().get_parent().add_child(corpse)
 	clear_node_data()
 	self.queue_free()
+
+func alert_comrades() -> void:
+	for e in get_tree().get_nodes_in_group("enemies"):
+		if e.state == PATROL:
+			e.state = TAKE_COVER
