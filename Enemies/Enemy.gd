@@ -98,7 +98,7 @@ func prep_node(node):
 func check_vision() -> bool:
 	var collisions = $VisionCone.get_overlapping_bodies()
 	for collider in collisions:
-		if collider.is_in_group("player"):
+		if collider is Player:
 			can_see_player = cast_to_player_hitboxes()
 #			target = collider
 			return can_see_player
@@ -135,8 +135,9 @@ func aim_at_player(_delta):
 	look_at(player.translation, Vector3(0,1,0))
 	rotation_degrees.x = 0
 
-var path_timer:float = 0.1
 var rng = RandomNumberGenerator.new()
+var cover_timer = 0
+var cover_timer_limit = 3
 
 func _process(delta):
 	match state:
@@ -148,13 +149,7 @@ func _process(delta):
 				state = TAKE_COVER
 				return
 			aim_at_player(delta)
-#			update_path(player.translation)
-			if path_timer < 0:
-				update_path(player.translation)
-				rng.randomize()
-				path_timer = rng.randf_range(0.1, 1)
-			else:
-				path_timer -= delta
+			update_path(player.translation)
 			move_along_path(delta)
 			var distance = translation.distance_to(player.translation)
 			if distance <= 10:
@@ -183,13 +178,10 @@ func _process(delta):
 					else:
 						patrolNodeIndex += 1
 					$PatrolTimer.start()
-
-
 		FIND_COVER:
 			prep_node(get_shortest_node())
 			
 			state = TAKE_COVER
-
 		TAKE_COVER:
 			if currentNode.visible_to_player:
 				state = FIND_COVER
@@ -199,8 +191,6 @@ func _process(delta):
 			if path.empty():
 				state = SHOOT
 				return
-
-
 		SHOOT:
 			###TO DO: ADD POPPING OUT OF COVER###
 			aim_at_player(delta)
@@ -213,8 +203,6 @@ func _process(delta):
 				state = FIND_COVER
 				return
 
-var cover_timer = 0
-var cover_timer_limit = 3
 
 # Length of path to a point
 func get_path_distance_to(goal: Vector3) -> float:
@@ -249,11 +237,13 @@ func take_damage() -> void:
 	var corpse_scn: Resource = preload("res://Enemies/DeadEnemy.tscn")
 	var corpse = corpse_scn.instance()
 	corpse.transform = self.transform
+	# TODO: replace this with something that lets the level manage corpses
 	get_parent().get_parent().add_child(corpse)
 	clear_node_data()
 	self.queue_free()
 
 func alert_comrades() -> void:
+	# TODO: Replace this with something that's restricted to a certain area, and/or a signal?
 	for e in get_tree().get_nodes_in_group("enemies"):
 		if e.state == PATROL:
 			e.state = TAKE_COVER

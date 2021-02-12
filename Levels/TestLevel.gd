@@ -12,14 +12,7 @@ func _ready():
 	add_instances()
 	update_cover()
 
-var enemy_spawn_counter = 0
-
 func _process(delta):
-	enemy_spawn_counter += delta
-	print(enemies.get_child_count())
-#	if enemy_spawn_counter > 30:
-#		enemy_spawn_counter = 0
-#		spawn_enemies()
 	if enemies.get_child_count() == 0:
 		spawn_enemies()
 	update_cover()
