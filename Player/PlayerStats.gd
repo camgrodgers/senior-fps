@@ -61,6 +61,7 @@ func danger_update(delta):
 func rate_of_danger_increase(enemy) -> float:
 	var player_distance: float = enemy.player_distance
 	var player_speed: float = get_parent().vel.abs().length()
+	print(player_speed)
 	
 	if not enemy.can_see_player:
 		return 0.0

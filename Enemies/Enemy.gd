@@ -96,21 +96,26 @@ func prep_node(node):
 
 # Check if player is visible inside the enemy's vision cone
 func check_vision() -> bool:
-	var collisions = $VisionCone.get_overlapping_bodies()
-	for collider in collisions:
-		if collider is Player:
-			can_see_player = cast_to_player_hitboxes()
-#			target = collider
-			return can_see_player
+	var collisions = $VisionCone.get_overlapping_areas()
+	if collisions.empty():
+		can_see_player = false
+		return false
 	
-	can_see_player = false
+	can_see_player = cast_to_player_hitboxes()
+#			target = collider
 	return can_see_player
 
 # If it returns true, a raycast can hit the player's hitboxes
 func cast_to_player_hitboxes() -> bool:
 	var space_state = get_world().direct_space_state
 	for h in player.hitboxes():
-		var body_ray = space_state.intersect_ray($Gun.global_transform.origin, h.global_transform.origin, [self])
+		var body_ray = space_state.intersect_ray(
+			$Gun.global_transform.origin,
+			h.global_transform.origin,
+			[self], # exclude
+			0b0011, # collides with 0...0, player, world
+			true, # collide with bodies  
+			true) # collide with areas
 		if body_ray.empty():
 			print("empty ray")
 			# TODO: why does this keep printing?
@@ -144,16 +149,19 @@ func _process(delta):
 		FIND:
 			if can_see_player:
 				cover_timer += delta
-			if cover_timer > 2:
+				var distance = translation.distance_to(player.translation)
+				if distance <= 10:
+					state = FIND_COVER
+					cover_timer = 0
+					return
+			if cover_timer > 3:
 				cover_timer = 0
-				state = TAKE_COVER
+				state = FIND_COVER
 				return
 			aim_at_player(delta)
 			update_path(player.translation)
 			move_along_path(delta)
-			var distance = translation.distance_to(player.translation)
-			if distance <= 10:
-				state = FIND_COVER
+
 #				path.clear()
 		HOLD:
 			aim_at_player(delta)

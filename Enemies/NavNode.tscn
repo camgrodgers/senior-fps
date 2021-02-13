@@ -5,8 +5,15 @@
 [sub_resource type="SpatialMaterial" id=1]
 albedo_color = Color( 0.85098, 1, 0, 1 )
 
-[node name="NavNode" type="CSGSphere"]
+[node name="NavNode" type="CSGSphere" groups=[
+"navnodes",
+]]
 transform = Transform( 0.25, 0, 0, 0, 0.25, 0, 0, 0, 0.25, 0, 0.701584, -0.135872 )
+cast_shadow = 0
+use_collision = true
+collision_layer = 32
+collision_mask = 2147483680
 radius = 0.2
+radial_segments = 8
 material = SubResource( 1 )
 script = ExtResource( 1 )

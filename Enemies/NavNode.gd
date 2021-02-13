@@ -8,5 +8,4 @@ var visible_to_player: bool = false
 
 func _ready():
 	visible = false
-	use_collision = false
 

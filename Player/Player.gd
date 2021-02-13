@@ -44,7 +44,7 @@ const GRAVITY: float = -40.0
 
 var vel: Vector3 = Vector3()
 
-const WALK_SPEED: int = 13
+const WALK_SPEED: int = 10
 const AIR_CONTROL_SPEED: int = 5
 const JUMP_HEIGHT: int = 15
 const ACCEL: float = 4.5
@@ -88,18 +88,22 @@ func process_movement(delta: float) -> void:
 		
 		if Input.is_action_just_pressed("crouch"):
 			if is_crouching:
-				$CameraHolder.translation.y += 1
+				$CameraHolder.translation.y += 0.7
 				$HUD.zoomOut()
 				$StandingCollisionShape.disabled = false
 				$CrouchingCollisionShape.disabled = true
+				$StandingHitboxes.monitorable = true
+				$CrouchingHitboxes.monitorable = false
 			else:
-				$CameraHolder.translation.y -= 1
+				$CameraHolder.translation.y -= 0.7
 				$HUD.zoomIn()
 				$StandingCollisionShape.disabled = true
 				$CrouchingCollisionShape.disabled = false
+				$StandingHitboxes.monitorable = false
+				$CrouchingHitboxes.monitorable = true
 			is_crouching = !is_crouching
 		if is_crouching:
-			target_speed *= 0.75
+			target_speed *= 0.5
 		if Input.is_action_pressed("sprint") and stamina > 0 and not is_crouching:
 			target_speed *= 1.75
 			accel *= 1.5
@@ -217,4 +221,8 @@ func _input(event: InputEvent) -> void:
 
 ## Enemy/hazard interactions ##
 func hitboxes() -> Array:
-	return $Hitboxes.get_children()
+	if is_crouching:
+		return $CrouchingHitboxes.get_children()
+	else:
+		return $StandingHitboxes.get_children()
+		
