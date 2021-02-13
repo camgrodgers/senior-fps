@@ -122,7 +122,7 @@ width = 4.57343
 depth = 16.3376
 
 [node name="DirectionalLight" type="DirectionalLight" parent="."]
-transform = Transform( 0.818461, -0.361584, 0.446519, 0, 0.777146, 0.629321, -0.574563, -0.515074, 0.636063, 0, 17.0986, 0 )
+transform = Transform( 0.633205, 0.487084, -0.601498, -0.311497, 0.871804, 0.378056, 0.708534, -0.0520226, 0.703756, 0, 17.0986, 0 )
 shadow_enabled = true
 
 [node name="PatrolRoutes" type="Spatial" parent="."]

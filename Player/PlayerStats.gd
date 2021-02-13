@@ -1,6 +1,7 @@
 extends Node
 
 var danger_level: float = 0
+# TODO: count decreasing danger levels separately?
 var danger_decrease_acceleration: float = 0.1
 # NOTE: This could be changed to a per-enemy value
 var danger_decrease_velocity: float = 0
