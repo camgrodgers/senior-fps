@@ -75,23 +75,26 @@ func add_instances():
 	
 	update_cover()
 
+# TODO: This could possibly be improved by moving it into the player and
+# 		having a front vision, flanking, and rear area that detect nodes
 func update_cover():
 	coverNodes.clear()
 	var space_state = get_world().direct_space_state
-	var actors = [player]
-	actors += enemies.get_children()
+#	var actors = [player]
+#	actors += enemies.get_children()
 	var h = player.hitboxes()[0]
-	for n in $NavNodes.get_children():
-#		for h in player.hitboxes():
-		var body_ray = space_state.intersect_ray(h.global_transform.origin, n.global_transform.origin, actors)
-#			print(n)
+	for n in get_tree().get_nodes_in_group("navnodes"):
+		var body_ray = space_state.intersect_ray(
+			h.global_transform.origin,
+			n.global_transform.origin,
+			[], # exclude
+			0b100001, # collides with 0...0,navnodes, 0, 0, 0, 0, world
+			true, # collide with bodies  
+			false) # collide with areas
 		if body_ray.empty():
-#				print("empty ray")
-			# Something very messed up must have happened
-			# return an error or something here
-			#WHY IS IT EMPTY??? It seems to only be empty when the player can see the node
-			#and an enemy is in the way...sometimes
-			#setting it as true until I figure out what is happening
+			print("empty ray")
+			# This was empty because the navnode collision was disabled,
+			# now, this path should not execute.
 			n.visible_to_player = true
 			continue
 			
