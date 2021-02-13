@@ -1,14 +1,14 @@
 extends KinematicBody
+class_name Enemy
 
-var ENEMY_SPEED = 4.0
+var ENEMY_SPEED: int = 6
 
 var nav: Navigation = null
 var target = null
-var navNodes: Array = []
+var player = null
 var patrolNodes: Array = []
 var coverNodes: Array = []
 var path: Array = []
-var progress: float = 0
 var last_valid_path_of_target: Array = []
 var last_valid_coordinate
 
@@ -31,39 +31,48 @@ enum {
 	SHOOT
 }
 
-
 var state = PATROL
 
-func update_path():
-	if path.empty() || path[path.size() - 1].distance_to(target.translation) > 10:
-		prep(target.translation)
-	if path.empty():
-		path.push_front(last_valid_coordinate)
-	if path[0] != null:
-		last_valid_coordinate = path[0]
+func _ready():
+	rng.randomize()
+	cover_timer_limit = rng.randf_range(1, 10)
 
-func prep(location):
-	path = nav.get_simple_path(translation, location, true)
-	path = Array(path)
-	for p in path:
-		p.y = translation.y
-	last_valid_path_of_target = path
-func prep_node(node):
-	clear_node_data()
-	path = nav.get_simple_path(translation, node.translation, true)
-	path = Array(path)
-	for p in path:
-		p.y = translation.y
-	currentNode = node
-	currentNode.occupied = true
-	currentNode.occupied_by = self
+# Updates the path variable to lead to a new destination
+func update_path(goal: Vector3) -> void:
+	var new_path_pool: PoolVector3Array = nav.get_simple_path(translation, nav.get_closest_point(goal), true)
+	var new_path: Array = Array(new_path_pool)
+	if new_path == null or new_path.empty():
+		print("got null path")
+		return
+	path = new_path
 
+# Moves the enemy along the path held in 'path'
+func move_along_path(delta: float, lookat: bool = false) -> void:
+	if path == null or path.empty():
+		print("null or empty path")
+		return
+	
+	var moving = ENEMY_SPEED * delta
+	var to = path[0]
+	while translation.distance_to(to) < moving:
+		path.pop_front()
+		if path.empty():
+			return
+		to = path[0]
+	
+	var velocity = translation.direction_to(path[0]).normalized() * ENEMY_SPEED
+	if lookat:
+		look_at(global_transform.origin + velocity, Vector3.UP)
+#	translation = translation.linear_interpolate(to, moving / distance)
+	move_and_slide(velocity, Vector3.UP)
+
+# Find the nearest node to take cover at
 func get_shortest_node():
 	var shortestNodePathDistance = INF
 	var shortestNodePathIndex = null
 	var currentNodePathIndex = 0
 	for n in coverNodes:
-		if n.occupied:
+		if n.occupied == true:
 			currentNodePathIndex += 1
 			continue
 		var path_to_node = nav.get_simple_path(translation, n.translation, true)
@@ -74,80 +83,94 @@ func get_shortest_node():
 		currentNodePathIndex += 1
 	if shortestNodePathIndex == null:
 		print("no free nodes")
-		prep_node(currentNode)
-		return
-	prep_node(coverNodes[shortestNodePathIndex])
+		return currentNode
+	return coverNodes[shortestNodePathIndex]
 
-func check_vision():
+func prep_node(node):
+	if currentNode != node:
+		clear_node_data()
+	update_path(node.translation)
+	currentNode = node
+	currentNode.occupied = true
+	currentNode.occupied_by = self
+
+# Check if player is visible inside the enemy's vision cone
+func check_vision() -> bool:
 	var collisions = $VisionCone.get_overlapping_bodies()
 	for collider in collisions:
-		if collider.is_in_group("player"):
-			target = collider
-			return true
+		if collider is Player:
+			can_see_player = cast_to_player_hitboxes()
+#			target = collider
+			return can_see_player
+	
+	can_see_player = false
+	return can_see_player
 
-func aim_at_player(_delta):
+# If it returns true, a raycast can hit the player's hitboxes
+func cast_to_player_hitboxes() -> bool:
 	var space_state = get_world().direct_space_state
-	for h in target.hitboxes():
+	for h in player.hitboxes():
 		var body_ray = space_state.intersect_ray($Gun.global_transform.origin, h.global_transform.origin, [self])
 		if body_ray.empty():
 			print("empty ray")
 			# TODO: why does this keep printing?
-			return
+			continue
 		
 		var collider = body_ray.collider
 #		print(collider)
-		if collider != target:
-			can_see_player = false
-			return
-		else:
-			break
-	
-	can_see_player = true
-	player_distance = target.translation.distance_to(translation)
+		if collider == player:
+			return true
+			
+	return false
+
+# If can see player, turn to look at the player
+func aim_at_player(_delta):
+	can_see_player = cast_to_player_hitboxes()
+	if not can_see_player: return
+	player_distance = player.translation.distance_to(translation)
 		# Could change this to relative velocity later?
 	# TODO: find out why player velocity is >0 when standing still
 #	target_speed = target.vel.abs().length()
 	
-	look_at(target.translation, Vector3(0,1,0))
+	look_at(player.translation, Vector3(0,1,0))
 	rotation_degrees.x = 0
 
-func _physics_process(delta):
-	var moving = ENEMY_SPEED * delta
-	
+var rng = RandomNumberGenerator.new()
+var cover_timer = 0
+var cover_timer_limit = 3
+
+func _process(delta):
 	match state:
 		FIND:
-			aim_at_player(delta)
-			update_path()
-			var to = path[0]
-			var distance = translation.distance_to(to)
-			var total_distance = get_absolute_distance(target.translation)
-			if total_distance <= 10:
-				state = HOLD
-				path.clear()
-			if distance < moving:
-				path.pop_front()
+			if can_see_player:
+				cover_timer += delta
+			if cover_timer > 2:
+				cover_timer = 0
+				state = TAKE_COVER
 				return
-			
-			translation = translation.linear_interpolate(to, moving / distance)
+			aim_at_player(delta)
+			update_path(player.translation)
+			move_along_path(delta)
+			var distance = translation.distance_to(player.translation)
+			if distance <= 10:
+				state = FIND_COVER
+#				path.clear()
 		HOLD:
 			aim_at_player(delta)
-			update_path()
-			if path.empty():
-				return
-			var to = path[0]
-			var distance = translation.distance_to(to)
-			var total_distance = get_absolute_distance(target.translation)
-			if total_distance > 15:
-				path.clear()
+			var distance = translation.distance_to(player.translation)
+			if distance > 10:
 				state = FIND
-				
 		PATROL:
 			if check_vision():
+				alert_comrades()
 				state = FIND_COVER
 				clear_node_data()
+				return
 			if $PatrolTimer.get_time_left() > 0:
 				return
 			else:
+				prep_node(patrolNodes[patrolNodeIndex])
+				move_along_path(delta, true)
 				if path.size() < 1:
 					prep_node(patrolNodes[patrolNodeIndex])
 					if patrolNodeIndex == patrolNodes.size() - 1:
@@ -155,73 +178,72 @@ func _physics_process(delta):
 					else:
 						patrolNodeIndex += 1
 					$PatrolTimer.start()
-				var to = path[0]
-				var distance = translation.distance_to(to)
-				var total_distance = get_absolute_distance(target.translation)
-				
-				if distance < moving:
-					path.pop_front()
-					return
-					
-				var velocity = translation.direction_to(path[0]).normalized() * ENEMY_SPEED
-				look_at(global_transform.origin + velocity, Vector3.UP)
-				translation = translation.linear_interpolate(to, moving / distance)
-				
 		FIND_COVER:
+			prep_node(get_shortest_node())
 			
-			get_shortest_node()
-			aim_at_player(delta)
 			state = TAKE_COVER
-			
 		TAKE_COVER:
-			if currentNode.visible_to_player || currentNode.occupied_by != self:
+			if currentNode.visible_to_player:
 				state = FIND_COVER
-				path.clear()
 				return
-			
+			move_along_path(delta)
 			aim_at_player(delta)
 			if path.empty():
 				state = SHOOT
 				return
-			
-			var to = path[0]
-			var distance = translation.distance_to(to)
-			
-			if distance < moving:
-				path.pop_front()
-				return
-			var velocity = translation.direction_to(path[0]).normalized() * ENEMY_SPEED
-			move_and_slide(velocity, Vector3.UP)
-			
 		SHOOT:
 			###TO DO: ADD POPPING OUT OF COVER###
 			aim_at_player(delta)
-			if currentNode == null: return
+			cover_timer += delta
+			if cover_timer > cover_timer_limit:
+				state = FIND
+				cover_timer = 0
+				return
 			if currentNode.visible_to_player:
 				state = FIND_COVER
-				path.clear()
 				return
 
-func take_damage():
-	var corpse_scn: Resource = preload("res://Enemies/DeadEnemy.tscn")
-	var corpse = corpse_scn.instance()
-	corpse.transform = self.transform
-	get_parent().add_child(corpse)
-	clear_node_data()
-	self.queue_free()
-	
-func get_absolute_distance(point):
-	return translation.distance_to(point)
 
-func get_path_distance(path_array):
-	var total_distance = translation.distance_to(path_array[0])
-	for i in range(path_array.size() - 1):
+# Length of path to a point
+func get_path_distance_to(goal: Vector3) -> float:
+	# TODO: What if this is null?
+	var temp_path_pool: PoolVector3Array = nav.get_simple_path(translation, goal, true)
+	var temp_path: Array = Array(temp_path_pool)
+	return get_path_distance(temp_path)
+
+# Length of a path
+func get_path_distance(path_array: Array) -> float:
+	var total_distance: float = translation.distance_to(path_array[0])
+	for i in range(path_array.size() - 2):
 		total_distance += path_array[i].distance_to(path_array[i + 1])
 	return total_distance
 
-func clear_node_data():
+func clear_node_data() -> void:
 	path.clear()
 	if currentNode != null:
 		currentNode.occupied = false
 		currentNode.occupied_by = null
-		currentNode = null
+
+# Respond to player attacks
+var HP: int = 2
+
+func take_damage() -> void:
+	alert_comrades()
+	HP -= 1
+	if HP > 0:
+		$CSGCombiner/CSGCylinder.visible = false
+		$CSGCombiner/CSGCylinder2.visible = true
+		return
+	var corpse_scn: Resource = preload("res://Enemies/DeadEnemy.tscn")
+	var corpse = corpse_scn.instance()
+	corpse.transform = self.transform
+	# TODO: replace this with something that lets the level manage corpses
+	get_parent().get_parent().add_child(corpse)
+	clear_node_data()
+	self.queue_free()
+
+func alert_comrades() -> void:
+	# TODO: Replace this with something that's restricted to a certain area, and/or a signal?
+	for e in get_tree().get_nodes_in_group("enemies"):
+		if e.state == PATROL:
+			e.state = TAKE_COVER

@@ -1,0 +1,204 @@
+[gd_scene load_steps=31 format=2]
+
+[ext_resource path="res://textures/PNG/Red/texture_10.png" type="Texture" id=1]
+[ext_resource path="res://textures/PNG/Orange/texture_09.png" type="Texture" id=2]
+[ext_resource path="res://textures/PNG/Purple/texture_04.png" type="Texture" id=3]
+[ext_resource path="res://textures/PNG/Light/texture_03.png" type="Texture" id=4]
+[ext_resource path="res://textures/PNG/Purple/texture_06.png" type="Texture" id=5]
+[ext_resource path="res://textures/PNG/Purple/texture_11.png" type="Texture" id=6]
+[ext_resource path="res://textures/PNG/Light/texture_04.png" type="Texture" id=7]
+[ext_resource path="res://textures/PNG/Light/texture_06.png" type="Texture" id=8]
+[ext_resource path="res://textures/PNG/Orange/texture_10.png" type="Texture" id=9]
+[ext_resource path="res://textures/PNG/Dark/texture_04.png" type="Texture" id=10]
+[ext_resource path="res://Player/Player.tscn" type="PackedScene" id=11]
+
+[sub_resource type="CubeMesh" id=1]
+size = Vector3( 90, 0.5, 90 )
+
+[sub_resource type="SpatialMaterial" id=2]
+albedo_color = Color( 0.164706, 0.54902, 0.298039, 1 )
+
+[sub_resource type="BoxShape" id=3]
+extents = Vector3( 44.9795, 0.327744, 45.0353 )
+
+[sub_resource type="SpatialMaterial" id=4]
+albedo_color = Color( 0.992157, 0.0196078, 0.0196078, 1 )
+
+[sub_resource type="SpatialMaterial" id=5]
+albedo_texture = ExtResource( 1 )
+
+[sub_resource type="SpatialMaterial" id=6]
+albedo_texture = ExtResource( 10 )
+
+[sub_resource type="SpatialMaterial" id=7]
+albedo_texture = ExtResource( 10 )
+
+[sub_resource type="SpatialMaterial" id=8]
+albedo_color = Color( 0.996078, 0.956863, 0, 1 )
+albedo_texture = ExtResource( 4 )
+
+[sub_resource type="SpatialMaterial" id=9]
+albedo_color = Color( 0.996078, 0.956863, 0, 1 )
+albedo_texture = ExtResource( 7 )
+
+[sub_resource type="SpatialMaterial" id=10]
+albedo_texture = ExtResource( 6 )
+
+[sub_resource type="SpatialMaterial" id=11]
+albedo_texture = ExtResource( 5 )
+
+[sub_resource type="SpatialMaterial" id=12]
+albedo_texture = ExtResource( 2 )
+
+[sub_resource type="SpatialMaterial" id=13]
+albedo_texture = ExtResource( 8 )
+
+[sub_resource type="SpatialMaterial" id=14]
+flags_world_triplanar = true
+albedo_texture = ExtResource( 2 )
+
+[sub_resource type="SpatialMaterial" id=15]
+albedo_texture = ExtResource( 9 )
+
+[sub_resource type="SpatialMaterial" id=16]
+albedo_texture = ExtResource( 3 )
+
+[sub_resource type="SpatialMaterial" id=17]
+albedo_color = Color( 0.00392157, 0.0196078, 0.180392, 1 )
+albedo_texture = ExtResource( 3 )
+
+[sub_resource type="SpatialMaterial" id=18]
+albedo_color = Color( 0.976471, 0.964706, 0.964706, 1 )
+albedo_texture = ExtResource( 1 )
+
+[sub_resource type="SpatialMaterial" id=19]
+albedo_texture = ExtResource( 8 )
+
+[node name="MainScene" type="Spatial"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.435333, 0.225521, -0.140871 )
+
+[node name="Ground" type="MeshInstance" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.146674, 0.130458, -0.0305541 )
+mesh = SubResource( 1 )
+material/0 = SubResource( 2 )
+
+[node name="StaticBody" type="StaticBody" parent="Ground"]
+
+[node name="CollisionShape" type="CollisionShape" parent="Ground/StaticBody"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.006567, -0.0624459, -0.0151024 )
+shape = SubResource( 3 )
+
+[node name="CSGCombiner" type="CSGCombiner" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -5.60993, 0.0143166, -2.76618 )
+use_collision = true
+
+[node name="Building" type="CSGBox" parent="CSGCombiner"]
+transform = Transform( -2.00594e-06, 0, 13.8777, 0, 23.0101, 0, -11.5091, 0, -2.11347e-06, -13.428, 1.45967, 22.4581 )
+material_override = SubResource( 4 )
+height = 1.92245
+material = SubResource( 5 )
+
+[node name="Building2- Inside" type="CSGBox" parent="CSGCombiner/Building"]
+transform = Transform( 0.896454, 0, 0, 0, 0.837537, 0, 0, 0, 0.802707, -0.00557899, -0.0175533, 0 )
+operation = 2
+material = SubResource( 5 )
+
+[node name="door" type="CSGBox" parent="CSGCombiner/Building"]
+transform = Transform( 0.230122, 0, -3.48173e-08, 0, 0.588326, 0, -1.76064e-08, 0, 0.547805, 0.94682, -0.267113, -0.0335502 )
+operation = 2
+height = 2.46847
+
+[node name="door2" type="CSGBox" parent="CSGCombiner/Building"]
+transform = Transform( 0.230121, 0, 0, 0, 0.588326, 0, 0, 0, 0.301897, -0.928355, -0.267113, 0.530671 )
+operation = 2
+
+[node name="walls" type="CSGBox" parent="CSGCombiner"]
+transform = Transform( 3.15573, 0, 0, 0, 28.4362, 0, 0, 0, 44.2413, -43.7399, 0, 0.0976328 )
+width = 0.622027
+material = SubResource( 6 )
+
+[node name="walls2" type="CSGBox" parent="CSGCombiner"]
+transform = Transform( 3.15573, 0, 0, 0, 28.4362, 0, 0, 0, 44.2413, 43.7399, 0, 0.0976328 )
+width = 0.622027
+material = SubResource( 7 )
+
+[node name="walls3" type="CSGBox" parent="CSGCombiner"]
+transform = Transform( -5.14134e-07, 0, 44.2413, 0, 28.4362, 0, -3.15573, 0, -7.20782e-06, -0.271114, 0, -44.0942 )
+width = 0.622027
+material = SubResource( 8 )
+
+[node name="walls4" type="CSGBox" parent="CSGCombiner"]
+transform = Transform( -5.14134e-07, 0, 44.2413, 0, 28.4362, 0, -3.15573, 0, -7.20782e-06, 0.776924, 1.08026, 42.4516 )
+width = 0.622027
+material = SubResource( 9 )
+
+[node name="Bridge" type="CSGPolygon" parent="CSGCombiner"]
+transform = Transform( 3.15219, 0, 0, 0, 9.06711, 0, 0, 0, 10.554, -25.7742, -0.414331, -32.3151 )
+polygon = PoolVector2Array( -0.0112739, 0.00544894, -1.29505, -0.0247546, 2.93117, 0.937535, 2.91204, 0.0179694 )
+material = SubResource( 10 )
+
+[node name="CSGBox" type="CSGBox" parent="CSGCombiner/Bridge"]
+transform = Transform( 5.05368, 0, 0, 0, 0.455582, 0, 0, 0, 0.514179, 7.99376, 0.483891, -0.514177 )
+material = SubResource( 11 )
+
+[node name="container" type="CSGBox" parent="CSGCombiner"]
+transform = Transform( 6.84645, 0, 0, 0, 6.2107, 0, 0, 0, 3.4701, -24.6311, 1.43376, -8.2273 )
+material = SubResource( 12 )
+
+[node name="sidewall" type="CSGBox" parent="CSGCombiner"]
+transform = Transform( 22.1963, 0, 0, 0, 6.2107, 0, 0, 0, 0.93445, 20.6831, 6.45439, 11.9311 )
+material = SubResource( 13 )
+
+[node name="sidewalk-opening1" type="CSGCylinder" parent="CSGCombiner/sidewall"]
+transform = Transform( 0.0399236, 0, 0, 0, -2.32112e-08, -0.142469, 0, 2.84323, -4.63221e-07, -0.366265, -0.362359, -0.194648 )
+operation = 2
+radius = 7.887
+
+[node name="sidewalk-opening2" type="CSGCylinder" parent="CSGCombiner/sidewall"]
+transform = Transform( 0.0399236, 0, 0, 0, -2.32112e-08, -0.142469, 0, 2.84323, -4.63221e-07, 0.473005, -0.362359, -0.194648 )
+operation = 2
+radius = 8.12707
+
+[node name="container2" type="CSGBox" parent="CSGCombiner"]
+transform = Transform( 3.05621, 0, 0, 0, 6.2107, 0, 0, 0, 3.4701, -1.76443, 1.43376, -16.2596 )
+material = SubResource( 14 )
+
+[node name="container3" type="CSGBox" parent="CSGCombiner"]
+transform = Transform( 8.06672, 0, 0, 0, 6.2107, 0, 0, 0, 3.4701, 22.3665, 1.43376, 24.7548 )
+material = SubResource( 15 )
+
+[node name="stairs" type="CSGBox" parent="CSGCombiner"]
+transform = Transform( 6.84645, 0, 0, 0, 3.58779, 0, 0, 0, 3.4701, 0.589555, 1.43376, -29.4201 )
+visible = false
+material = SubResource( 16 )
+
+[node name="stairs-2" type="CSGBox" parent="CSGCombiner"]
+transform = Transform( 6.84645, 0, 0, 0, 1.63251, 0, 0, 0, 2.31208, 13.1219, 1.43369, -23.8463 )
+visible = false
+material = SubResource( 17 )
+
+[node name="room" type="CSGBox" parent="CSGCombiner"]
+transform = Transform( 14.7421, 0, 0, 0, 13.9385, 0, 0, 0, 15.2569, 29.4193, 12.1252, -27.4633 )
+material = SubResource( 18 )
+
+[node name="room2" type="CSGBox" parent="CSGCombiner/room"]
+transform = Transform( 1, 0, 0, 0, 0.85506, 0, 0, 0, 1, 0.00125408, -0.0132391, -0.0142292 )
+operation = 2
+width = 1.77706
+depth = 1.6901
+material = SubResource( 18 )
+
+[node name="door" type="CSGBox" parent="CSGCombiner/room"]
+transform = Transform( 0.238091, 0, 0, 0, 0.557329, 0, 0, 0, 0.279282, -0.97571, -0.311323, 0.39178 )
+operation = 2
+
+[node name="door2" type="CSGBox" parent="CSGCombiner/room"]
+transform = Transform( 0.238091, 0, 0, 0, 0.557329, 0, 0, 0, 0.279282, 0.580213, -0.305189, 0.750495 )
+operation = 2
+
+[node name="inside-wall" type="CSGBox" parent="CSGCombiner"]
+transform = Transform( 7.08036, 0, 0, 0, 3.70962, 0, 0, 0, 0.618458, 29.0149, 4.01343, -27.746 )
+material = SubResource( 19 )
+
+[node name="Player" parent="." instance=ExtResource( 11 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -5.48341, 1.38579, 1.23492 )

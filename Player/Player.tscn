@@ -39,9 +39,9 @@ disabled = true
 script = ExtResource( 3 )
 
 [node name="CameraHolder" type="Spatial" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.9, 0 )
 
 [node name="Camera" type="Camera" parent="CameraHolder"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.998, 0 )
 fov = 90.0
 far = 1000.0
 
@@ -50,10 +50,13 @@ enabled = true
 cast_to = Vector3( 0, 0, -1000 )
 collide_with_areas = true
 
-[node name="ItemHolder" type="Spatial" parent="CameraHolder/Camera"]
+[node name="WeaponHolder" type="Spatial" parent="CameraHolder/Camera"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.438983, -0.238201, -0.790554 )
 
-[node name="TestGun" parent="CameraHolder/Camera/ItemHolder" instance=ExtResource( 4 )]
+[node name="TestGun" parent="CameraHolder/Camera/WeaponHolder" instance=ExtResource( 4 )]
+
+[node name="ItemHolder" type="Spatial" parent="CameraHolder/Camera"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.632482, -2.1756 )
 
 [node name="Hitboxes" type="Area" parent="."]
 collision_layer = 0

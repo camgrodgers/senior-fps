@@ -1,6 +1,6 @@
 extends Spatial
 
-var occupied = false
+var occupied: bool = false
 
 func _ready():
 	pass

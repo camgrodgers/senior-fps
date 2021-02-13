@@ -1,9 +1,14 @@
 extends KinematicBody
+class_name Player
 
 onready var PlayerStats: Node = $PlayerStats
 
 var is_dead: bool = false
 var debug: bool = false
+
+onready var ray = $CameraHolder/Camera/RayCast
+onready	var weapon_holder = $CameraHolder/Camera/WeaponHolder
+onready var item_holder = $CameraHolder/Camera/ItemHolder
 
 func _ready() -> void:
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
@@ -28,9 +33,10 @@ func _physics_process(delta) -> void:
 	# Using items/weapons
 	process_item_use(delta)
 	# Screen shake
-	screen_shake(delta)
+#	screen_shake(delta)
+	crosshair_update(delta)
 	
-	if Input.is_action_pressed("debug"):
+	if Input.is_action_just_pressed("debug"):
 		debug = !debug
 
 # Movement
@@ -55,7 +61,6 @@ var stamina: float = 100.0
 #		such as this one: 
 #		https://docs.godotengine.org/en/3.2/tutorials/3d/fps_tutorial/part_one.html#making-the-fps-movement-logic
 func process_movement(delta: float) -> void:
-	
 	var aiming: Basis = $CameraHolder.transform.basis
 	var direction: Vector3 = Vector3()
 	var target_speed: float = WALK_SPEED
@@ -112,33 +117,55 @@ func process_movement(delta: float) -> void:
 	vel.x = hvel.x
 	vel.z = hvel.z
 	
-#	print(vel.abs().length())
-#	print(is_on_floor())
 	var snap = Vector3.DOWN if is_on_floor() and vel.y == 0 else Vector3.ZERO
 	move_and_slide_with_snap(vel, snap, Vector3(0, 1, 0), 0.05, 4, deg2rad(MAX_SLOPE_ANGLE))
 
 # Weapons/item use
 func process_item_use(_delta: float) -> void:
-	if Input.is_action_pressed("use_item_alt"):
-		$CameraHolder/Camera/ItemHolder.visible = true
-	else:
-		$CameraHolder/Camera/ItemHolder.visible = false
-
-	if Input.is_action_just_pressed("use_item"):
-		if not Input.is_action_pressed("use_item_alt"):
+	# Using items/weapons
+	var held_weapon = weapon_holder.get_child(0) if weapon_holder.get_child_count() > 0 else null
+	var held_item = item_holder.get_child(0) if item_holder.get_child_count() > 0 else null
+	var use_item_pressed: bool = Input.is_action_pressed("use_item")
+	var use_item_alt_pressed: bool = Input.is_action_pressed("use_item_alt")
+	var interact_pressed: bool = Input.is_action_just_pressed("interact")
+	var aiming: Basis = $CameraHolder.transform.basis
+	
+	if held_item != null:
+		if use_item_pressed or interact_pressed:
+			held_item.unequip()
+			$CameraHolder/Camera/ItemHolder.remove_child(held_item)
+			held_item.translation = translation - aiming[2]
+			held_item.translation.y += 1
+			get_parent().add_child(held_item)
+		return
+	
+	if held_weapon != null:
+		held_weapon.ray = ray
+		held_weapon.use_item_pressed = use_item_pressed
+		held_weapon.use_item_alt_pressed = use_item_alt_pressed
+		if held_weapon.is_active:
 			return
-		
-		var ray: RayCast = $CameraHolder/Camera/RayCast
-		
+	
+	if interact_pressed:
 		ray.force_raycast_update()
 		if !ray.is_colliding():
-#			print("asdf")
+	#			print("asdf")
 			return
 			
 		var obj = ray.get_collider()
 		print(obj)
-		if obj.has_method("take_damage"):
-			obj.take_damage()
+		if obj.translation.distance_to(translation) > 4:
+			return
+		
+		if obj.has_method("interact"):
+			obj.interact()
+		elif obj.has_method("pick_up"):
+			obj.get_parent().remove_child(obj)
+			$CameraHolder/Camera/ItemHolder.add_child(obj)
+			obj.pick_up()
+
+
+
 
 # Camera motion
 export var turn_speed: int = 50
@@ -153,14 +180,30 @@ var inverse_x_factor: int = -1
 var inverse_y_factor: int = -1
 
 var screen_shake_width: float = .005
-var screen_shake_counter: float = 0
+var screen_shake_counter: float = 0.5
 
+var _min = 0
+var _max = 0
 func screen_shake(delta: float) -> void:
 	if screen_shake_counter == INF:
 		screen_shake_counter = 0
-	var offset_x = sin(screen_shake_counter) * screen_shake_width
-	screen_shake_counter += delta * 1
-	$CameraHolder/Camera.set_rotation(Vector3(0, offset_x, 0))
+	var offset_x = (cos(screen_shake_counter) * screen_shake_width) #+ (screen_shake_width / 2)
+	screen_shake_counter += delta * 2
+	if offset_x < _min: _min = offset_x
+	if offset_x > _max: _max = offset_x
+#	print(_min)
+#	print(_max)
+#	ray.rotation_degrees = ray.rotation_degrees.linear_interpolate(Vector3(0, offset_x, 0), 1)
+	ray.set_rotation(Vector3(0, offset_x, 0))
+
+func crosshair_update(delta:float) -> void:
+	ray.force_raycast_update()
+	if !ray.is_colliding():
+		$HUD.crosshair_coordinates = Vector2(get_viewport().size.x / 2, get_viewport().size.y / 2)
+		return
+		
+	var point = ray.get_collision_point()
+	$HUD.crosshair_coordinates = $CameraHolder/Camera.unproject_position(point)
 
 func _input(event: InputEvent) -> void:
 	if !event is InputEventMouseMotion:

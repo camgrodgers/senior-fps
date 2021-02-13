@@ -1,4 +1,4 @@
-extends Spatial
+extends Node
 
 var current_level: Navigation = null
 
