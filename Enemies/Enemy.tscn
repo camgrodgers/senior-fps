@@ -34,14 +34,14 @@ radius = 0.310121
 material = SubResource( 2 )
 
 [node name="leg1" type="CSGCylinder" parent="CSGCombiner"]
-transform = Transform( -0.0744392, 0, 0.997226, 0, 1, 0, -0.997226, 0, -0.0744392, -0.200909, 0.407105, 0.0234945 )
+transform = Transform( -0.0744392, 0, 0.997226, 0, 1, 0, -0.997226, 0, -0.0744392, -0.200909, 0.236621, 0.0234945 )
 radius = 0.0893239
-height = 0.81715
+height = 1.03762
 
 [node name="leg2" type="CSGCylinder" parent="CSGCombiner"]
-transform = Transform( -0.0744392, 0, 0.997226, 0, 1, 0, -0.997226, 0, -0.0744392, 0.208868, 0.425962, 0.000800828 )
+transform = Transform( -0.0744392, 0, 0.997226, 0, 1, 0, -0.997226, 0, -0.0744392, 0.208868, 0.250823, 0.000800828 )
 radius = 0.0893239
-height = 0.825927
+height = 1.00889
 
 [node name="CSGCylinder" type="CSGCylinder" parent="CSGCombiner"]
 transform = Transform( -0.0744392, 0, 0.997226, 0, 1, 0, -0.997226, 0, -0.0744392, 0, 1.20337, 0 )
