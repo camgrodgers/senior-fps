@@ -18,10 +18,15 @@ func _ready() -> void:
 	if (inverse_y):
 		inverse_y_factor = 1
 
+func _process(delta) -> void:
+	$Danger_Player.volume_db = -50 + PlayerStats.danger_level / 2
+
 func _physics_process(delta) -> void:
 	if PlayerStats.danger_level >= 100 && !debug:
 		is_dead = true
 		$HUD.player_dead_message()
+		$Danger_Player.stop()
+		$Sound_Player.play_sound("Game_Over_shot")
 		set_process(false)
 		set_physics_process(false)
 #		set_process_input(false)
