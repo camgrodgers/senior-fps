@@ -23,9 +23,9 @@ func _physics_process(delta):
 		
 	if use_item_pressed:
 		if not (use_item_alt_pressed and raised and chambering == 0):
-			print("didn't fire")
+#			print("didn't fire")
 			return
-		print("fired")
+#		print("fired")
 		
 		$AnimationPlayer.play("Fire")
 		chambering = 0.15

@@ -193,6 +193,10 @@ material = SubResource( 3 )
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -48.0346, 0.856778, -0.976458 )
 material = SubResource( 3 )
 
+[node name="NavNode47" parent="NavNodes" instance=ExtResource( 6 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -65.4326, 0.856778, 11.7252 )
+material = SubResource( 3 )
+
 [node name="NavNode5" parent="NavNodes" instance=ExtResource( 6 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -8.23165, 0.856776, 13.5225 )
 material = SubResource( 3 )
@@ -238,7 +242,24 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -19.4355, 0.626659, 38.3289 )
 material = SubResource( 3 )
 
 [node name="NavNode24" parent="NavNodes" instance=ExtResource( 6 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 8.70801, 0.626659, 2.53224 )
+material = SubResource( 3 )
+
+[node name="NavNode43" parent="NavNodes" instance=ExtResource( 6 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 10.9427, 0.626659, 8.7565 )
+material = SubResource( 3 )
+
+[node name="NavNode44" parent="NavNodes" instance=ExtResource( 6 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 14.8561, 0.626659, 8.86974 )
+material = SubResource( 3 )
+
+[node name="NavNode45" parent="NavNodes" instance=ExtResource( 6 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -19.8954, 0.626659, 27.3995 )
+material = SubResource( 3 )
+
+[node name="NavNode42" parent="NavNodes" instance=ExtResource( 6 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 8.56473, 0.626659, 2.5526 )
+radius = 0.001
 material = SubResource( 3 )
 
 [node name="NavNode25" parent="NavNodes" instance=ExtResource( 6 )]
@@ -257,6 +278,50 @@ material = SubResource( 3 )
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -63.3631, 0.626659, 33.8769 )
 material = SubResource( 3 )
 
+[node name="NavNode31" parent="NavNodes" instance=ExtResource( 6 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -59.7482, 0.626659, 34.9466 )
+material = SubResource( 3 )
+
+[node name="NavNode32" parent="NavNodes" instance=ExtResource( 6 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -68.4258, 0.626659, 31.4937 )
+material = SubResource( 3 )
+
+[node name="NavNode33" parent="NavNodes" instance=ExtResource( 6 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -56.6905, 0.626659, 22.7088 )
+material = SubResource( 3 )
+
+[node name="NavNode34" parent="NavNodes" instance=ExtResource( 6 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -86.0842, 0.626659, 13.7555 )
+material = SubResource( 3 )
+
+[node name="NavNode35" parent="NavNodes" instance=ExtResource( 6 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -66.1192, 0.626659, 2.11841 )
+material = SubResource( 3 )
+
+[node name="NavNode36" parent="NavNodes" instance=ExtResource( 6 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -70.5714, 0.626659, 11.9676 )
+material = SubResource( 3 )
+
+[node name="NavNode37" parent="NavNodes" instance=ExtResource( 6 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -68.2197, 0.626659, 15.5501 )
+material = SubResource( 3 )
+
+[node name="NavNode38" parent="NavNodes" instance=ExtResource( 6 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -54.2887, 0.626659, -21.4205 )
+material = SubResource( 3 )
+
+[node name="NavNode39" parent="NavNodes" instance=ExtResource( 6 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -48.5793, 0.626659, -23.5122 )
+material = SubResource( 3 )
+
+[node name="NavNode40" parent="NavNodes" instance=ExtResource( 6 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -17.2914, 0.626658, -35.9239 )
+material = SubResource( 3 )
+
+[node name="NavNode41" parent="NavNodes" instance=ExtResource( 6 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -8.96165, 0.626658, -41.4249 )
+material = SubResource( 3 )
+
 [node name="NavNode22" parent="NavNodes" instance=ExtResource( 6 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -72.0645, 0.626659, 29.3481 )
 material = SubResource( 3 )
@@ -266,7 +331,7 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -39.9767, 0.626658, -6.12512 )
 material = SubResource( 3 )
 
 [node name="NavNode17" parent="NavNodes" instance=ExtResource( 6 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -44.3324, 0.626658, 3.47866 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -44.6153, 0.626658, 4.69134 )
 material = SubResource( 3 )
 
 [node name="NavNode18" parent="NavNodes" instance=ExtResource( 6 )]
@@ -277,6 +342,18 @@ material = SubResource( 3 )
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -52.2343, 10.1809, -0.983279 )
 material = SubResource( 3 )
 
+[node name="NavNode46" parent="NavNodes" instance=ExtResource( 6 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -50.8661, 10.1809, 16.911 )
+material = SubResource( 3 )
+
 [node name="NavNode20" parent="NavNodes" instance=ExtResource( 6 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -63.4677, 10.1809, 29.2994 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -62.0442, 10.1809, 31.3819 )
+material = SubResource( 3 )
+
+[node name="NavNode30" parent="NavNodes" instance=ExtResource( 6 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -62.6182, 10.1809, 24.1654 )
+material = SubResource( 3 )
+
+[node name="NavNode29" parent="NavNodes" instance=ExtResource( 6 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -69.5161, 10.1809, 27.7864 )
 material = SubResource( 3 )
