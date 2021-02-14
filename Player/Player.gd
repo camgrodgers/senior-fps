@@ -90,15 +90,15 @@ func process_movement(delta: float) -> void:
 	if(devmode):
 		translation.y = playerAltLevel
 		if Input.is_action_pressed("move_forward"):
-			translation -= aiming[2]
+			translation -= 0.4*aiming[2]
 		if Input.is_action_pressed("move_backward"):
-			translation += aiming[2]
+			translation += 0.4*aiming[2]
 		if Input.is_action_pressed("move_right"):
-			translation += aiming[0]
+			translation += 0.4*aiming[0]
 		if Input.is_action_pressed("move_left"):
-			translation -= aiming[0]
+			translation -= 0.4*aiming[0]
 	if(devmode && Input.is_action_pressed("jump")):
-		playerAltLevel += 0.2	
+		playerAltLevel += 0.1
 
 	if is_on_floor():
 		if Input.is_action_just_pressed("jump") && !devmode:
