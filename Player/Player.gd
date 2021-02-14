@@ -5,6 +5,9 @@ onready var PlayerStats: Node = $PlayerStats
 
 var is_dead: bool = false
 var debug: bool = false
+var devmode: bool = false
+
+var playerAltLevel = 1
 
 onready var ray = $CameraHolder/Camera/RayCast
 onready	var weapon_holder = $CameraHolder/Camera/WeaponHolder
@@ -73,6 +76,10 @@ func process_movement(delta: float) -> void:
 		direction += aiming[0]
 	if Input.is_action_pressed("move_left"):
 		direction -= aiming[0]
+	if Input.is_action_just_pressed("devmode"):
+		if(devmode):
+			playerAltLevel = 1
+		devmode = !devmode
 	
 	direction = direction.normalized()
 	var hvel: Vector3 = vel
@@ -80,8 +87,21 @@ func process_movement(delta: float) -> void:
 	var target: Vector3 = direction
 	var accel: float = ACCEL if direction.dot(hvel) > 0 else DEACCEL
 
+	if(devmode):
+		translation.y = playerAltLevel
+		if Input.is_action_pressed("move_forward"):
+			translation -= aiming[2]
+		if Input.is_action_pressed("move_backward"):
+			translation += aiming[2]
+		if Input.is_action_pressed("move_right"):
+			translation += aiming[0]
+		if Input.is_action_pressed("move_left"):
+			translation -= aiming[0]
+	if(devmode && Input.is_action_pressed("jump")):
+		playerAltLevel += 0.2	
+
 	if is_on_floor():
-		if Input.is_action_just_pressed("jump"):
+		if Input.is_action_just_pressed("jump") && !devmode:
 			vel.y = JUMP_HEIGHT
 		else:
 			vel.y = 0
