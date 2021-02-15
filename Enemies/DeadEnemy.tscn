@@ -1,4 +1,6 @@
-[gd_scene format=2]
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://Sounds/Enemy_Death.wav" type="AudioStream" id=1]
 
 [node name="DeadEnemy" type="CSGCombiner"]
 
@@ -26,3 +28,8 @@ height = 1.65312
 transform = Transform( 0.499968, 0.00565882, -0.000339025, -0.00554385, 0.494306, 0.0750426, 0.00118446, -0.075034, 0.494336, -0.0138196, -1.25633, -0.188208 )
 radius = 0.11247
 height = 1.65312
+
+[node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource( 1 )
+unit_db = 15.0
+autoplay = true

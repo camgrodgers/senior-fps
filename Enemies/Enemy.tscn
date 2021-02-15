@@ -1,6 +1,7 @@
 [gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://Enemies/Enemy.gd" type="Script" id=1]
+[ext_resource path="res://Enemies/Enemy_audio_player.gd" type="Script" id=2]
 
 [sub_resource type="CapsuleShape" id=1]
 radius = 0.5
@@ -80,3 +81,10 @@ shape = SubResource( 5 )
 [node name="PatrolTimer" type="Timer" parent="."]
 wait_time = 4.0
 one_shot = true
+
+[node name="Enemy_audio_player" type="Spatial" parent="."]
+script = ExtResource( 2 )
+
+[node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="Enemy_audio_player"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0 )
+unit_db = 30.0

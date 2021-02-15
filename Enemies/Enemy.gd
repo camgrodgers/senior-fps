@@ -201,6 +201,8 @@ func _process(delta):
 				return
 		SHOOT:
 			###TO DO: ADD POPPING OUT OF COVER###
+      if can_see_player and not $Enemy_audio_player.playing():
+				$Enemy_audio_player.play_sound($Enemy_audio_player.enemy_shot)
 			aim_at_player(delta)
 			cover_timer += delta
 			if cover_timer > cover_timer_limit:
