@@ -22,6 +22,8 @@ func _ready() -> void:
 	$Sound_Player.play_sound($Sound_Player.gun_cock)
 func _process(delta) -> void:
 	$Danger_Player.volume_db = -50 + PlayerStats.danger_level / 2
+	if not $Danger_Player.playing:
+		$Danger_Player.play()
 	print(vel)
 	if (vel >= Vector3(.5, 0, .5) or vel <= Vector3(-.5, 0, -.5)) and is_on_floor():
 		
