@@ -32,7 +32,7 @@ script = ExtResource( 2 )
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 31.4908, 9.83961, -24.757 )
 
 [node name="Ball2" parent="." instance=ExtResource( 4 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 31.4908, 9.83961, -17.483 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 55.5176, 9.83961, 1.54082 )
 
 [node name="EnemySpawns" type="Spatial" parent="."]
 
@@ -187,7 +187,7 @@ transform = Transform( 0.25, 0, 0, 0, 0.25, 0, 0, 0, 0.25, 19.2254, 2.5, -4.7180
 transform = Transform( 0.25, 0, 0, 0, 0.25, 0, 0, 0, 0.25, 13.2115, 2.5, 5.20761 )
 
 [node name="PlayerSpawn" parent="." instance=ExtResource( 9 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 31.3974, 9.41224, -37.3374 )
+transform = Transform( -0.00420633, 0, -0.999991, 0, 1, 0, 0.999991, 0, -0.00420633, 54.6213, 2.49553, 15.4054 )
 script = ExtResource( 6 )
 
 [node name="NavNodes" type="Spatial" parent="."]
@@ -217,4 +217,4 @@ transform = Transform( 0.25, 0, 0, 0, 0.25, 0, 0, 0, 0.25, -17.8867, 2, -28.6415
 material = SubResource( 3 )
 
 [node name="Button" parent="." instance=ExtResource( 10 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 30.2482, 8.60775, 6.59383 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 51.6688, 3.1316, 6.59383 )

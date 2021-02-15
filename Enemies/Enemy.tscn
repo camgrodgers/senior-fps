@@ -16,7 +16,7 @@ albedo_color = Color( 0.972549, 0.0784314, 0.0117647, 1 )
 extents = Vector3( 10, 10, 10 )
 
 [sub_resource type="ConvexPolygonShape" id=5]
-points = PoolVector3Array( 0, 0, 0, -100, 50, -150, 100, 50, -150, -100, -50, -150, 100, -50, -150 )
+points = PoolVector3Array( 0, 0, 0, -100, 50, -100, 100, 50, -100, -100, -50, -100, 100, -50, -100 )
 
 [node name="Enemy" type="KinematicBody" groups=[
 "enemies",
