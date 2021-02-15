@@ -21,6 +21,13 @@ func _ready() -> void:
 	$Sound_Player.play_sound($Sound_Player.gun_cock)
 func _process(delta) -> void:
 	$Danger_Player.volume_db = -50 + PlayerStats.danger_level / 2
+	print(vel)
+	if (vel >= Vector3(.5, 0, .5) or vel <= Vector3(-.5, 0, -.5)) and is_on_floor():
+		
+		if not $Footsteps.playing:
+			$Footsteps.play()
+	else:
+		$Footsteps.stop()
 
 func _physics_process(delta) -> void:
 	if PlayerStats.danger_level >= 100 && !debug:
@@ -123,6 +130,7 @@ func process_movement(delta: float) -> void:
 	
 	var snap = Vector3.DOWN if is_on_floor() and vel.y == 0 else Vector3.ZERO
 	move_and_slide_with_snap(vel, snap, Vector3(0, 1, 0), 0.05, 4, deg2rad(MAX_SLOPE_ANGLE))
+	
 
 # Weapons/item use
 func process_item_use(_delta: float) -> void:

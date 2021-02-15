@@ -183,6 +183,8 @@ func _physics_process(delta):
 		SHOOT:
 			###TO DO: ADD POPPING OUT OF COVER###
 			aim_at_player(delta)
+			if can_see_player and not $Enemy_audio_player.playing():
+				$Enemy_audio_player.play_sound($Enemy_audio_player.enemy_shot)
 			if currentNode.visible_to_player:
 				state = FIND_COVER
 				return
