@@ -25,7 +25,6 @@ func _physics_process(delta):
 			return
 		
 		$AnimationPlayer.play("Fire")
-		
 		ray.force_raycast_update()
 		if !ray.is_colliding():
 #			print("asdf")

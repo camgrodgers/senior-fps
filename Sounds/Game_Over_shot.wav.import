@@ -2,12 +2,12 @@
 
 importer="wav"
 type="AudioStreamSample"
-path="res://.import/Sniper_shot.wav-0908ab42c97bc8d95c1f9c5162bb8405.sample"
+path="res://.import/Game_Over_shot.wav-84bb256c90a5290ff451d8cb3e3ad87b.sample"
 
 [deps]
 
-source_file="res://Sounds/Sniper_shot.wav"
-dest_files=[ "res://.import/Sniper_shot.wav-0908ab42c97bc8d95c1f9c5162bb8405.sample" ]
+source_file="res://Sounds/Game_Over_shot.wav"
+dest_files=[ "res://.import/Game_Over_shot.wav-84bb256c90a5290ff451d8cb3e3ad87b.sample" ]
 
 [params]
 

@@ -17,7 +17,8 @@ func _ready() -> void:
 		inverse_x_factor = 1
 	if (inverse_y):
 		inverse_y_factor = 1
-
+	
+	$Sound_Player.play_sound($Sound_Player.gun_cock)
 func _process(delta) -> void:
 	$Danger_Player.volume_db = -50 + PlayerStats.danger_level / 2
 
@@ -26,7 +27,7 @@ func _physics_process(delta) -> void:
 		is_dead = true
 		$HUD.player_dead_message()
 		$Danger_Player.stop()
-		$Sound_Player.play_sound("Game_Over_shot")
+		$Sound_Player.play_sound($Sound_Player.game_over_shot)
 		set_process(false)
 		set_physics_process(false)
 #		set_process_input(false)
@@ -146,6 +147,7 @@ func process_item_use(_delta: float) -> void:
 		held_weapon.ray = ray
 		held_weapon.use_item_pressed = use_item_pressed
 		held_weapon.use_item_alt_pressed = use_item_alt_pressed
+		
 		if held_weapon.is_active:
 			return
 	

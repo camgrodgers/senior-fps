@@ -1,29 +1,28 @@
 extends Spatial
 
-var game_over_shot = preload("res://Sounds/Sniper_shot.wav")
+export var game_over_shot = preload("res://Sounds/Game_Over_shot.wav")
+export var rifle_shot = preload("res://Sounds/Rifle_shot.wav")
+export var gun_cock = preload("res://Sounds/Gun_cock.wav")
 var audio_node = null
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	audio_node = $Audio_Stream_Player
-	audio_node.connect("finished", self, "destroy_self")
 	audio_node.stop()
-	pass # Replace with function body.
 
 
-func play_sound(sound_name, position=null):
+func play_sound(audio_stream_name, position=null):
 
-	if game_over_shot == null:
+	if audio_stream_name == null:
 		print ("Audio not set!")
-		queue_free()
 		return
 
-	if sound_name == "Game_Over_shot":
-		audio_node.stream =game_over_shot
-	else:
-		print ("UNKNOWN STREAM")
-		queue_free()
-		return
+
+	audio_node.stream = audio_stream_name
+#	else:
+#		print ("UNKNOWN STREAM")
+#		queue_free()
+#		return
 
 	# If you are using an AudioStreamPlayer3D, then uncomment these lines to set the position.
 	#if audio_node is AudioStreamPlayer3D:
