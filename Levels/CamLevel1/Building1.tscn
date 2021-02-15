@@ -1,0 +1,79 @@
+[gd_scene format=2]
+
+[node name="CSGCombiner" type="CSGCombiner"]
+
+[node name="CSGBox" type="CSGBox" parent="."]
+transform = Transform( 1, 0, -2.98023e-08, 0, 0.866025, -0.5, 0, 0.5, 0.866026, -5.09283, -5.81641, -3.5637 )
+width = 4.06949
+height = 0.477646
+depth = 22.7752
+
+[node name="CSGBox2" type="CSGBox" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.743463, -0.424079, 27.1791 )
+width = 13.0512
+height = 0.897012
+depth = 16.6082
+
+[node name="CSGCylinder" type="CSGCylinder" parent="CSGBox2"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -4.67324, -4.98911, 7.24187 )
+height = 10.0859
+
+[node name="CSGCylinder2" type="CSGCylinder" parent="CSGBox2"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 4.88134, -4.98911, 7.24187 )
+height = 10.0859
+
+[node name="CSGBox3" type="CSGBox" parent="CSGBox2"]
+transform = Transform( -1.62921e-07, -0.5, -0.866026, 0, 0.866025, -0.5, 1, -8.14603e-08, -1.41094e-07, -16.1812, -5.38505, -2.12812 )
+width = 4.06949
+height = 0.477646
+depth = 22.7752
+
+[node name="Building1" type="CSGBox" parent="."]
+width = 20.0
+height = 20.0
+depth = 40.0
+
+[node name="Interior" type="CSGBox" parent="Building1"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -5.1403, 0 )
+operation = 2
+width = 19.0
+height = 9.0
+depth = 39.0
+
+[node name="Interior2" type="CSGBox" parent="Building1"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.49353, 0 )
+operation = 2
+width = 19.0
+height = 9.0
+depth = 39.0
+
+[node name="Door" type="CSGBox" parent="Building1"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 9.57721, -6.63605, -3.84341 )
+operation = 2
+height = 6.0
+depth = 6.1649
+
+[node name="Door2" type="CSGBox" parent="Building1"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -9.31859, -6.63605, 12.6469 )
+operation = 2
+height = 6.0
+depth = 6.1649
+
+[node name="window" type="CSGBox" parent="Building1"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 9.66373, 4.30782, -3.34719 )
+operation = 2
+height = 6.0
+depth = 27.8772
+
+[node name="window2" type="CSGBox" parent="Building1"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.10588, 3.02588, 20.0372 )
+operation = 2
+width = 16.0968
+height = 6.0
+depth = 4.51085
+
+[node name="floor hole" type="CSGBox" parent="Building1"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -5.3726, 0, -6.8729 )
+operation = 2
+width = 5.11134
+depth = 12.9525

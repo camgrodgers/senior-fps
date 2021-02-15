@@ -1,4 +1,5 @@
 extends KinematicBody
+class_name Player
 
 onready var PlayerStats: Node = $PlayerStats
 
@@ -45,7 +46,8 @@ func _physics_process(delta) -> void:
 	# Using items/weapons
 	process_item_use(delta)
 	# Screen shake
-	screen_shake(delta)
+#	screen_shake(delta)
+	crosshair_update(delta)
 	
 	if Input.is_action_just_pressed("debug"):
 		debug = !debug
@@ -55,7 +57,7 @@ const GRAVITY: float = -40.0
 
 var vel: Vector3 = Vector3()
 
-const WALK_SPEED: int = 13
+const WALK_SPEED: int = 10
 const AIR_CONTROL_SPEED: int = 5
 const JUMP_HEIGHT: int = 15
 const ACCEL: float = 4.5
@@ -99,18 +101,22 @@ func process_movement(delta: float) -> void:
 		
 		if Input.is_action_just_pressed("crouch"):
 			if is_crouching:
-				$CameraHolder.translation.y += 1
+				$CameraHolder.translation.y += 0.7
 				$HUD.zoomOut()
 				$StandingCollisionShape.disabled = false
 				$CrouchingCollisionShape.disabled = true
+				$StandingHitboxes.monitorable = true
+				$CrouchingHitboxes.monitorable = false
 			else:
-				$CameraHolder.translation.y -= 1
+				$CameraHolder.translation.y -= 0.7
 				$HUD.zoomIn()
 				$StandingCollisionShape.disabled = true
 				$CrouchingCollisionShape.disabled = false
+				$StandingHitboxes.monitorable = false
+				$CrouchingHitboxes.monitorable = true
 			is_crouching = !is_crouching
 		if is_crouching:
-			target_speed *= 0.75
+			target_speed *= 0.5
 		if Input.is_action_pressed("sprint") and stamina > 0 and not is_crouching:
 			target_speed *= 1.75
 			accel *= 1.5
@@ -193,14 +199,30 @@ var inverse_x_factor: int = -1
 var inverse_y_factor: int = -1
 
 var screen_shake_width: float = .005
-var screen_shake_counter: float = 0
+var screen_shake_counter: float = 0.5
 
+var _min = 0
+var _max = 0
 func screen_shake(delta: float) -> void:
 	if screen_shake_counter == INF:
 		screen_shake_counter = 0
-	var offset_x = sin(screen_shake_counter) * screen_shake_width
-	screen_shake_counter += delta * 1
-	$CameraHolder/Camera.set_rotation(Vector3(0, offset_x, 0))
+	var offset_x = (cos(screen_shake_counter) * screen_shake_width) #+ (screen_shake_width / 2)
+	screen_shake_counter += delta * 2
+	if offset_x < _min: _min = offset_x
+	if offset_x > _max: _max = offset_x
+#	print(_min)
+#	print(_max)
+#	ray.rotation_degrees = ray.rotation_degrees.linear_interpolate(Vector3(0, offset_x, 0), 1)
+	ray.set_rotation(Vector3(0, offset_x, 0))
+
+func crosshair_update(delta:float) -> void:
+	ray.force_raycast_update()
+	if !ray.is_colliding():
+		$HUD.crosshair_coordinates = Vector2(get_viewport().size.x / 2, get_viewport().size.y / 2)
+		return
+		
+	var point = ray.get_collision_point()
+	$HUD.crosshair_coordinates = $CameraHolder/Camera.unproject_position(point)
 
 func _input(event: InputEvent) -> void:
 	if !event is InputEventMouseMotion:
@@ -214,4 +236,8 @@ func _input(event: InputEvent) -> void:
 
 ## Enemy/hazard interactions ##
 func hitboxes() -> Array:
-	return $Hitboxes.get_children()
+	if is_crouching:
+		return $CrouchingHitboxes.get_children()
+	else:
+		return $StandingHitboxes.get_children()
+		
