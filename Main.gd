@@ -14,7 +14,7 @@ func _on_Button3_pressed():
 	load_level("res://Levels/TestLevel.tscn")
 
 func _on_Button_pressed():
-	load_level("res://Levels/NewLevel/GameLevel.tscn")
+	load_level("res://Levels/JacobLevel1/GameLevel.tscn")
 
 func _on_Button2_pressed():
 	load_level("res://Levels/CamLevel1/CamLevel1.tscn")

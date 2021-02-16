@@ -13,6 +13,7 @@ func _process(delta):
 		tool_process(delta)
 
 # Editor tool code
+var loop_last_value: bool = loop
 func tool_process(delta: float) -> void:
 	if children_count < get_child_count():
 		connect_child_moved_signal()
@@ -21,6 +22,9 @@ func tool_process(delta: float) -> void:
 	if children_count > get_child_count():
 		children_count = get_child_count()
 		draw_lines()
+	if loop_last_value != loop:
+		draw_lines()
+		loop_last_value = loop
 
 func tool_ready():
 	im = ImmediateGeometry.new()
