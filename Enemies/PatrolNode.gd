@@ -41,6 +41,7 @@ func reposition(delta: float) -> void:
 		repositioning = false
 		
 		if nav == null:
+			# NOTE/TODO: This is ugly and bad? How should this be fixed?
 			var maybe_nav = get_parent().get_parent().get_parent()
 			if maybe_nav is Navigation:
 				nav = maybe_nav
