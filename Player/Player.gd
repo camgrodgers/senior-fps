@@ -21,6 +21,17 @@ func _ready() -> void:
 		inverse_x_factor = 1
 	if (inverse_y):
 		inverse_y_factor = 1
+	
+	$Sound_Player.play_sound($Sound_Player.gun_cock)
+func _process(delta) -> void:
+	$Danger_Player.volume_db = -50 + PlayerStats.danger_level / 2
+	if not $Danger_Player.playing:
+		$Danger_Player.play()
+	if (vel >= Vector3(.5, 0, .5) or vel <= Vector3(-.5, 0, -.5)) and is_on_floor() and not is_dead:
+		if not $Footsteps.playing:
+			$Footsteps.play()
+	else:
+		$Footsteps.stop()
 
 func _physics_process(delta) -> void:
 	if Input.is_action_just_pressed("flymode"):
@@ -29,6 +40,8 @@ func _physics_process(delta) -> void:
 	if PlayerStats.danger_level >= 100 && !debug:
 		is_dead = true
 		$HUD.player_dead_message()
+		$Danger_Player.stop()
+		$Sound_Player.play_sound($Sound_Player.game_over_shot)
 		set_process(false)
 		set_physics_process(false)
 #		set_process_input(false)
@@ -157,6 +170,7 @@ func process_movement(delta: float) -> void:
 	
 	var snap = Vector3.DOWN if is_on_floor() and vel.y == 0 else Vector3.ZERO
 	move_and_slide_with_snap(vel, snap, Vector3(0, 1, 0), 0.05, 4, deg2rad(MAX_SLOPE_ANGLE))
+	
 
 # Weapons/item use
 func process_item_use(_delta: float) -> void:
@@ -181,6 +195,7 @@ func process_item_use(_delta: float) -> void:
 		held_weapon.ray = ray
 		held_weapon.use_item_pressed = use_item_pressed
 		held_weapon.use_item_alt_pressed = use_item_alt_pressed
+		
 		if held_weapon.is_active:
 			return
 	

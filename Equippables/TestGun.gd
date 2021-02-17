@@ -29,7 +29,6 @@ func _physics_process(delta):
 		
 		$AnimationPlayer.play("Fire")
 		chambering = 0.15
-		
 		ray.force_raycast_update()
 		if !ray.is_colliding():
 #			print("asdf")

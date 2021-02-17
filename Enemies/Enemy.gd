@@ -201,6 +201,8 @@ func _process(delta):
 				return
 		SHOOT:
 			###TO DO: ADD POPPING OUT OF COVER###
+			if can_see_player and not $Enemy_audio_player.playing():
+				$Enemy_audio_player.play_sound($Enemy_audio_player.enemy_shot)
 			aim_at_player(delta)
 			cover_timer += delta
 			if cover_timer > cover_timer_limit:
@@ -252,6 +254,8 @@ func take_damage() -> void:
 
 func alert_comrades() -> void:
 	# TODO: Replace this with something that's restricted to a certain area, and/or a signal?
-	for e in get_tree().get_nodes_in_group("enemies"):
-		if e.state == PATROL:
-			e.state = TAKE_COVER
+	get_tree().call_group("enemies", "alert_to_player")
+	
+func alert_to_player() -> void:
+	if state == PATROL:
+		state = TAKE_COVER
