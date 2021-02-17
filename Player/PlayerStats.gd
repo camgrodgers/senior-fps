@@ -1,11 +1,11 @@
 extends Node
 
 var danger_level: float = 0
+var danger_level_orange: float = 0
 # TODO: count decreasing danger levels separately?
-var danger_decrease_acceleration: float = 0.1
+var danger_decrease_acceleration: float = 6
 # NOTE: This could be changed to a per-enemy value
 var danger_decrease_velocity: float = 0
-var last_known_position = null
 var known_cover_position: bool = false
 var hidden_from_enemies: bool = true
 
@@ -14,49 +14,43 @@ func _process(delta):
 
 # Handles enemy and player data
 func danger_update(delta):
-	var new_danger_level: float = 0
-	var new_hidden_from_enemies: bool = true
-	
+	#TODO: all of this stuff needs to be replaced with encapsulated enemy logic
+	var player_position = get_parent().translation
+	danger_level = 0
+	danger_level_orange = 0
+	known_cover_position = false
+	hidden_from_enemies = true
+
 	var enemies: Array = get_tree().get_nodes_in_group("enemies")
 	if enemies.size() == 0:
-		last_known_position = null
 		hidden_from_enemies = true
-		new_hidden_from_enemies = true
 		known_cover_position = false
 	for e in enemies:
 		if e.can_see_player:
-			new_hidden_from_enemies = false
+			hidden_from_enemies = false
 			danger_decrease_velocity = 0
-			break
-	
-	if new_hidden_from_enemies == false and hidden_from_enemies == true:
-		last_known_position = null
-	if new_hidden_from_enemies == true and hidden_from_enemies == false:
-		last_known_position = get_parent().translation
-	
-	hidden_from_enemies = new_hidden_from_enemies
+		if e.last_player_position.distance_to(player_position) < 6:
+			known_cover_position = true
+			danger_decrease_velocity = 0
 
-	if last_known_position != null and last_known_position.distance_to(get_parent().translation) < 6:
-		danger_decrease_velocity = 0.05
-		known_cover_position = true
-	else:
-		known_cover_position = false
-	
 	for e in enemies:
 		var rate = rate_of_danger_increase(e)
 		e.player_danger = clamp(e.player_danger + (rate * delta), 0, 100)
-#		print("rate: {%f} danger: {%f}" % [rate, e.player_danger])
-		if hidden_from_enemies:
-			e.player_danger -= (danger_decrease_velocity / enemies.size())
-		new_danger_level += e.player_danger
+		if ((not e.can_see_player)
+				and e.last_player_position.distance_to(player_position) < 6):
+			e.player_danger -= 3 * delta
+			danger_level_orange += e.player_danger
+		elif hidden_from_enemies and not known_cover_position:
+			e.player_danger -= (danger_decrease_velocity / enemies.size()) * delta
+
+		danger_level += e.player_danger
 	
-	new_danger_level = clamp(new_danger_level, 0, 100)
+	danger_level = clamp(danger_level, 0, 100)
+	danger_level_orange = clamp(danger_level_orange, 0, 100)
 	danger_decrease_velocity += (danger_decrease_acceleration * delta)
 	
-	if new_danger_level == 0:
+	if danger_level == 0:
 		danger_decrease_velocity = 0
-	
-	danger_level = new_danger_level
 
 func rate_of_danger_increase(enemy) -> float:
 	var player_distance: float = enemy.player_distance

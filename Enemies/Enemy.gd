@@ -21,6 +21,7 @@ var TestNodeIndex = 0
 var player_distance: float = 0.0
 var can_see_player: bool = false
 var player_danger: float = 0.0
+var last_player_position: Vector3 = Vector3(-1000, -1000, -1000)
 
 enum {
 	FIND,
@@ -133,6 +134,7 @@ func aim_at_player(_delta):
 	can_see_player = cast_to_player_hitboxes()
 	if not can_see_player: return
 	player_distance = player.translation.distance_to(translation)
+	last_player_position = player.translation
 		# Could change this to relative velocity later?
 	# TODO: find out why player velocity is >0 when standing still
 #	target_speed = target.vel.abs().length()

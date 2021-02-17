@@ -33,17 +33,20 @@ func _process(_delta):
 	update_danger_meter()
 	update_enemy_distance_indicator()
 	
-	known_cover_label.visible = player_stats.known_cover_position and player_stats.danger_level > 0
+	known_cover_label.visible = (player_stats.known_cover_position
+			and player_stats.danger_level > 0)
 
 func update_danger_meter():
 	danger_meter.value = player_stats.danger_level
 	danger_meter_yellow.value = player_stats.danger_level
-	danger_meter_orange.value = player_stats.danger_level
+	danger_meter_orange.value = player_stats.danger_level_orange
 	
 	if player_stats.danger_level > 0:
 		danger_meter.visible = true
-		danger_meter_yellow.visible = player_stats.hidden_from_enemies and not player_stats.known_cover_position
-		danger_meter_orange.visible = player_stats.hidden_from_enemies and player_stats.known_cover_position
+		danger_meter_orange.visible = true
+		danger_meter_yellow.visible = (player_stats.hidden_from_enemies
+				and not player_stats.known_cover_position)
+		
 	else:
 		danger_meter.visible = false
 		danger_meter_yellow.visible = false
