@@ -23,6 +23,9 @@ func _ready() -> void:
 		inverse_y_factor = 1
 
 func _physics_process(delta) -> void:
+	if Input.is_action_just_pressed("flymode"):
+		devmode = !devmode
+		
 	if PlayerStats.danger_level >= 100 && !debug:
 		is_dead = true
 		$HUD.player_dead_message()
@@ -32,7 +35,10 @@ func _physics_process(delta) -> void:
 		return
 	
 	# Movement
-	process_movement(delta)
+	if(devmode):
+		fly(delta)
+	else:
+		process_movement(delta)
 	# Using items/weapons
 	process_item_use(delta)
 	# Screen shake
@@ -60,6 +66,31 @@ const MAX_SLOPE_ANGLE: int = 40
 var is_crouching: bool = false
 var stamina: float = 100.0
 
+func fly(delta: float) -> void:
+	var aiming: Basis = $CameraHolder.transform.basis
+	var direction: Vector3 = Vector3()
+	var target_speed: float = WALK_SPEED
+	
+	if Input.is_action_pressed("move_forward"):
+		direction -= aiming[2]
+	if Input.is_action_pressed("move_backward"):
+		direction += aiming[2]
+	if Input.is_action_pressed("move_right"):
+		direction += aiming[0]
+	if Input.is_action_pressed("move_left"):
+		direction -= aiming[0]
+	
+
+	direction = direction.normalized()
+	
+	var target = direction * target_speed
+	
+	
+	vel = vel.linear_interpolate(target, ACCEL * delta)
+
+	move_and_slide(vel)
+	
+	
 # NOTE: Much of movement code is boilerplate and based on tutorials
 #		such as this one: 
 #		https://docs.godotengine.org/en/3.2/tutorials/3d/fps_tutorial/part_one.html#making-the-fps-movement-logic
@@ -76,29 +107,12 @@ func process_movement(delta: float) -> void:
 		direction += aiming[0]
 	if Input.is_action_pressed("move_left"):
 		direction -= aiming[0]
-	if Input.is_action_just_pressed("devmode"):
-		if(devmode):
-			playerAltLevel = 1
-		devmode = !devmode
 	
 	direction = direction.normalized()
 	var hvel: Vector3 = vel
 	hvel.y = 0
 	var target: Vector3 = direction
 	var accel: float = ACCEL if direction.dot(hvel) > 0 else DEACCEL
-
-	if(devmode):
-		translation.y = playerAltLevel
-		if Input.is_action_pressed("move_forward"):
-			translation -= 0.4*aiming[2]
-		if Input.is_action_pressed("move_backward"):
-			translation += 0.4*aiming[2]
-		if Input.is_action_pressed("move_right"):
-			translation += 0.4*aiming[0]
-		if Input.is_action_pressed("move_left"):
-			translation -= 0.4*aiming[0]
-	if(devmode && Input.is_action_pressed("jump")):
-		playerAltLevel += 0.1
 
 	if is_on_floor():
 		if Input.is_action_just_pressed("jump") && !devmode:
