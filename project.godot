@@ -17,12 +17,12 @@ _global_script_classes=[ {
 "base": "Navigation",
 "class": "Level",
 "language": "GDScript",
-"path": "res://Levels/TestLevel.gd"
+"path": "res://Levels/TestLevel/TestLevel.gd"
 }, {
 "base": "CSGSphere",
 "class": "PatrolNode",
 "language": "GDScript",
-"path": "res://Enemies/PatrolNode.gd"
+"path": "res://LevelObjects/PatrolNode.gd"
 }, {
 "base": "KinematicBody",
 "class": "Player",
