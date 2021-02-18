@@ -9,8 +9,6 @@ var player = null
 var patrolNodes: Array = []
 var coverNodes: Array = []
 var path: Array = []
-var last_valid_path_of_target: Array = []
-var last_valid_coordinate
 
 var patrolNodeIndex = 1
 var currentNode = null
@@ -21,6 +19,8 @@ var TestNodeIndex = 0
 var player_distance: float = 0.0
 var can_see_player: bool = false
 var player_danger: float = 0.0
+# TODO: is it possible to move this up the tree somehow?
+var last_player_position: Vector3 = Vector3(-1000, -1000, -1000)
 
 enum {
 	FIND,
@@ -133,8 +133,9 @@ func aim_at_player(_delta):
 	can_see_player = cast_to_player_hitboxes()
 	if not can_see_player: return
 	player_distance = player.translation.distance_to(translation)
-		# Could change this to relative velocity later?
-	# TODO: find out why player velocity is >0 when standing still
+	last_player_position = player.translation
+	# TODO: Could be changed to work in an area radius
+	get_tree().call_group("enemies", "update_last_player_position", last_player_position)
 #	target_speed = target.vel.abs().length()
 	
 	look_at(player.translation, Vector3(0,1,0))
@@ -259,3 +260,6 @@ func alert_comrades() -> void:
 func alert_to_player() -> void:
 	if state == PATROL:
 		state = TAKE_COVER
+
+func update_last_player_position(position: Vector3) -> void:
+	last_player_position = position

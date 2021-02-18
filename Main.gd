@@ -11,7 +11,7 @@ func load_level(filename: String):
 	$Menu.visible = false
 
 func _on_Button3_pressed():
-	load_level("res://Levels/TestLevel.tscn")
+	load_level("res://Levels/TestLevel/TestLevel.tscn")
 
 func _on_Button_pressed():
 	load_level("res://Levels/JacobLevel1/GameLevel.tscn")

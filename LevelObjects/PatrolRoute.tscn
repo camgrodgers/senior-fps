@@ -2,6 +2,6 @@
 
 [ext_resource path="res://LevelObjects/PatrolRoute.gd" type="Script" id=1]
 
-
 [node name="PatrolRoute" type="Spatial"]
 script = ExtResource( 1 )
+loop = null
