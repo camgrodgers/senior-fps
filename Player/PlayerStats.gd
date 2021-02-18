@@ -2,7 +2,6 @@ extends Node
 
 var danger_level: float = 0
 var danger_level_orange: float = 0
-# TODO: count decreasing danger levels separately?
 var danger_decrease_acceleration: float = 6
 # NOTE: This could be changed to a per-enemy value
 var danger_decrease_velocity: float = 0
@@ -14,7 +13,7 @@ func _process(delta):
 
 # Handles enemy and player data
 func danger_update(delta):
-	#TODO: all of this stuff needs to be replaced with encapsulated enemy logic
+	#TODO: all of this stuff needs to be replaced with encapsulated enemy logic?
 	var player_position = get_parent().translation
 	danger_level = 0
 	danger_level_orange = 0
