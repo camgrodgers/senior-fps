@@ -1,6 +1,7 @@
 [gd_scene load_steps=3 format=2]
 
-[ext_resource path="res://Enemies/PatrolNode.gd" type="Script" id=1]
+[ext_resource path="res://LevelObjects/PatrolNode.gd" type="Script" id=1]
+
 
 [sub_resource type="SpatialMaterial" id=1]
 albedo_color = Color( 0.0313726, 0, 1, 1 )
