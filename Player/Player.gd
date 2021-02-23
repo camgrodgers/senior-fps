@@ -5,6 +5,9 @@ onready var PlayerStats: Node = $PlayerStats
 
 var is_dead: bool = false
 var debug: bool = false
+var devmode: bool = false
+
+var playerAltLevel = 1
 
 onready var ray = $CameraHolder/Camera/RayCast
 onready	var weapon_holder = $CameraHolder/Camera/WeaponHolder
@@ -31,6 +34,9 @@ func _process(delta) -> void:
 		$Footsteps.stop()
 
 func _physics_process(delta) -> void:
+	if Input.is_action_just_pressed("flymode"):
+		devmode = !devmode
+		
 	if PlayerStats.danger_level >= 100 && !debug:
 		is_dead = true
 		$HUD.player_dead_message()
@@ -42,7 +48,10 @@ func _physics_process(delta) -> void:
 		return
 	
 	# Movement
-	process_movement(delta)
+	if(devmode):
+		fly(delta)
+	else:
+		process_movement(delta)
 	# Using items/weapons
 	process_item_use(delta)
 	# Screen shake
@@ -70,6 +79,33 @@ const MAX_SLOPE_ANGLE: int = 40
 var is_crouching: bool = false
 var stamina: float = 100.0
 
+func fly(delta: float) -> void:
+	var aiming: Basis = $CameraHolder.transform.basis
+	var direction: Vector3 = Vector3()
+	var target_speed: float = WALK_SPEED
+	
+	if Input.is_action_pressed("move_forward"):
+		direction -= aiming[2]
+	if Input.is_action_pressed("move_backward"):
+		direction += aiming[2]
+	if Input.is_action_pressed("move_right"):
+		direction += aiming[0]
+	if Input.is_action_pressed("move_left"):
+		direction -= aiming[0]
+	
+
+	direction = direction.normalized()
+	
+	if Input.is_action_pressed("sprint"):
+		target_speed *= 1.25
+	
+	var target = direction * target_speed
+	
+	vel = vel.linear_interpolate(target, ACCEL * delta)
+
+	move_and_slide(vel)
+	
+	
 # NOTE: Much of movement code is boilerplate and based on tutorials
 #		such as this one: 
 #		https://docs.godotengine.org/en/3.2/tutorials/3d/fps_tutorial/part_one.html#making-the-fps-movement-logic
