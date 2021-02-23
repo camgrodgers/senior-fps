@@ -13,8 +13,6 @@ var path: Array = []
 var patrolNodeIndex = 1
 var currentNode = null
 
-var TestNodeIndex = 0
-
 # Relations to player
 var player_distance: float = 0.0
 var can_see_player: bool = false
@@ -22,13 +20,23 @@ var player_danger: float = 0.0
 # TODO: is it possible to move this up the tree somehow?
 var last_player_position: Vector3 = Vector3(-1000, -1000, -1000)
 
+var world_state = {
+	"can_see_player" : false, 
+	"in_cover" : false,
+	"has_target" : false
+}
+
+##IDLE, MOVETO, PERORMACTION BELONG TO GOAP Logic
 enum {
 	FIND,
 	HOLD,
 	PATROL,
 	FIND_COVER,
 	TAKE_COVER,
-	SHOOT
+	SHOOT,
+	IDLE,
+	MOVE_TO,
+	PERFORM_ACTION
 }
 
 var state = PATROL
@@ -124,6 +132,8 @@ func cast_to_player_hitboxes() -> bool:
 		var collider = body_ray.collider
 #		print(collider)
 		if collider == player:
+			world_state["can_see_player"] = true
+			world_state["has_target"] = true
 			return true
 			
 	return false
@@ -146,73 +156,80 @@ var cover_timer = 0
 var cover_timer_limit = 3
 
 func _process(delta):
-	match state:
-		FIND:
-			if can_see_player:
-				cover_timer += delta
-				var distance = translation.distance_to(player.translation)
-				if distance <= 10:
-					state = FIND_COVER
-					cover_timer = 0
-					return
-			if cover_timer > 3:
-				cover_timer = 0
-				state = FIND_COVER
-				return
-			aim_at_player(delta)
-			update_path(player.translation)
-			move_along_path(delta)
-
-#				path.clear()
-		HOLD:
-			aim_at_player(delta)
-			var distance = translation.distance_to(player.translation)
-			if distance > 10:
-				state = FIND
-		PATROL:
-			if check_vision():
-				alert_comrades()
-				state = FIND_COVER
-				clear_node_data()
-				return
-			if $PatrolTimer.get_time_left() > 0:
-				return
-			else:
-				prep_node(patrolNodes[patrolNodeIndex])
-				move_along_path(delta, true)
-				if path.size() < 1:
-					prep_node(patrolNodes[patrolNodeIndex])
-					if patrolNodeIndex == patrolNodes.size() - 1:
-						patrolNodeIndex = 0
-					else:
-						patrolNodeIndex += 1
-					$PatrolTimer.start()
-		FIND_COVER:
-			prep_node(get_shortest_node())
-			
-			state = TAKE_COVER
-		TAKE_COVER:
-			if currentNode.visible_to_player:
-				state = FIND_COVER
-				return
-			move_along_path(delta)
-			aim_at_player(delta)
-			if path.empty():
-				state = SHOOT
-				return
-		SHOOT:
-			###TO DO: ADD POPPING OUT OF COVER###
-			if can_see_player and not $Enemy_audio_player.playing():
-				$Enemy_audio_player.play_sound($Enemy_audio_player.enemy_shot)
-			aim_at_player(delta)
-			cover_timer += delta
-			if cover_timer > cover_timer_limit:
-				state = FIND
-				cover_timer = 0
-				return
-			if currentNode.visible_to_player:
-				state = FIND_COVER
-				return
+	##TODO Choose Action
+	
+	##TODO Take Action
+	
+	
+	pass
+#	match state:
+#		FIND:
+#			if can_see_player:
+#				cover_timer += delta
+#				var distance = translation.distance_to(player.translation)
+#				if distance <= 10:
+#					state = FIND_COVER
+#					cover_timer = 0
+#					return
+#			if cover_timer > 3:
+#				cover_timer = 0
+#				state = FIND_COVER
+#				return
+#			aim_at_player(delta)
+#			update_path(player.translation)
+#			move_along_path(delta)
+#
+##				path.clear()
+#		HOLD:
+#			aim_at_player(delta)
+#			var distance = translation.distance_to(player.translation)
+#			if distance > 10:
+#				state = FIND
+#		PATROL:
+#			if check_vision():
+#				alert_comrades()
+#				state = FIND_COVER
+#				clear_node_data()
+#				return
+#			if $PatrolTimer.get_time_left() > 0:
+#				return
+#			else:
+#				prep_node(patrolNodes[patrolNodeIndex])
+#				move_along_path(delta, true)
+#				if path.size() < 1:
+#					prep_node(patrolNodes[patrolNodeIndex])
+#					if patrolNodeIndex == patrolNodes.size() - 1:
+#						patrolNodeIndex = 0
+#					else:
+#						patrolNodeIndex += 1
+#					$PatrolTimer.start()
+#		FIND_COVER:
+#			prep_node(get_shortest_node())
+#
+#			state = TAKE_COVER
+#		TAKE_COVER:
+#			if currentNode.visible_to_player:
+#				state = FIND_COVER
+#				return
+#			move_along_path(delta)
+#			aim_at_player(delta)
+#			if path.empty():
+#
+#				state = SHOOT
+#				return
+#		SHOOT:
+#			###TO DO: ADD POPPING OUT OF COVER###
+#			if can_see_player and not $Enemy_audio_player.playing():
+#				$Enemy_audio_player.play_sound($Enemy_audio_player.enemy_shot)
+#			aim_at_player(delta)
+#			cover_timer += delta
+#			if cover_timer > cover_timer_limit:
+#				state = FIND
+#				cover_timer = 0
+#				return
+#			if currentNode.visible_to_player:
+#				state = FIND_COVER
+#				return
 
 
 # Length of path to a point
@@ -260,6 +277,7 @@ func alert_comrades() -> void:
 func alert_to_player() -> void:
 	if state == PATROL:
 		state = TAKE_COVER
+	world_state["has_target"] = true
 
 func update_last_player_position(position: Vector3) -> void:
 	last_player_position = position
