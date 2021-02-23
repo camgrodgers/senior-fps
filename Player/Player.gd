@@ -96,8 +96,10 @@ func fly(delta: float) -> void:
 
 	direction = direction.normalized()
 	
-	var target = direction * target_speed
+	if Input.is_action_pressed("sprint"):
+		target_speed *= 1.25
 	
+	var target = direction * target_speed
 	
 	vel = vel.linear_interpolate(target, ACCEL * delta)
 
@@ -128,7 +130,7 @@ func process_movement(delta: float) -> void:
 	var accel: float = ACCEL if direction.dot(hvel) > 0 else DEACCEL
 
 	if is_on_floor():
-		if Input.is_action_just_pressed("jump") && !devmode:
+		if Input.is_action_just_pressed("jump"):
 			vel.y = JUMP_HEIGHT
 		else:
 			vel.y = 0
