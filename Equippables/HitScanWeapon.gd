@@ -15,7 +15,7 @@ func set_inputs(primary_pressed: bool, secondary_pressed: bool) -> void:
 	_primary_pressed = primary_pressed
 	_secondary_pressed = secondary_pressed
 
-func fire_ray(damage: float, force_multiply: float) -> void:
+func _fire_ray(damage: float, force_multiply: float) -> void:
 	_ray.force_raycast_update()
 	if !_ray.is_colliding(): return
 	

@@ -22,7 +22,7 @@ _global_script_classes=[ {
 "base": "Navigation",
 "class": "Level",
 "language": "GDScript",
-"path": "res://Levels/TestLevel/TestLevel.gd"
+"path": "res://Levels/Level.gd"
 }, {
 "base": "CSGSphere",
 "class": "PatrolNode",

@@ -21,7 +21,7 @@ func _physics_process(delta):
 		
 		$AnimationPlayer.play("Fire")
 		chambering = 0.15
-		fire_ray(1, 1)
+		_fire_ray(1, 1)
 
 func unequip():
 	self.queue_free()
