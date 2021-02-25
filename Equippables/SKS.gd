@@ -14,6 +14,10 @@ func _physics_process(delta):
 			$AnimationPlayer.play_backwards("Raise")
 		
 	if _primary_pressed:
+		if not _secondary_pressed:
+			$AnimationPlayer.play("Melee")
+			
+			return
 		if not (_secondary_pressed and raised and chambering == 0):
 #			print("didn't fire")
 			return
@@ -31,3 +35,11 @@ func equip():
 
 func _ready():
 	$AnimationPlayer.play_backwards("Raise")
+
+func _on_Area_body_entered(body):
+	if body.has_method("take_damage"):
+		body.take_damage()
+	if body is RigidBody:
+		print("asdf")
+		var force = global_transform.origin.direction_to(body.translation) / 2
+		body.apply_central_impulse(force)

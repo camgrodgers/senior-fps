@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://Equippables/SKS.gd" type="Script" id=1]
 [ext_resource path="res://Sounds/Test_gun_shot.wav" type="AudioStream" id=2]
@@ -8,7 +8,7 @@ resource_name = "Fire"
 length = 0.15
 step = 0.01
 tracks/0/type = "value"
-tracks/0/path = NodePath(".:translation")
+tracks/0/path = NodePath("Model:translation")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
@@ -20,7 +20,7 @@ tracks/0/keys = {
 "values": [ Vector3( 0, 0, 0 ), Vector3( 0, 0.0684289, 0 ), Vector3( 0, 0, 0 ) ]
 }
 tracks/1/type = "value"
-tracks/1/path = NodePath(".:rotation_degrees")
+tracks/1/path = NodePath("Model:rotation_degrees")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/imported = false
@@ -31,38 +31,75 @@ tracks/1/keys = {
 "update": 0,
 "values": [ Vector3( 0, 0, 0 ), Vector3( 4.149, 0, 0 ), Vector3( 0, 0, 0 ) ]
 }
-tracks/2/type = "audio"
-tracks/2/path = NodePath("AudioStreamPlayer")
+tracks/2/type = "value"
+tracks/2/path = NodePath("OmniLight:visible")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/imported = false
 tracks/2/enabled = true
 tracks/2/keys = {
-"clips": [ {
-"end_offset": 0.0,
-"start_offset": 0.0,
-"stream": null
-}, {
-"end_offset": 2.85,
-"start_offset": 0.0,
-"stream": ExtResource( 2 )
-} ],
-"times": PoolRealArray( 0, 0.03 )
-}
-tracks/3/type = "value"
-tracks/3/path = NodePath("OmniLight:visible")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/keys = {
 "times": PoolRealArray( 0, 0.03 ),
 "transitions": PoolRealArray( 1, 1 ),
 "update": 1,
 "values": [ true, false ]
 }
+tracks/3/type = "method"
+tracks/3/path = NodePath("AudioStreamPlayer")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"values": [ {
+"args": [ 0.0 ],
+"method": "play"
+} ]
+}
 
 [sub_resource type="Animation" id=2]
+resource_name = "Melee"
+length = 0.2
+step = 0.01
+tracks/0/type = "value"
+tracks/0/path = NodePath("Model:translation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.04, 0.06, 0.09, 0.2 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector3( 0, 0, 0 ), Vector3( -0.103533, 0.266343, 0.246993 ), Vector3( -0.152175, 0.391476, 0.363034 ), Vector3( 0.210928, 0.516505, 0.139526 ), Vector3( 0, 0, 0 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Model:rotation_degrees")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.04, 0.09, 0.2 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector3( 0, 0, 0 ), Vector3( 21.4956, 77.9074, 46.3858 ), Vector3( 21.4956, 77.9074, 46.3858 ), Vector3( 0, 0, 0 ) ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("Model/Area:monitoring")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 0.02, 0.11, 0.12 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 1,
+"values": [ false, true, true, false ]
+}
+
+[sub_resource type="Animation" id=3]
 length = 0.15
 step = 0.01
 tracks/0/type = "value"
@@ -102,7 +139,11 @@ tracks/2/keys = {
 "values": [ false, false, true ]
 }
 
+[sub_resource type="BoxShape" id=4]
+extents = Vector3( 0.293948, 0.191559, 1 )
+
 [node name="SKS" type="Spatial"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0561764, -0.395012, 0 )
 script = ExtResource( 1 )
 
 [node name="OmniLight" type="OmniLight" parent="."]
@@ -112,13 +153,24 @@ omni_range = 10.0
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 anims/Fire = SubResource( 1 )
-anims/Raise = SubResource( 2 )
+anims/Melee = SubResource( 2 )
+anims/Raise = SubResource( 3 )
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 2 )
 
 [node name="Model" type="CSGCombiner" parent="."]
-transform = Transform( 1, 0, 0, 0, 0.999999, 0, 0, 0, 1, 0, 0, 0 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
+
+[node name="Area" type="Area" parent="Model"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
+monitoring = false
+monitorable = false
+collision_layer = 0
+collision_mask = 4
+
+[node name="CollisionShape" type="CollisionShape" parent="Model/Area"]
+shape = SubResource( 4 )
 
 [node name="CSGBox2" type="CSGBox" parent="Model"]
 transform = Transform( 1, 0, 0, 0, 0.952257, 0.305296, 0, -0.305296, 0.952257, 0, -0.18017, 0.128824 )
@@ -131,3 +183,4 @@ transform = Transform( 1, -5.96046e-08, 1.49012e-08, -2.98023e-08, 1, 4.47035e-0
 width = 0.112515
 height = 0.168774
 depth = 1.44352
+[connection signal="body_entered" from="Model/Area" to="." method="_on_Area_body_entered"]
