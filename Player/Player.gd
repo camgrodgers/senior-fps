@@ -27,7 +27,9 @@ func _process(delta) -> void:
 	$Danger_Player.volume_db = -50 + PlayerStats.danger_level / 2
 	if not $Danger_Player.playing:
 		$Danger_Player.play()
-	if (vel >= Vector3(.5, 0, .5) or vel <= Vector3(-.5, 0, -.5)) and is_on_floor() and not is_dead:
+	if ((vel.abs().length() > 0.5)
+			and is_on_floor()
+			and not is_dead):
 		if not $Footsteps.playing:
 			$Footsteps.play()
 	else:
@@ -115,15 +117,17 @@ func process_movement(delta: float) -> void:
 	var target_speed: float = WALK_SPEED
 	
 	if Input.is_action_pressed("move_forward"):
-		direction -= aiming[2]
+		direction -= aiming.z
 	if Input.is_action_pressed("move_backward"):
-		direction += aiming[2]
+		direction += aiming.z
 	if Input.is_action_pressed("move_right"):
-		direction += aiming[0]
+		direction += aiming.x
 	if Input.is_action_pressed("move_left"):
-		direction -= aiming[0]
+		direction -= aiming.x
 	
+	direction.y = 0
 	direction = direction.normalized()
+	
 	var hvel: Vector3 = vel
 	hvel.y = 0
 	var target: Vector3 = direction
@@ -153,7 +157,9 @@ func process_movement(delta: float) -> void:
 			is_crouching = !is_crouching
 		if is_crouching:
 			target_speed *= 0.5
-		if Input.is_action_pressed("sprint") and stamina > 0 and not is_crouching:
+		if (Input.is_action_pressed("sprint")
+				and stamina > 0
+				and not is_crouching):
 			target_speed *= 1.75
 			accel *= 1.5
 			stamina -= 10 * delta
@@ -171,14 +177,23 @@ func process_movement(delta: float) -> void:
 	vel.z = hvel.z
 	
 	var snap = Vector3.DOWN if is_on_floor() and vel.y == 0 else Vector3.ZERO
-	move_and_slide_with_snap(vel, snap, Vector3(0, 1, 0), 0.05, 4, deg2rad(MAX_SLOPE_ANGLE))
+	move_and_slide_with_snap(vel,
+		snap,
+		Vector3(0, 1, 0), # up direction
+		false, # stop on slope
+		4, # max slides
+		deg2rad(MAX_SLOPE_ANGLE))
 	
 
 # Weapons/item use
 func process_item_use(_delta: float) -> void:
 	# Using items/weapons
-	var held_weapon: HitScanWeapon = weapon_holder.get_child(0) if weapon_holder.get_child_count() > 0 else null
-	var held_item = item_holder.get_child(0) if item_holder.get_child_count() > 0 else null
+	var held_weapon: HitScanWeapon = (
+		weapon_holder.get_child(0) if weapon_holder.get_child_count() > 0
+		else null)
+	var held_item = (
+		item_holder.get_child(0) if item_holder.get_child_count() > 0
+		else null)
 	var use_item_pressed: bool = Input.is_action_pressed("use_item")
 	var use_item_alt_pressed: bool = Input.is_action_pressed("use_item_alt")
 	var interact_pressed: bool = Input.is_action_just_pressed("interact")

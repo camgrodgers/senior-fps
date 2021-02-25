@@ -5,6 +5,9 @@ func _physics_process(delta):
 	chambering = clamp(chambering - delta, 0, 0.15)
 	_is_active = false
 	
+	if $AnimationPlayer.is_playing():
+		return
+	
 	if _secondary_pressed:
 		_is_active = true
 		if not raised:
@@ -36,10 +39,11 @@ func equip():
 func _ready():
 	$AnimationPlayer.play_backwards("Raise")
 
-func _on_Area_body_entered(body):
-	if body.has_method("take_damage"):
-		body.take_damage()
-	if body is RigidBody:
-		print("asdf")
-		var force = global_transform.origin.direction_to(body.translation) / 2
-		body.apply_central_impulse(force)
+func inflict_melee_damage():
+	var bodies: Array = $Model/Area.get_overlapping_bodies()
+	for body in bodies:
+		if body.has_method("take_damage"):
+			body.take_damage()
+		if body is RigidBody:
+			var force = global_transform.origin.direction_to(body.translation) / 2
+			body.apply_central_impulse(force)
