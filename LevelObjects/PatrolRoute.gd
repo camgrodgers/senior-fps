@@ -3,7 +3,6 @@ extends Spatial
 
 export(bool) var loop: bool = true
 
-var occupied: bool = false
 
 func _ready():
 	if Engine.editor_hint:
@@ -12,6 +11,15 @@ func _ready():
 func _process(delta):
 	if Engine.editor_hint:
 		tool_process(delta)
+	else:
+		game_process(delta)
+
+var occupied: bool = false
+
+func game_process(delta: float) -> void:
+	pass
+
+
 
 # Editor tool code
 var loop_last_value: bool = true

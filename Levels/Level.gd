@@ -42,11 +42,16 @@ func update_cover() -> void:
 			coverNodes.append(n)
 			n.visible_to_player = false
 
-func spawn_scene(scene: Resource, spawn_pos: Vector3) -> Node:
+func spawn_scene(scene: Resource, spawn_pos: Vector3, parent: Node) -> Node:
 	var instance = scene.instance()
-	self.add_child(instance)
+	parent.add_child(instance)
 	instance.translation = spawn_pos
 	return instance
 
-func spawn_enemy(spawn_pos: Vector3) -> void:
-	pass
+func spawn_enemy(spawn_pos: Vector3, state: int, patrol_route: Array) -> void:
+	var instance: Enemy = spawn_scene(enemy_scn, spawn_pos, enemies)
+	instance.nav = self
+	instance.state = state
+	instance.player = player
+	instance.patrolNodes = patrol_route
+	instance.coverNodes = coverNodes

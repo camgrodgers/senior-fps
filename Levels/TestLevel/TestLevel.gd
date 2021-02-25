@@ -1,9 +1,7 @@
 extends Level
 
-
-
 func _ready():
-	player = spawn_scene(player_scn, $PlayerSpawn.translation)
+	add_instances()
 	update_cover()
 
 func _process(delta):
@@ -34,7 +32,6 @@ func spawn_enemies():
 		
 		enemy_instance.nav = self
 		enemy_instance.state = 3
-		enemy_instance.target = player
 		enemy_instance.player = player
 		enemy_instance.translation = get_closest_point(Vector3(spawn.translation.x, 0, spawn.translation.z))
 		enemy_instance.patrolNodes = $PatrolRoutes.get_child(0).get_children()
@@ -44,17 +41,19 @@ func spawn_enemies():
 		
 
 func add_instances():
+	player = player_scn.instance()
+	self.add_child(player)
+	player.translation = $PlayerSpawn.translation
 	
 	
 	enemies = Spatial.new()
 	self.add_child(enemies)
 	
 	for patrol_route in $PatrolRoutes.get_children():
-		var enemy_instance: KinematicBody = enemy_scn.instance()
+		var enemy_instance: Enemy = enemy_scn.instance()
 		enemies.add_child(enemy_instance)
 		
 		enemy_instance.nav = self
-		enemy_instance.target = player
 		enemy_instance.player = player
 		enemy_instance.translation = get_closest_point(Vector3(patrol_route.get_child(0).translation.x, 0, patrol_route.get_child(0).translation.z))
 		enemy_instance.patrolNodes = patrol_route.get_children()
