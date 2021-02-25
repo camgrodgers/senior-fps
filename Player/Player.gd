@@ -177,7 +177,7 @@ func process_movement(delta: float) -> void:
 # Weapons/item use
 func process_item_use(_delta: float) -> void:
 	# Using items/weapons
-	var held_weapon = weapon_holder.get_child(0) if weapon_holder.get_child_count() > 0 else null
+	var held_weapon: HitScanWeapon = weapon_holder.get_child(0) if weapon_holder.get_child_count() > 0 else null
 	var held_item = item_holder.get_child(0) if item_holder.get_child_count() > 0 else null
 	var use_item_pressed: bool = Input.is_action_pressed("use_item")
 	var use_item_alt_pressed: bool = Input.is_action_pressed("use_item_alt")
@@ -194,11 +194,10 @@ func process_item_use(_delta: float) -> void:
 		return
 	
 	if held_weapon != null:
-		held_weapon.ray = ray
-		held_weapon.use_item_pressed = use_item_pressed
-		held_weapon.use_item_alt_pressed = use_item_alt_pressed
+		held_weapon.set_ray(ray)
+		held_weapon.set_inputs(use_item_pressed, use_item_alt_pressed)
 		
-		if held_weapon.is_active:
+		if held_weapon.is_active():
 			return
 	
 	if interact_pressed:

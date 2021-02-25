@@ -14,10 +14,15 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://Enemies/Enemy.gd"
 }, {
+"base": "Spatial",
+"class": "HitScanWeapon",
+"language": "GDScript",
+"path": "res://Equippables/HitScanWeapon.gd"
+}, {
 "base": "Navigation",
 "class": "Level",
 "language": "GDScript",
-"path": "res://Levels/TestLevel/TestLevel.gd"
+"path": "res://Levels/Level.gd"
 }, {
 "base": "CSGSphere",
 "class": "PatrolNode",
@@ -28,12 +33,19 @@ _global_script_classes=[ {
 "class": "Player",
 "language": "GDScript",
 "path": "res://Player/Player.gd"
+}, {
+"base": "HitScanWeapon",
+"class": "SKS",
+"language": "GDScript",
+"path": "res://Equippables/SKS.gd"
 } ]
 _global_script_class_icons={
 "Enemy": "",
+"HitScanWeapon": "",
 "Level": "",
 "PatrolNode": "",
-"Player": ""
+"Player": "",
+"SKS": ""
 }
 
 [application]

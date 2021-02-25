@@ -4,7 +4,6 @@ class_name Enemy
 var ENEMY_SPEED: int = 6
 
 var nav: Navigation = null
-var target = null
 var player = null
 var patrolNodes: Array = []
 var coverNodes: Array = []
@@ -102,7 +101,6 @@ func check_vision() -> bool:
 		return false
 	
 	can_see_player = cast_to_player_hitboxes()
-#			target = collider
 	return can_see_player
 
 # If it returns true, a raycast can hit the player's hitboxes
