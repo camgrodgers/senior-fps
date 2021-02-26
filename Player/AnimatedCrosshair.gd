@@ -5,10 +5,6 @@ onready var left: ColorRect = $Lines/Left
 onready var right: ColorRect = $Lines/Right
 onready var top: ColorRect = $Lines/Top
 onready var bottom: ColorRect = $Lines/Bottom
-#onready var left: ColorRect = $Left
-#onready var right: ColorRect = $Right
-#onready var top: ColorRect = $Top
-#onready var bottom: ColorRect = $Bottom
 
 # width is distance between inside points of lines
 export var goal_width: float = 30

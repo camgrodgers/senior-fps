@@ -1,6 +1,8 @@
 extends Spatial
 class_name HitScanWeapon
 
+signal recoil(force)
+
 var _is_active: bool = false
 var _ray: RayCast
 var _primary_pressed: bool = false
