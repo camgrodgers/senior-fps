@@ -18,6 +18,10 @@ func _ready() -> void:
 	
 	$HUD.camera = $CameraHolder
 	$HUD.player = self
+	$CameraHolder/Camera/WeaponHolder/SKS.connect(
+			"recoil",
+			self,
+			"_on_weapon_recoil")
 	
 	turn_factor = turn_speed / 10000.0
 	if (inverse_x):
@@ -62,6 +66,7 @@ func _physics_process(delta) -> void:
 	# Screen shake
 #	screen_shake(delta)
 	crosshair_update(delta)
+	_process_recoil(delta)
 	
 	if Input.is_action_just_pressed("debug"):
 		debug = !debug
@@ -267,6 +272,21 @@ func screen_shake(delta: float) -> void:
 #	print(_max)
 #	ray.rotation_degrees = ray.rotation_degrees.linear_interpolate(Vector3(0, offset_x, 0), 1)
 	ray.set_rotation(Vector3(0, offset_x, 0))
+
+var _goal_recoil: float = 0
+var _recoil: float = 0
+const RECOIL_MAX_ANGLE: float = 15.0
+
+func _on_weapon_recoil(force: float) -> void:
+	_goal_recoil = clamp(_goal_recoil + force, 0, RECOIL_MAX_ANGLE)
+
+func _process_recoil(delta) -> void:
+	var camera = $CameraHolder/Camera
+	camera.rotation_degrees = camera.rotation_degrees.linear_interpolate(
+			Vector3(_goal_recoil, 0,  0),
+			delta * 10
+			)
+	_goal_recoil = clamp(_goal_recoil - (delta * 25), 0, RECOIL_MAX_ANGLE)
 
 func crosshair_update(delta:float) -> void:
 	$HUD/AnimatedCrosshair.goal_width = 10 + (vel.abs().length() * 1.5)
