@@ -24,7 +24,7 @@ class PlannerNode:
 		self.final_cost = given_cost + heuristic_cost
 
 var start: Graph_Node = null
-
+var goal: Graph_Node = null
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -57,7 +57,7 @@ func plan_actions(current_state: Dictionary, desired_state: Dictionary):
 		
 		if check_if_desired(current_node.vertex.state, desired_state):
 			###solved!!!
-			##probably will return current_node
+			goal = current_node
 			return true;
 		
 		for edge in current_node.vertex.edges:
@@ -74,19 +74,18 @@ func plan_actions(current_state: Dictionary, desired_state: Dictionary):
 					visited[successor].parent = current_node.vertex
 					##will resort queue if present in queue, insert if not
 					open.insert_or_resort(visited[successor])
-	return $Actions.get_child(0)
+	
+	##what should be returned if no solution found?
+	return
 
 func check_if_desired(current_state: Dictionary, desired_state: Dictionary) -> bool:
-	var states_equal: bool = true
 	for key in desired_state.keys():
 		if current_state.has(key):
 			if desired_state[key] != current_state[key]:
-				states_equal = false
-				break
+				return false
 		else:
-			states_equal = false
-			break
-	return states_equal
+			return false
+	return true
 
 
 ##Initialize Generation by creating start node

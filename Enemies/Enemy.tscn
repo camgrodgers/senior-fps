@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://Enemies/Enemy.gd" type="Script" id=1]
 [ext_resource path="res://Enemies/Enemy_audio_player.gd" type="Script" id=2]
@@ -6,6 +6,7 @@
 [ext_resource path="res://Enemies/action_shoot.gd" type="Script" id=4]
 [ext_resource path="res://Enemies/action_move_to_cover.gd" type="Script" id=5]
 [ext_resource path="res://Enemies/action_patrol.gd" type="Script" id=6]
+[ext_resource path="res://Enemies/PriorityQueue.gd" type="Script" id=7]
 
 [sub_resource type="CapsuleShape" id=1]
 radius = 0.5
@@ -96,11 +97,16 @@ unit_db = 30.0
 [node name="GOAP-Planner" type="Node" parent="."]
 script = ExtResource( 3 )
 
-[node name="action_patrol" type="Node" parent="GOAP-Planner"]
+[node name="PriorityQueue" type="Node" parent="GOAP-Planner"]
+script = ExtResource( 7 )
+
+[node name="Actions" type="Node" parent="GOAP-Planner"]
+
+[node name="action_patrol" type="Node" parent="GOAP-Planner/Actions"]
 script = ExtResource( 6 )
 
-[node name="action_shoot" type="Node" parent="GOAP-Planner"]
+[node name="action_shoot" type="Node" parent="GOAP-Planner/Actions"]
 script = ExtResource( 4 )
 
-[node name="action_move_to_cover" type="Node" parent="GOAP-Planner"]
+[node name="action_move_to_cover" type="Node" parent="GOAP-Planner/Actions"]
 script = ExtResource( 5 )
