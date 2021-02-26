@@ -87,17 +87,6 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.438983, -0.238201, -0.790554
 [node name="ItemHolder" type="Spatial" parent="CameraHolder/Camera"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.632482, -2.1756 )
 
-[node name="Hitboxes" type="Area" parent="."]
-collision_layer = 0
-
-[node name="Head" type="CollisionShape" parent="Hitboxes"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.00905, 0 )
-shape = SubResource( 3 )
-
-[node name="Body" type="CollisionShape" parent="Hitboxes"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.695323, 0 )
-shape = SubResource( 4 )
-
 [node name="Sound_Player" type="Spatial" parent="."]
 script = ExtResource( 5 )
 
