@@ -9,6 +9,20 @@ class Edge:
 	var end_point: Graph_Node
 	var current_cost: int
 
+class PlannerNode:
+	var vertex: Graph_Node
+	var parent: Graph_Node
+	var given_cost: int
+	var heuristic_cost: int
+	var final_cost: int
+	
+	func _init(vertex, parent, given_cost, heuristic_cost):
+		self.vertex = vertex
+		self.parent = parent
+		self.given_cost = given_cost
+		self.heuristic_cost = heuristic_cost
+		self.final_cost = given_cost + heuristic_cost
+
 var start: Graph_Node = null
 
 
@@ -18,11 +32,49 @@ func _ready():
 #	for a in get_children():
 #		actions.add_child(a)
 	
+	
+func estimate_cost(current_state: Dictionary, desired_state: Dictionary):
+	var hcost: int = 0
+	for key in desired_state.keys():
+		if current_state.has(key):
+			if desired_state[key] != current_state[key]:
+				hcost += 1
+		else:
+			hcost += 1
+	return hcost
+
 ##Returning first child as placeholder
+##Use A* to go through search graph
+##Get a list of actions to follow
 func plan_actions(current_state: Dictionary, desired_state: Dictionary):
 	
+	var open = $PriorityQueue._init()
+	open.insert(PlannerNode.new(start, null, 0, estimate_cost(start.state, desired_state)))
+	var visited = {start: open.peek()}
 	
-	return get_child(0)
+	while !open.empty():
+		var current_node = open.delMin()
+		
+		if check_if_desired(current_node.vertex.state, desired_state):
+			###solved!!!
+			##probably will return current_node
+			return true;
+		
+		for edge in current_node.vertex.edges:
+			var newCost = current_node.given_cost + edge.cost
+			var successor = edge.end_point
+			
+			if not visited.has(successor):
+				visited[successor] = PlannerNode.new(successor, current_node.vertex, newCost, estimate_cost(successor.state, desired_state))
+				open.insert(visited[successor])
+			else:
+				if newCost < visited[successor].given_cost:
+					visited[successor].given_cost = newCost
+					visited[successor].final_cost = visited[successor].heuristic_cost + newCost
+					visited[successor].parent = current_node.vertex
+					##will resort queue if present in queue, insert if not
+					open.insert_or_resort(visited[successor])
+	return $Actions.get_child(0)
 
 func check_if_desired(current_state: Dictionary, desired_state: Dictionary) -> bool:
 	var states_equal: bool = true
@@ -50,7 +102,7 @@ func generate_graph(current_state: Dictionary, desired_state: Dictionary):
 	
 	var solution_count: int = 0
 	var queue: Array = []
-	var start = Graph_Node.new()
+	start = Graph_Node.new()
 	start.state = current_state.duplicate(true)
 	queue.push_back(start)
 	
@@ -69,7 +121,7 @@ func generate_graph(current_state: Dictionary, desired_state: Dictionary):
 ##Go through list of actions
 ##If preconditions met, add an edge with updated state
 func get_adjacents(node: Graph_Node):
-	for action in get_children():
+	for action in $Actions.get_children():
 		var precons_met: bool = true
 		for key in action.preconditions.keys():
 			if node.state.has(key):
