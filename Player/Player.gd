@@ -16,6 +16,9 @@ onready var item_holder = $CameraHolder/Camera/ItemHolder
 func _ready() -> void:
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	
+	$HUD.camera = $CameraHolder
+	$HUD.player = self
+	
 	turn_factor = turn_speed / 10000.0
 	if (inverse_x):
 		inverse_x_factor = 1
@@ -266,13 +269,14 @@ func screen_shake(delta: float) -> void:
 	ray.set_rotation(Vector3(0, offset_x, 0))
 
 func crosshair_update(delta:float) -> void:
-	ray.force_raycast_update()
-	if !ray.is_colliding():
-		$HUD.crosshair_coordinates = Vector2(get_viewport().size.x / 2, get_viewport().size.y / 2)
-		return
-		
-	var point = ray.get_collision_point()
-	$HUD.crosshair_coordinates = $CameraHolder/Camera.unproject_position(point)
+	$HUD/AnimatedCrosshair.goal_width = 10 + (vel.abs().length() * 1.5)
+#	ray.force_raycast_update()
+#	if !ray.is_colliding():
+##		$HUD.crosshair_coordinates = Vector2(get_viewport().size.x / 2, get_viewport().size.y / 2)
+#		return
+#
+#	var point = ray.get_collision_point()
+#	$HUD.crosshair_coordinates = $CameraHolder/Camera.unproject_position(point)
 
 func _input(event: InputEvent) -> void:
 	if !event is InputEventMouseMotion:

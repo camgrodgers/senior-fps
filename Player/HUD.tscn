@@ -1,6 +1,6 @@
 [gd_scene load_steps=8 format=2]
 
-[ext_resource path="res://Player/crosshair.png" type="Texture" id=1]
+[ext_resource path="res://Player/AnimatedCrosshair.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Player/HUD.gd" type="Script" id=2]
 [ext_resource path="res://Player/danger_texture.png" type="Texture" id=3]
 [ext_resource path="res://Player/danger_texture_yellow.png" type="Texture" id=4]
@@ -21,23 +21,15 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="AnimatedCrosshair" parent="." instance=ExtResource( 1 )]
+goal_width = 10.0
+
 [node name="KnownCover" type="Label" parent="."]
 anchor_left = 0.02
 anchor_top = 0.954
 anchor_right = 0.029
 anchor_bottom = 0.977
 text = "Enemies know where you are"
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Crosshair" type="TextureRect" parent="."]
-margin_left = 462.0
-margin_top = 244.0
-margin_right = 562.0
-margin_bottom = 350.0
-texture = ExtResource( 1 )
-stretch_mode = 3
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -53,18 +45,6 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Label" type="Label" parent="ProgressBar"]
-visible = false
-anchor_right = 1.0
-margin_left = 3.0
-margin_top = -11.0
-margin_right = 40.0
-margin_bottom = 14.0
-text = "10m"
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
 [node name="RedProgress" type="TextureProgress" parent="."]
 visible = false
 anchor_left = 0.02
@@ -76,17 +56,6 @@ rounded = true
 texture_under = SubResource( 2 )
 texture_progress = ExtResource( 3 )
 nine_patch_stretch = true
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Label" type="Label" parent="RedProgress"]
-anchor_right = 1.0
-margin_left = 3.0
-margin_top = -11.0
-margin_right = 40.0
-margin_bottom = 14.0
-text = "10m"
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -126,13 +95,19 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Label" type="Label" parent="CenterContainer"]
+[node name="Control" type="Control" parent="CenterContainer"]
+margin_left = 512.0
+margin_top = 300.0
+margin_right = 512.0
+margin_bottom = 300.0
+
+[node name="DeadMessage" type="Label" parent="CenterContainer"]
 visible = false
-margin_left = 389.0
+margin_left = 390.0
 margin_top = 293.0
-margin_right = 634.0
+margin_right = 633.0
 margin_bottom = 307.0
-text = "You are dead, press \"space\" to reload\""
+text = "You are dead. Press \"space\" to reload."
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 margin_right = 40.0

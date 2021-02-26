@@ -9,6 +9,11 @@
 config_version=4
 
 _global_script_classes=[ {
+"base": "Control",
+"class": "AnimatedCrosshair",
+"language": "GDScript",
+"path": "res://Player/AnimatedCrosshair.gd"
+}, {
 "base": "KinematicBody",
 "class": "Enemy",
 "language": "GDScript",
@@ -40,6 +45,7 @@ _global_script_classes=[ {
 "path": "res://Equippables/SKS.gd"
 } ]
 _global_script_class_icons={
+"AnimatedCrosshair": "",
 "Enemy": "",
 "HitScanWeapon": "",
 "Level": "",
