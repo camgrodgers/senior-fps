@@ -1,0 +1,57 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://Player/AnimatedCrosshair.gd" type="Script" id=1]
+
+[node name="AnimatedCrosshair" type="CenterContainer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Lines" type="Control" parent="."]
+margin_left = 640.0
+margin_top = 360.0
+margin_right = 640.0
+margin_bottom = 360.0
+
+[node name="Left" type="ColorRect" parent="Lines"]
+margin_left = -120.0
+margin_right = -100.0
+margin_bottom = 2.0
+rect_min_size = Vector2( 20, 2 )
+color = Color( 0, 0, 0, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Right" type="ColorRect" parent="Lines"]
+margin_left = 100.0
+margin_right = 120.0
+margin_bottom = 2.0
+rect_min_size = Vector2( 20, 2 )
+color = Color( 0, 0, 0, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Top" type="ColorRect" parent="Lines"]
+margin_top = -120.0
+margin_right = 2.0
+margin_bottom = -100.0
+rect_min_size = Vector2( 2, 20 )
+color = Color( 0, 0, 0, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Bottom" type="ColorRect" parent="Lines"]
+margin_top = 100.0
+margin_right = 2.0
+margin_bottom = 120.0
+rect_min_size = Vector2( 2, 20 )
+color = Color( 0, 0, 0, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
