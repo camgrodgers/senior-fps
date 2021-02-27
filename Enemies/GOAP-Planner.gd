@@ -3,11 +3,19 @@ extends Node
 class Graph_Node:
 	var state: Dictionary
 	var edges: Array = []
+	
+	func _init(state):
+		self.state = state
 
 class Edge:
 	var action: Node
 	var end_point: Graph_Node
-	var current_cost: int
+	var cost: int
+	
+	func _init(action, end_point, cost):
+		self.action = action
+		self.end_point = end_point
+		self.cost = cost
 
 class PlannerNode:
 	var vertex: Graph_Node
@@ -101,8 +109,9 @@ func generate_graph(current_state: Dictionary, desired_state: Dictionary):
 	
 	var solution_count: int = 0
 	var queue: Array = []
-	start = Graph_Node.new()
-	start.state = current_state.duplicate(true)
+	var state_in_graph: Dictionary = {}
+	start = Graph_Node.new(current_state.duplicate(true))
+	state_in_graph[start.state.hash()] = start
 	queue.push_back(start)
 	
 	while(!queue.empty() and solution_count < 5):
@@ -110,7 +119,7 @@ func generate_graph(current_state: Dictionary, desired_state: Dictionary):
 		if check_if_desired(current.state, desired_state):
 			solution_count += 1
 			continue
-		get_adjacents(current)
+		get_adjacents(current, state_in_graph)
 		
 		for edge in current.edges:
 			queue.push_back(edge.end_point)
@@ -119,7 +128,9 @@ func generate_graph(current_state: Dictionary, desired_state: Dictionary):
 
 ##Go through list of actions
 ##If preconditions met, add an edge with updated state
-func get_adjacents(node: Graph_Node):
+##Check state against current states in graph to see if duplicate
+##Checking for duplicates and properly linking nodes allows for more dynamic planning
+func get_adjacents(node: Graph_Node, state_in_graph: Dictionary):
 	for action in $Actions.get_children():
 		var precons_met: bool = true
 		for key in action.preconditions.keys():
@@ -134,9 +145,8 @@ func get_adjacents(node: Graph_Node):
 			var new_state = node.state.duplicate(true)
 			for key in action.effects.keys():
 				new_state[key] = action.effects[key]
-			var add_edge = Edge.new()
-			add_edge.action = action
-			add_edge.end_point = Graph_Node.new()
-			add_edge.end_point.state = new_state
-			add_edge.current_cost = action.cost
-			node.edges.append(add_edge)
+			if state_in_graph.has(new_state.hash):
+				node.edges.append(Edge.new(action, state_in_graph[new_state.hash], action.cost))
+			else:
+				state_in_graph[new_state.hash] = Graph_Node.new(new_state)
+				node.edges.append(Edge.new(action, state_in_graph[new_state.hash], action.cost))
