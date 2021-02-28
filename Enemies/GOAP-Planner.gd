@@ -20,23 +20,45 @@ class Edge:
 class PlannerNode:
 	var vertex: Graph_Node
 	var parent: Graph_Node
+	var edge: Edge
 	var given_cost: int
 	var heuristic_cost: int
 	var final_cost: int
 	
-	func _init(vertex, parent, given_cost, heuristic_cost):
+	func _init(vertex, parent, given_cost, heuristic_cost, edge):
 		self.vertex = vertex
 		self.parent = parent
 		self.given_cost = given_cost
 		self.heuristic_cost = heuristic_cost
 		self.final_cost = given_cost + heuristic_cost
+		self.edge = edge
 
 var start: Graph_Node = null
 var goal: Graph_Node = null
+var visited: Dictionary = {}
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	pass
+	##Example use for debugging
+#	var state = {"has_target" : true, "in_cover": false, "can_see_player": true}
+#	var desired = {"has_target" : false}
+#	print("Current State: ")
+#	print(state)
+#	print("Desired State: ")
+#	print(desired)
+#	generate_graph(state, desired)
+#	plan_actions(state, desired)
+#
+#	##Go through solution for debugging purposes
+#	var traceback:Graph_Node = goal
+#	var solution: Array = []
+#	while(traceback != null and visited[traceback].edge != null):
+#		solution.push_front(visited[traceback].edge.action.get_name())
+#		traceback = visited[traceback].parent
+#	for e in solution:
+#		print(e + " -> ")
+#	print("goal reached!")
 #	for a in get_children():
 #		actions.add_child(a)
 	
@@ -56,16 +78,16 @@ func estimate_cost(current_state: Dictionary, desired_state: Dictionary):
 ##Get a list of actions to follow
 func plan_actions(current_state: Dictionary, desired_state: Dictionary):
 	
-	var open = $PriorityQueue._init()
-	open.insert(PlannerNode.new(start, null, 0, estimate_cost(start.state, desired_state)))
-	var visited = {start: open.peek()}
+	$PriorityQueue._init()
+	$PriorityQueue.insert(PlannerNode.new(start, null, 0, estimate_cost(start.state, desired_state), null))
+	visited = {start: $PriorityQueue.peek()}
 	
-	while !open.empty():
-		var current_node = open.delMin()
+	while !$PriorityQueue.empty():
+		var current_node = $PriorityQueue.delMin()
 		
 		if check_if_desired(current_node.vertex.state, desired_state):
 			###solved!!!
-			goal = current_node
+			goal = current_node.vertex
 			return true;
 		
 		for edge in current_node.vertex.edges:
@@ -73,15 +95,16 @@ func plan_actions(current_state: Dictionary, desired_state: Dictionary):
 			var successor = edge.end_point
 			
 			if not visited.has(successor):
-				visited[successor] = PlannerNode.new(successor, current_node.vertex, newCost, estimate_cost(successor.state, desired_state))
-				open.insert(visited[successor])
+				visited[successor] = PlannerNode.new(successor, current_node.vertex, newCost, estimate_cost(successor.state, desired_state), edge)
+				$PriorityQueue.insert(visited[successor])
 			else:
 				if newCost < visited[successor].given_cost:
 					visited[successor].given_cost = newCost
 					visited[successor].final_cost = visited[successor].heuristic_cost + newCost
 					visited[successor].parent = current_node.vertex
+					visited[successor].edge = edge
 					##will resort queue if present in queue, insert if not
-					open.insert_or_resort(visited[successor])
+					$PriorityQueue.insert_or_resort(visited[successor])
 	
 	##what should be returned if no solution found?
 	return
@@ -145,8 +168,8 @@ func get_adjacents(node: Graph_Node, state_in_graph: Dictionary):
 			var new_state = node.state.duplicate(true)
 			for key in action.effects.keys():
 				new_state[key] = action.effects[key]
-			if state_in_graph.has(new_state.hash):
-				node.edges.append(Edge.new(action, state_in_graph[new_state.hash], action.cost))
+			if state_in_graph.has(new_state.hash()):
+				node.edges.append(Edge.new(action, state_in_graph[new_state.hash()], action.cost))
 			else:
-				state_in_graph[new_state.hash] = Graph_Node.new(new_state)
-				node.edges.append(Edge.new(action, state_in_graph[new_state.hash], action.cost))
+				state_in_graph[new_state.hash()] = Graph_Node.new(new_state)
+				node.edges.append(Edge.new(action, state_in_graph[new_state.hash()], action.cost))

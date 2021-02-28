@@ -104,9 +104,29 @@ script = ExtResource( 7 )
 
 [node name="action_patrol" type="Node" parent="GOAP-Planner/Actions"]
 script = ExtResource( 6 )
+preconditions = {
+"has_target": false
+}
+effects = {
+
+}
 
 [node name="action_shoot" type="Node" parent="GOAP-Planner/Actions"]
 script = ExtResource( 4 )
+preconditions = {
+"can_see_player": true,
+"has_target": true,
+"in_cover": true
+}
+effects = {
+"has_target": false
+}
 
-[node name="action_move_to_cover" type="Node" parent="GOAP-Planner/Actions"]
+[node name="action_find_cover" type="Node" parent="GOAP-Planner/Actions"]
 script = ExtResource( 5 )
+preconditions = {
+"in_cover": false
+}
+effects = {
+"in_cover": true
+}
