@@ -234,11 +234,11 @@ func clear_node_data() -> void:
 		currentNode.occupied_by = null
 
 # Respond to player attacks
-var HP: int = 2
+var HP: float = 2.0
 
-func take_damage() -> void:
+func take_damage(damage: float) -> void:
 	alert_comrades()
-	HP -= 1
+	HP -= damage
 	if HP > 0:
 		$CSGCombiner/CSGCylinder.visible = false
 		$CSGCombiner/CSGCylinder2.visible = true
