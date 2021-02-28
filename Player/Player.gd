@@ -58,14 +58,14 @@ func _physics_process(delta) -> void:
 	
 	# Movement
 	if(devmode):
-		fly(delta)
+		_fly(delta)
 	else:
-		process_movement(delta)
+		_process_movement(delta)
 	# Using items/weapons
-	process_item_use(delta)
+	_process_item_use(delta)
 	# Screen shake
-#	screen_shake(delta)
-	crosshair_update(delta)
+	_aim_shake(delta)
+	_crosshair_update(delta)
 	_process_recoil(delta)
 	
 	if Input.is_action_just_pressed("debug"):
@@ -89,7 +89,7 @@ const MAX_SLOPE_ANGLE: int = 40
 var is_crouching: bool = false
 var stamina: float = 100.0
 
-func fly(delta: float) -> void:
+func _fly(delta: float) -> void:
 	var aiming: Basis = $CameraHolder.transform.basis
 	var direction: Vector3 = Vector3()
 	var target_speed: float = WALK_SPEED
@@ -119,7 +119,7 @@ func fly(delta: float) -> void:
 # NOTE: Much of movement code is boilerplate and based on tutorials
 #		such as this one: 
 #		https://docs.godotengine.org/en/3.2/tutorials/3d/fps_tutorial/part_one.html#making-the-fps-movement-logic
-func process_movement(delta: float) -> void:
+func _process_movement(delta: float) -> void:
 	var aiming: Basis = $CameraHolder.transform.basis
 	var direction: Vector3 = Vector3()
 	var target_speed: float = WALK_SPEED
@@ -194,7 +194,7 @@ func process_movement(delta: float) -> void:
 	
 
 # Weapons/item use
-func process_item_use(_delta: float) -> void:
+func _process_item_use(_delta: float) -> void:
 	# Using items/weapons
 	var held_weapon: HitScanWeapon = (
 		weapon_holder.get_child(0) if weapon_holder.get_child_count() > 0
@@ -256,21 +256,18 @@ var turn_factor: float
 var inverse_x_factor: int = -1
 var inverse_y_factor: int = -1
 
-var screen_shake_width: float = .005
-var screen_shake_counter: float = 0.5
+var aim_shake_width: float = .005
+var aim_shake_speed: float = 5
+var _aim_shake_counter: float = 0.5
 
-var _min = 0
-var _max = 0
-func screen_shake(delta: float) -> void:
-	if screen_shake_counter == INF:
-		screen_shake_counter = 0
-	var offset_x = (cos(screen_shake_counter) * screen_shake_width) #+ (screen_shake_width / 2)
-	screen_shake_counter += delta * 2
-	if offset_x < _min: _min = offset_x
-	if offset_x > _max: _max = offset_x
-#	print(_min)
-#	print(_max)
-#	ray.rotation_degrees = ray.rotation_degrees.linear_interpolate(Vector3(0, offset_x, 0), 1)
+func _aim_shake(delta: float) -> void:
+	if _aim_shake_counter == INF:
+		_aim_shake_counter = 0
+	var offset_x = (cos(_aim_shake_counter)
+			* (aim_shake_width + (vel.abs().length() / 800))
+			)
+	_aim_shake_counter += delta * aim_shake_speed
+
 	ray.set_rotation(Vector3(0, offset_x, 0))
 
 var _goal_recoil: float = 0
@@ -288,15 +285,18 @@ func _process_recoil(delta) -> void:
 			)
 	_goal_recoil = clamp(_goal_recoil - (delta * 25), 0, RECOIL_MAX_ANGLE)
 
-func crosshair_update(delta:float) -> void:
+func _crosshair_update(delta:float) -> void:
+	# Animated Crosshair
 	$HUD/AnimatedCrosshair.goal_width = 10 + (vel.abs().length() * 1.5)
-#	ray.force_raycast_update()
-#	if !ray.is_colliding():
-##		$HUD.crosshair_coordinates = Vector2(get_viewport().size.x / 2, get_viewport().size.y / 2)
-#		return
-#
-#	var point = ray.get_collision_point()
-#	$HUD.crosshair_coordinates = $CameraHolder/Camera.unproject_position(point)
+	
+	# Laser Point
+	ray.force_raycast_update()
+	if !ray.is_colliding():
+		$CameraHolder/LaserPoint.translation = Vector3(0, 0, 0)
+		return
+
+	var point = ray.get_collision_point()
+	$CameraHolder/LaserPoint.global_transform.origin = point
 
 func _input(event: InputEvent) -> void:
 	if !event is InputEventMouseMotion:

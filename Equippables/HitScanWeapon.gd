@@ -23,9 +23,10 @@ func _fire_ray(damage: float, force_multiply: float) -> void:
 	
 	var obj = _ray.get_collider()
 	if obj.has_method("take_damage"):
-		obj.take_damage()
+		obj.take_damage(damage)
 	if obj is RigidBody:
-		var force = global_transform.origin.direction_to(obj.translation) / 4
+		var force = (force_multiply *
+				global_transform.origin.direction_to(obj.translation) / 4)
 		obj.apply_central_impulse(force)
 
 func is_active() -> bool:
