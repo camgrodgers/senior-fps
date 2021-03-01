@@ -204,6 +204,7 @@ func _process_item_use(_delta: float) -> void:
 		else null)
 	var use_item_pressed: bool = Input.is_action_pressed("use_item")
 	var use_item_alt_pressed: bool = Input.is_action_pressed("use_item_alt")
+	var reload_pressed: bool = Input.is_action_pressed("reload")
 	var interact_pressed: bool = Input.is_action_just_pressed("interact")
 	var aiming: Basis = $CameraHolder.transform.basis
 	
@@ -218,7 +219,9 @@ func _process_item_use(_delta: float) -> void:
 	
 	if held_weapon != null:
 		held_weapon.set_ray(ray)
-		held_weapon.set_inputs(use_item_pressed, use_item_alt_pressed)
+		held_weapon.set_inputs(use_item_pressed,
+				use_item_alt_pressed,
+				reload_pressed)
 		
 		if held_weapon.is_active():
 			return

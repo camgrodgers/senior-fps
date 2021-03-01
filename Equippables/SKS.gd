@@ -1,6 +1,14 @@
 extends HitScanWeapon
 class_name SKS
 
+
+func _ready():
+	ammo_loaded = 20
+	AMMO_PER_MAG = 20
+	ammo_backup = 100
+	$AnimationPlayer.play_backwards("Raise")
+	
+
 func _physics_process(delta):
 	chambering = clamp(chambering - delta, 0, 0.15)
 	_is_active = false
@@ -8,6 +16,10 @@ func _physics_process(delta):
 	if $AnimationPlayer.is_playing():
 		return
 	
+	if _reload_pressed:
+		_is_active = true
+		$AnimationPlayer.play("Reload")
+		
 	if _secondary_pressed:
 		_is_active = true
 		if not raised:
@@ -19,14 +31,12 @@ func _physics_process(delta):
 	if _primary_pressed:
 		if not _secondary_pressed:
 			$AnimationPlayer.play("Melee")
-			
 			return
-		if not (_secondary_pressed and raised and chambering == 0):
-#			print("didn't fire")
+		if not (raised and chambering == 0 and ammo_loaded > 0):
 			return
-#		print("fired")
 		
 		$AnimationPlayer.play("Fire")
+		_spend_round()
 		chambering = 0.15
 		_fire_ray(1, 1)
 		emit_signal("recoil", 4)
@@ -37,8 +47,6 @@ func unequip():
 func equip():
 	pass
 
-func _ready():
-	$AnimationPlayer.play_backwards("Raise")
 
 func inflict_melee_damage():
 	var bodies: Array = $Model/Area.get_overlapping_bodies()
