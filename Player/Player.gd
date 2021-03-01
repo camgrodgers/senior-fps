@@ -18,10 +18,15 @@ func _ready() -> void:
 	
 	$HUD.camera = $CameraHolder
 	$HUD.player = self
-	$CameraHolder/Camera/WeaponHolder/SKS.connect(
+	var weapon: HitScanWeapon = $CameraHolder/Camera/WeaponHolder/SKS
+	weapon.connect(
 			"recoil",
 			self,
 			"_on_weapon_recoil")
+	weapon.connect("expose_ammo_count", $HUD, "_on_expose_ammo_count")
+	weapon.connect("hide_ammo_count", $HUD, "_on_hide_ammo_count")
+	weapon.connect("update_ammo_count", $HUD, "_on_update_ammo_count")
+	
 	
 	turn_factor = turn_speed / 10000.0
 	if (inverse_x):
@@ -30,6 +35,7 @@ func _ready() -> void:
 		inverse_y_factor = 1
 	
 	$Sound_Player.play_sound($Sound_Player.gun_cock)
+
 func _process(delta) -> void:
 	$Danger_Player.volume_db = -50 + PlayerStats.danger_level / 2
 	if not $Danger_Player.playing:

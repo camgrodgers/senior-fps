@@ -2,6 +2,9 @@ extends Spatial
 class_name HitScanWeapon
 
 signal recoil(force)
+signal expose_ammo_count()
+signal hide_ammo_count()
+signal update_ammo_count(loaded, backup, per_mag)
 
 var _is_active: bool = false
 var _ray: RayCast

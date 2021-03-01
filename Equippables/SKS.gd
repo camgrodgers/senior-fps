@@ -13,6 +13,8 @@ func _physics_process(delta):
 	chambering = clamp(chambering - delta, 0, 0.15)
 	_is_active = false
 	
+	emit_signal("update_ammo_count", ammo_loaded, ammo_backup, AMMO_PER_MAG)
+	
 	if $AnimationPlayer.is_playing():
 		return
 	
@@ -24,9 +26,11 @@ func _physics_process(delta):
 		_is_active = true
 		if not raised:
 			$AnimationPlayer.play("Raise")
+			emit_signal("expose_ammo_count")
 	else:
 		if raised:
 			$AnimationPlayer.play_backwards("Raise")
+			emit_signal("hide_ammo_count")
 		
 	if _primary_pressed:
 		if not _secondary_pressed:
