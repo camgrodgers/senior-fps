@@ -18,10 +18,15 @@ func _ready() -> void:
 	
 	$HUD.camera = $CameraHolder
 	$HUD.player = self
-	$CameraHolder/Camera/WeaponHolder/SKS.connect(
+	var weapon: HitScanWeapon = $CameraHolder/Camera/WeaponHolder/SKS
+	weapon.connect(
 			"recoil",
 			self,
 			"_on_weapon_recoil")
+	weapon.connect("expose_ammo_count", $HUD, "_on_expose_ammo_count")
+	weapon.connect("hide_ammo_count", $HUD, "_on_hide_ammo_count")
+	weapon.connect("update_ammo_count", $HUD, "_on_update_ammo_count")
+	
 	
 	turn_factor = turn_speed / 10000.0
 	if (inverse_x):
@@ -30,6 +35,7 @@ func _ready() -> void:
 		inverse_y_factor = 1
 	
 	$Sound_Player.play_sound($Sound_Player.gun_cock)
+
 func _process(delta) -> void:
 	$Danger_Player.volume_db = -50 + PlayerStats.danger_level / 2
 	if not $Danger_Player.playing:
@@ -150,14 +156,12 @@ func _process_movement(delta: float) -> void:
 		if Input.is_action_just_pressed("crouch"):
 			if is_crouching:
 				$CameraHolder.translation.y += 0.7
-				$HUD.zoomOut()
 				$StandingCollisionShape.disabled = false
 				$CrouchingCollisionShape.disabled = true
 				$StandingHitboxes.monitorable = true
 				$CrouchingHitboxes.monitorable = false
 			else:
 				$CameraHolder.translation.y -= 0.7
-				$HUD.zoomIn()
 				$StandingCollisionShape.disabled = true
 				$CrouchingCollisionShape.disabled = false
 				$StandingHitboxes.monitorable = false
@@ -204,6 +208,7 @@ func _process_item_use(_delta: float) -> void:
 		else null)
 	var use_item_pressed: bool = Input.is_action_pressed("use_item")
 	var use_item_alt_pressed: bool = Input.is_action_pressed("use_item_alt")
+	var reload_pressed: bool = Input.is_action_pressed("reload")
 	var interact_pressed: bool = Input.is_action_just_pressed("interact")
 	var aiming: Basis = $CameraHolder.transform.basis
 	
@@ -218,7 +223,9 @@ func _process_item_use(_delta: float) -> void:
 	
 	if held_weapon != null:
 		held_weapon.set_ray(ray)
-		held_weapon.set_inputs(use_item_pressed, use_item_alt_pressed)
+		held_weapon.set_inputs(use_item_pressed,
+				use_item_alt_pressed,
+				reload_pressed)
 		
 		if held_weapon.is_active():
 			return
@@ -235,7 +242,11 @@ func _process_item_use(_delta: float) -> void:
 			return
 		
 		if obj.has_method("interact"):
-			obj.interact()
+			var loot = obj.interact()
+			if loot.empty(): 
+				return
+			held_weapon.ammo_backup += loot["SKS_ammo"]
+			
 		elif obj.has_method("pick_up"):
 			obj.get_parent().remove_child(obj)
 			$CameraHolder/Camera/ItemHolder.add_child(obj)
