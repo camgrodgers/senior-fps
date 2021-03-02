@@ -148,6 +148,7 @@ reload={
 3d_physics/layer_4="smoke"
 3d_physics/layer_5="penetrable"
 3d_physics/layer_6="navnodes"
+3d_physics/layer_7="interaction"
 
 [rendering]
 

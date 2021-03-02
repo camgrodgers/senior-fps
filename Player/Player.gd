@@ -156,14 +156,12 @@ func _process_movement(delta: float) -> void:
 		if Input.is_action_just_pressed("crouch"):
 			if is_crouching:
 				$CameraHolder.translation.y += 0.7
-				$HUD.zoomOut()
 				$StandingCollisionShape.disabled = false
 				$CrouchingCollisionShape.disabled = true
 				$StandingHitboxes.monitorable = true
 				$CrouchingHitboxes.monitorable = false
 			else:
 				$CameraHolder.translation.y -= 0.7
-				$HUD.zoomIn()
 				$StandingCollisionShape.disabled = true
 				$CrouchingCollisionShape.disabled = false
 				$StandingHitboxes.monitorable = false
@@ -244,7 +242,11 @@ func _process_item_use(_delta: float) -> void:
 			return
 		
 		if obj.has_method("interact"):
-			obj.interact()
+			var loot = obj.interact()
+			if loot.empty(): 
+				return
+			held_weapon.ammo_backup += loot["SKS_ammo"]
+			
 		elif obj.has_method("pick_up"):
 			obj.get_parent().remove_child(obj)
 			$CameraHolder/Camera/ItemHolder.add_child(obj)
