@@ -4,24 +4,14 @@ extends Node
 # Declare member variables here. Examples:
 # var a = 2
 # var b = "text"
-export var preconditions = {
-	"has_target" : true,
-	"in_cover": true,
-	"can_see_player": true
-	
-}
+export var priority = 1
+export var desired_state = {"has_target": false}
 
-var effects = {
-	"has_target" : false
-}
-
-export var cost = 1
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	pass # Replace with function body.
 
-func move_to(delta):
-	pass
+
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):
 #	pass

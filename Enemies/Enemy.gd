@@ -6,11 +6,11 @@ var ENEMY_SPEED: int = 6
 var nav: Navigation = null
 var target = null
 var player = null
-var patrolNodes: Array = []
-var coverNodes: Array = []
+export var patrolNodes: Array = []
+export var coverNodes: Array = []
 var path: Array = []
 
-var patrolNodeIndex = 1
+export var patrolNodeIndex = 1
 var currentNode = null
 
 # Relations to player
@@ -20,13 +20,17 @@ var player_danger: float = 0.0
 # TODO: is it possible to move this up the tree somehow?
 var last_player_position: Vector3 = Vector3(-1000, -1000, -1000)
 
-var world_state = {
+var world_state: Dictionary = {
 	"can_see_player" : false, 
 	"in_cover" : false,
-	"has_target" : false
+	"has_target" : false,
+	"patrolling" : true
 }
 
-##IDLE, MOVETO, PERORMACTION BELONG TO GOAP Logic
+var action_plan: Array
+var action_index: int = 0
+
+##IDLE, MOVETO, TAKEACTION BELONG TO GOAP Logic
 enum {
 	FIND,
 	HOLD,
@@ -36,14 +40,16 @@ enum {
 	SHOOT,
 	IDLE,
 	MOVE_TO,
-	PERFORM_ACTION
+	TAKE_ACTION
 }
 
-var state = PATROL
+var state = IDLE
+
 
 func _ready():
 	rng.randomize()
 	cover_timer_limit = rng.randf_range(1, 10)
+	$PatrolTimer.set_paused(true)
 
 # Updates the path variable to lead to a new destination
 func update_path(goal: Vector3) -> void:
@@ -156,9 +162,24 @@ var cover_timer = 0
 var cover_timer_limit = 3
 
 func _process(delta):
-	##TODO Choose Action
 	
-	##TODO Take Action
+	match state:
+		IDLE:
+			action_plan = $GOAP_Planner.plan_actions(world_state)
+			state = MOVE_TO
+		MOVE_TO:
+			var retval: Array = action_plan[action_index].move_to(self)
+			update_path(retval[0])
+			move_along_path(delta, retval[1])
+			if path.empty():
+				state = TAKE_ACTION
+		TAKE_ACTION:
+			if action_plan[action_index].take_action(self):
+				action_index = action_index + 1
+			if action_index > action_plan.size() - 1:
+				action_index = 0
+				state = IDLE
+	
 	
 	
 	pass

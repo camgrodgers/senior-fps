@@ -4,13 +4,9 @@ extends Node
 # Declare member variables here. Examples:
 # var a = 2
 # var b = "text"
-export var preconditions = {
-	"has_target" : false,
-}
+export var priority = 2
+export var desired_state = {"patrolling": false}
 
-export var effects = {}
-
-export var cost = 1
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	pass # Replace with function body.

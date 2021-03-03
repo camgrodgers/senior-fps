@@ -33,8 +33,6 @@ class PlannerNode:
 		self.final_cost = given_cost + heuristic_cost
 		self.edge = edge
 
-var start: Graph_Node = null
-var goal: Graph_Node = null
 var visited: Dictionary = {}
 
 # Called when the node enters the scene tree for the first time.
@@ -61,7 +59,17 @@ func _ready():
 #	print("goal reached!")
 #	for a in get_children():
 #		actions.add_child(a)
-	
+
+func get_goal_node(current_state: Dictionary) -> Node:
+	var priority_goal: Node = null
+	for goal in $Goals.get_children():
+		if priority_goal == null:
+			if not compare_states(current_state, goal.desired_state):
+				priority_goal = goal
+				continue
+		elif not compare_states(current_state, priority_goal.desired_state) and priority_goal.priority > goal.priority:
+			priority_goal = goal
+	return priority_goal
 	
 func estimate_cost(current_state: Dictionary, desired_state: Dictionary):
 	var hcost: int = 0
@@ -76,7 +84,14 @@ func estimate_cost(current_state: Dictionary, desired_state: Dictionary):
 ##Returning first child as placeholder
 ##Use A* to go through search graph
 ##Get a list of actions to follow
-func plan_actions(current_state: Dictionary, desired_state: Dictionary):
+func plan_actions(current_state: Dictionary):
+	
+	var priority_goal: Node = get_goal_node(current_state)
+	var desired_state: Dictionary = priority_goal.desired_state
+	var start: Graph_Node = generate_graph(current_state, desired_state)
+	if start == null:
+		##No actions needed, should not happen
+		return
 	
 	$PriorityQueue._init()
 	$PriorityQueue.insert(PlannerNode.new(start, null, 0, estimate_cost(start.state, desired_state), null))
@@ -85,10 +100,10 @@ func plan_actions(current_state: Dictionary, desired_state: Dictionary):
 	while !$PriorityQueue.empty():
 		var current_node = $PriorityQueue.delMin()
 		
-		if check_if_desired(current_node.vertex.state, desired_state):
+		if compare_states(current_node.vertex.state, desired_state):
 			###solved!!!
-			goal = current_node.vertex
-			return true;
+			var goal: Graph_Node = current_node.vertex
+			return get_solution(goal);
 		
 		for edge in current_node.vertex.edges:
 			var newCost = current_node.given_cost + edge.cost
@@ -109,7 +124,7 @@ func plan_actions(current_state: Dictionary, desired_state: Dictionary):
 	##what should be returned if no solution found?
 	return
 
-func check_if_desired(current_state: Dictionary, desired_state: Dictionary) -> bool:
+func compare_states(current_state: Dictionary, desired_state: Dictionary) -> bool:
 	for key in desired_state.keys():
 		if current_state.has(key):
 			if desired_state[key] != current_state[key]:
@@ -124,22 +139,22 @@ func check_if_desired(current_state: Dictionary, desired_state: Dictionary) -> b
 ##Put adjacents in queue to visit later
 ##When pulled off of queue, check if state satisfies desired
 ##Return the starting node
-func generate_graph(current_state: Dictionary, desired_state: Dictionary):
+func generate_graph(current_state: Dictionary, desired_state: Dictionary) -> Graph_Node:
 	##Check if a graph even needs to be generated
 	##Probably not necessary...
-	if check_if_desired(current_state, desired_state):
-		return
+	if compare_states(current_state, desired_state):
+		return null
 	
 	var solution_count: int = 0
 	var queue: Array = []
 	var state_in_graph: Dictionary = {}
-	start = Graph_Node.new(current_state.duplicate(true))
+	var start : Graph_Node = Graph_Node.new(current_state.duplicate(true))
 	state_in_graph[start.state.hash()] = start
 	queue.push_back(start)
 	
 	while(!queue.empty() and solution_count < 5):
 		var current:Graph_Node = queue.pop_front()
-		if check_if_desired(current.state, desired_state):
+		if compare_states(current.state, desired_state):
 			solution_count += 1
 			continue
 		get_adjacents(current, state_in_graph)
@@ -173,3 +188,12 @@ func get_adjacents(node: Graph_Node, state_in_graph: Dictionary):
 			else:
 				state_in_graph[new_state.hash()] = Graph_Node.new(new_state)
 				node.edges.append(Edge.new(action, state_in_graph[new_state.hash()], action.cost))
+
+func get_solution(goal: Graph_Node) -> Array:
+	var traceback:Graph_Node = goal
+	var solution: Array = []
+	while(traceback != null and visited[traceback].edge != null):
+		solution.push_front(visited[traceback].edge.action)
+		traceback = visited[traceback].parent
+	
+	return solution

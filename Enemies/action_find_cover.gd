@@ -4,15 +4,13 @@ extends Node
 # Declare member variables here. Examples:
 # var a = 2
 # var b = "text"
+
 export var preconditions = {
-	"has_target" : true,
-	"in_cover": true,
-	"can_see_player": true
-	
+	"in_cover": false,
 }
 
 var effects = {
-	"has_target" : false
+	"in_cover" : true
 }
 
 export var cost = 1
@@ -20,8 +18,7 @@ export var cost = 1
 func _ready():
 	pass # Replace with function body.
 
-func move_to(delta):
-	pass
+
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):
 #	pass
