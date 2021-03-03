@@ -188,11 +188,14 @@ func _process_movement(delta: float) -> void:
 	vel.x = hvel.x
 	vel.z = hvel.z
 	
+	if vel.abs().length() < 0.01:
+		return
+	
 	var snap = Vector3.DOWN if is_on_floor() and vel.y == 0 else Vector3.ZERO
 	move_and_slide_with_snap(vel,
 		snap,
 		Vector3(0, 1, 0), # up direction
-		false, # stop on slope
+		true, # stop on slope. this only partially works.
 		4, # max slides
 		deg2rad(MAX_SLOPE_ANGLE))
 	
