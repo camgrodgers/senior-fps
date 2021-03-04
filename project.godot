@@ -9,20 +9,35 @@
 config_version=4
 
 _global_script_classes=[ {
+"base": "HitScanWeapon",
+"class": "AK47",
+"language": "GDScript",
+"path": "res://Equippables/AK47.gd"
+}, {
+"base": "Control",
+"class": "AnimatedCrosshair",
+"language": "GDScript",
+"path": "res://Player/AnimatedCrosshair.gd"
+}, {
 "base": "KinematicBody",
 "class": "Enemy",
 "language": "GDScript",
 "path": "res://Enemies/Enemy.gd"
 }, {
+"base": "Spatial",
+"class": "HitScanWeapon",
+"language": "GDScript",
+"path": "res://Equippables/HitScanWeapon.gd"
+}, {
 "base": "Navigation",
 "class": "Level",
 "language": "GDScript",
-"path": "res://Levels/TestLevel.gd"
+"path": "res://Levels/Level.gd"
 }, {
 "base": "CSGSphere",
 "class": "PatrolNode",
 "language": "GDScript",
-"path": "res://Enemies/PatrolNode.gd"
+"path": "res://LevelObjects/PatrolNode.gd"
 }, {
 "base": "KinematicBody",
 "class": "Player",
@@ -30,7 +45,10 @@ _global_script_classes=[ {
 "path": "res://Player/Player.gd"
 } ]
 _global_script_class_icons={
+"AK47": "",
+"AnimatedCrosshair": "",
 "Enemy": "",
+"HitScanWeapon": "",
 "Level": "",
 "PatrolNode": "",
 "Player": ""
@@ -116,6 +134,11 @@ flymode={
 "events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":88,"unicode":0,"echo":false,"script":null)
  ]
 }
+reload={
+"deadzone": 0.5,
+"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":82,"unicode":0,"echo":false,"script":null)
+ ]
+}
 
 [layer_names]
 
@@ -125,6 +148,7 @@ flymode={
 3d_physics/layer_4="smoke"
 3d_physics/layer_5="penetrable"
 3d_physics/layer_6="navnodes"
+3d_physics/layer_7="interaction"
 
 [rendering]
 

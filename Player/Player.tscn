@@ -1,9 +1,9 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://Player/Player.gd" type="Script" id=1]
 [ext_resource path="res://Player/HUD.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Player/PlayerStats.gd" type="Script" id=3]
-[ext_resource path="res://Equippables/TestGun.tscn" type="PackedScene" id=4]
+[ext_resource path="res://Equippables/AK47.tscn" type="PackedScene" id=4]
 [ext_resource path="res://Player/Sound_Player.gd" type="Script" id=5]
 [ext_resource path="res://Sounds/Shell_Shocked.wav" type="AudioStream" id=6]
 [ext_resource path="res://Sounds/Footsteps.wav" type="AudioStream" id=7]
@@ -21,6 +21,15 @@ extents = Vector3( 0.25, 0.25, 0.25 )
 
 [sub_resource type="BoxShape" id=4]
 extents = Vector3( 0.4, 0.579111, 0.4 )
+
+[sub_resource type="SpatialMaterial" id=5]
+flags_transparent = true
+flags_unshaded = true
+flags_no_depth_test = true
+flags_fixed_size = true
+flags_do_not_receive_shadows = true
+flags_disable_ambient_light = true
+albedo_color = Color( 0.984314, 0, 0, 0.784314 )
 
 [node name="Player" type="KinematicBody" groups=[
 "player",
@@ -76,27 +85,21 @@ far = 1000.0
 [node name="RayCast" type="RayCast" parent="CameraHolder/Camera"]
 enabled = true
 cast_to = Vector3( 0, 0, -1000 )
-collision_mask = 5
+collision_mask = 69
 collide_with_areas = true
 
 [node name="WeaponHolder" type="Spatial" parent="CameraHolder/Camera"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.438983, -0.238201, -0.790554 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.27342, -0.130831, -0.361414 )
 
-[node name="TestGun" parent="CameraHolder/Camera/WeaponHolder" instance=ExtResource( 4 )]
+[node name="AK47" parent="CameraHolder/Camera/WeaponHolder" instance=ExtResource( 4 )]
 
 [node name="ItemHolder" type="Spatial" parent="CameraHolder/Camera"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.632482, -2.1756 )
 
-[node name="Hitboxes" type="Area" parent="."]
-collision_layer = 0
-
-[node name="Head" type="CollisionShape" parent="Hitboxes"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.00905, 0 )
-shape = SubResource( 3 )
-
-[node name="Body" type="CollisionShape" parent="Hitboxes"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.695323, 0 )
-shape = SubResource( 4 )
+[node name="LaserPoint" type="CSGSphere" parent="CameraHolder"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.95931 )
+radius = 0.005
+material = SubResource( 5 )
 
 [node name="Sound_Player" type="Spatial" parent="."]
 script = ExtResource( 5 )

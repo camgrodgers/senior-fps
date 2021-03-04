@@ -1,8 +1,8 @@
 tool
 extends Spatial
 
-var occupied: bool = false
-export(bool) var loop = true
+export(bool) var loop: bool = true
+
 
 func _ready():
 	if Engine.editor_hint:
@@ -11,9 +11,18 @@ func _ready():
 func _process(delta):
 	if Engine.editor_hint:
 		tool_process(delta)
+	else:
+		game_process(delta)
+
+var occupied: bool = false
+
+func game_process(delta: float) -> void:
+	pass
+
+
 
 # Editor tool code
-var loop_last_value: bool = loop
+var loop_last_value: bool = true
 func tool_process(delta: float) -> void:
 	if children_count < get_child_count():
 		connect_child_moved_signal()
@@ -32,6 +41,7 @@ func tool_ready():
 	draw_lines()
 	children_count = get_child_count()
 	connect_child_moved_signal()
+	loop_last_value = loop
 
 func connect_child_moved_signal():
 	for c in get_children():

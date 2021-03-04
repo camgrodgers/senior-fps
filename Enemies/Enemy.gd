@@ -4,13 +4,10 @@ class_name Enemy
 var ENEMY_SPEED: int = 6
 
 var nav: Navigation = null
-var target = null
 var player = null
 var patrolNodes: Array = []
 var coverNodes: Array = []
 var path: Array = []
-var last_valid_path_of_target: Array = []
-var last_valid_coordinate
 
 var patrolNodeIndex = 1
 var currentNode = null
@@ -21,6 +18,8 @@ var TestNodeIndex = 0
 var player_distance: float = 0.0
 var can_see_player: bool = false
 var player_danger: float = 0.0
+# TODO: is it possible to move this up the tree somehow?
+var last_player_position: Vector3 = Vector3(-1000, -1000, -1000)
 
 enum {
 	FIND,
@@ -102,7 +101,6 @@ func check_vision() -> bool:
 		return false
 	
 	can_see_player = cast_to_player_hitboxes()
-#			target = collider
 	return can_see_player
 
 # If it returns true, a raycast can hit the player's hitboxes
@@ -133,8 +131,9 @@ func aim_at_player(_delta):
 	can_see_player = cast_to_player_hitboxes()
 	if not can_see_player: return
 	player_distance = player.translation.distance_to(translation)
-		# Could change this to relative velocity later?
-	# TODO: find out why player velocity is >0 when standing still
+	last_player_position = player.translation
+	# TODO: Could be changed to work in an area radius
+	get_tree().call_group("enemies", "update_last_player_position", last_player_position)
 #	target_speed = target.vel.abs().length()
 	
 	look_at(player.translation, Vector3(0,1,0))
@@ -235,11 +234,11 @@ func clear_node_data() -> void:
 		currentNode.occupied_by = null
 
 # Respond to player attacks
-var HP: int = 2
+var HP: float = 2.0
 
-func take_damage() -> void:
+func take_damage(damage: float) -> void:
 	alert_comrades()
-	HP -= 1
+	HP -= damage
 	if HP > 0:
 		$CSGCombiner/CSGCylinder.visible = false
 		$CSGCombiner/CSGCylinder2.visible = true
@@ -259,3 +258,6 @@ func alert_comrades() -> void:
 func alert_to_player() -> void:
 	if state == PATROL:
 		state = TAKE_COVER
+
+func update_last_player_position(position: Vector3) -> void:
+	last_player_position = position
