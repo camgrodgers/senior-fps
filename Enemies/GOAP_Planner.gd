@@ -34,6 +34,7 @@ class PlannerNode:
 		self.edge = edge
 
 var visited: Dictionary = {}
+var current_goal : Node = null
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -71,6 +72,22 @@ func get_goal_node(current_state: Dictionary) -> Node:
 			priority_goal = goal
 	return priority_goal
 	
+
+func check_current_goal(current_state: Dictionary) -> bool:
+	if current_goal == null or compare_states(current_state, current_goal.desired_state):
+		return true
+	var priority_goal: Node = null
+	for goal in $Goals.get_children():
+		if priority_goal == null:
+			if not compare_states(current_state, goal.desired_state):
+				priority_goal = goal
+				continue
+		elif not compare_states(current_state, priority_goal.desired_state) and priority_goal.priority > goal.priority:
+			priority_goal = goal
+	if current_goal == priority_goal:
+		return true
+	return false
+
 func estimate_cost(current_state: Dictionary, desired_state: Dictionary):
 	var hcost: int = 0
 	for key in desired_state.keys():
@@ -86,12 +103,12 @@ func estimate_cost(current_state: Dictionary, desired_state: Dictionary):
 ##Get a list of actions to follow
 func plan_actions(current_state: Dictionary):
 	
-	var priority_goal: Node = get_goal_node(current_state)
-	var desired_state: Dictionary = priority_goal.desired_state
+	current_goal = get_goal_node(current_state)
+	var desired_state: Dictionary = current_goal.desired_state
 	var start: Graph_Node = generate_graph(current_state, desired_state)
 	if start == null:
 		##No actions needed, should not happen
-		return
+		return []
 	
 	$PriorityQueue._init()
 	$PriorityQueue.insert(PlannerNode.new(start, null, 0, estimate_cost(start.state, desired_state), null))
@@ -122,7 +139,7 @@ func plan_actions(current_state: Dictionary):
 					$PriorityQueue.insert_or_resort(visited[successor])
 	
 	##what should be returned if no solution found?
-	return
+	return []
 
 func compare_states(current_state: Dictionary, desired_state: Dictionary) -> bool:
 	for key in desired_state.keys():

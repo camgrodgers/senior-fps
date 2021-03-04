@@ -106,11 +106,6 @@ script = ExtResource( 7 )
 
 [node name="action_shoot" type="Node" parent="GOAP_Planner/Actions"]
 script = ExtResource( 4 )
-preconditions = {
-"can_see_player": true,
-"has_target": true,
-"in_cover": true
-}
 
 [node name="action_find_cover" type="Node" parent="GOAP_Planner/Actions"]
 script = ExtResource( 5 )
@@ -125,3 +120,7 @@ script = ExtResource( 8 )
 
 [node name="goal_patrol" type="Node" parent="GOAP_Planner/Goals"]
 script = ExtResource( 9 )
+
+[node name="ReplanTimer" type="Timer" parent="."]
+wait_time = 1.5
+one_shot = true

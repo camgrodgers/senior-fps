@@ -4,8 +4,8 @@ extends Node
 # Declare member variables here. Examples:
 # var a = 2
 # var b = "text"
-export var priority = 2
-export var desired_state = {"patrolling": false}
+var priority = 2
+var desired_state = {"patrolling": false}
 
 # Called when the node enters the scene tree for the first time.
 func _ready():

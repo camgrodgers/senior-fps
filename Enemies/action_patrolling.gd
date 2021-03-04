@@ -6,19 +6,31 @@ var preconditions = {
 var effects = {
 	"patrolling" : false,
 }
-export var cost = 1
-# Called when the node enters the scene tree for the first time.
-func _ready():
-	pass # Replace with function body.
+var cost = 1
+
+var path_updated = false
 
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta):
-#	pass
-func move_to(enemy: KinematicBody) -> Array:
-	return [enemy.patrolNodes[enemy.patrolNodeIndex].translation, true]
+func move_to(enemy: KinematicBody, delta: float):
+	
+	if not path_updated:
+		enemy.update_path(enemy.patrolNodes[enemy.patrolNodeIndex].translation)
+		path_updated = true
+	enemy.move_along_path(delta, true)
+	enemy.check_vision()
+	if enemy.world_state["can_see_player"]:
+		enemy.world_state["patrolling"] = false
+		enemy.alert_comrades()
+		path_updated = false
+		enemy.replan_actions()
+	if enemy.path.empty() :
+		path_updated = false
+		enemy.ready_for_action()
+		return true
+	
+	return false
 
-func take_action(enemy: KinematicBody) -> bool:
+func take_action(enemy: KinematicBody, delta: float):
 	
 	if enemy.get_node("PatrolTimer").is_paused():
 		enemy.get_node("PatrolTimer").set_paused(false)
@@ -32,4 +44,4 @@ func take_action(enemy: KinematicBody) -> bool:
 			enemy.patrolNodeIndex += 1
 		enemy.get_node("PatrolTimer").start()
 		enemy.get_node("PatrolTimer").set_paused(true)
-	return true
+	enemy.go_to_next_action()

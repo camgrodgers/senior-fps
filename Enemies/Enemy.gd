@@ -113,9 +113,13 @@ func check_vision() -> bool:
 	var collisions = $VisionCone.get_overlapping_areas()
 	if collisions.empty():
 		can_see_player = false
+		world_state["can_see_player"] = false
 		return false
 	
 	can_see_player = cast_to_player_hitboxes()
+	world_state["can_see_player"] = can_see_player
+	if not world_state["has_target"]:
+		world_state["has_target"] = can_see_player
 #			target = collider
 	return can_see_player
 
@@ -138,8 +142,6 @@ func cast_to_player_hitboxes() -> bool:
 		var collider = body_ray.collider
 #		print(collider)
 		if collider == player:
-			world_state["can_see_player"] = true
-			world_state["has_target"] = true
 			return true
 			
 	return false
@@ -161,28 +163,42 @@ var rng = RandomNumberGenerator.new()
 var cover_timer = 0
 var cover_timer_limit = 3
 
+func check_goal() -> bool:
+	return $GOAP_Planner.check_current_goal()
+
+func replan_actions():
+	state = IDLE
+
+func ready_for_action():
+	state = TAKE_ACTION
+
+func go_to_next_action():
+	action_index = action_index + 1
+	state = MOVE_TO
+	if action_index > action_plan.size() - 1:
+		action_index = 0
+		state = IDLE
+
 func _process(delta):
+	
+	if state != IDLE and ($ReplanTimer.get_time_left() == 0 or not $GOAP_Planner.check_current_goal(world_state)):
+		state = IDLE
+		action_index = 0
+		rng.randomize()
+		$ReplanTimer.set_wait_time(rng.randf_range(0.6, 1.5))
+		$ReplanTimer.start()
 	
 	match state:
 		IDLE:
 			action_plan = $GOAP_Planner.plan_actions(world_state)
+			action_index = 0
 			state = MOVE_TO
 		MOVE_TO:
-			var retval: Array = action_plan[action_index].move_to(self)
-			update_path(retval[0])
-			move_along_path(delta, retval[1])
-			if path.empty():
-				state = TAKE_ACTION
+			action_plan[action_index].move_to(self, delta)
 		TAKE_ACTION:
-			if action_plan[action_index].take_action(self):
-				action_index = action_index + 1
-			if action_index > action_plan.size() - 1:
-				action_index = 0
-				state = IDLE
+			action_plan[action_index].take_action(self, delta)
 	
-	
-	
-	pass
+	return
 #	match state:
 #		FIND:
 #			if can_see_player:
@@ -296,9 +312,8 @@ func alert_comrades() -> void:
 	get_tree().call_group("enemies", "alert_to_player")
 	
 func alert_to_player() -> void:
-	if state == PATROL:
-		state = TAKE_COVER
 	world_state["has_target"] = true
+	world_state["patrolling"] = false
 
 func update_last_player_position(position: Vector3) -> void:
 	last_player_position = position
