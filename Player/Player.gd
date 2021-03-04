@@ -6,6 +6,7 @@ onready var PlayerStats: Node = $PlayerStats
 var is_dead: bool = false
 var debug: bool = false
 var devmode: bool = false
+var slowMo: bool = false
 
 var playerAltLevel = 1
 
@@ -93,6 +94,12 @@ func fly(delta: float) -> void:
 	if Input.is_action_pressed("move_left"):
 		direction -= aiming[0]
 	
+	if Input.is_action_pressed("slowmo"):
+		if(slowMo):
+			Engine.time_scale *= 2
+		else:
+			Engine.time_scale *= 0.5
+		slowMo = !slowMo
 
 	direction = direction.normalized()
 	
@@ -121,8 +128,22 @@ func process_movement(delta: float) -> void:
 	if Input.is_action_pressed("move_right"):
 		direction += aiming[0]
 	if Input.is_action_pressed("move_left"):
+<<<<<<< Updated upstream
 		direction -= aiming[0]
 	
+=======
+		direction -= aiming.x
+		
+	if Input.is_action_pressed("slowmo"):
+		if(slowMo):
+			Engine.time_scale *= 2
+		else:
+			Engine.time_scale *= 0.5
+		slowMo = !slowMo
+	
+
+	direction.y = 0
+>>>>>>> Stashed changes
 	direction = direction.normalized()
 	var hvel: Vector3 = vel
 	hvel.y = 0
@@ -169,6 +190,7 @@ func process_movement(delta: float) -> void:
 	hvel = hvel.linear_interpolate(target, accel * delta)
 	vel.x = hvel.x
 	vel.z = hvel.z
+	
 	
 	var snap = Vector3.DOWN if is_on_floor() and vel.y == 0 else Vector3.ZERO
 	move_and_slide_with_snap(vel, snap, Vector3(0, 1, 0), 0.05, 4, deg2rad(MAX_SLOPE_ANGLE))
