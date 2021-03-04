@@ -128,10 +128,7 @@ func process_movement(delta: float) -> void:
 	if Input.is_action_pressed("move_right"):
 		direction += aiming[0]
 	if Input.is_action_pressed("move_left"):
-<<<<<<< Updated upstream
 		direction -= aiming[0]
-	
-=======
 		direction -= aiming.x
 		
 	if Input.is_action_pressed("slowmo"):
@@ -143,7 +140,7 @@ func process_movement(delta: float) -> void:
 	
 
 	direction.y = 0
->>>>>>> Stashed changes
+
 	direction = direction.normalized()
 	var hvel: Vector3 = vel
 	hvel.y = 0
