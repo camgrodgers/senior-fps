@@ -1,5 +1,5 @@
 extends HitScanWeapon
-class_name SKS
+class_name AK47
 
 
 func _ready():

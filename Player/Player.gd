@@ -18,7 +18,7 @@ func _ready() -> void:
 	
 	$HUD.camera = $CameraHolder
 	$HUD.player = self
-	var weapon: HitScanWeapon = $CameraHolder/Camera/WeaponHolder/SKS
+	var weapon: HitScanWeapon = $CameraHolder/Camera/WeaponHolder/AK47
 	weapon.connect(
 			"recoil",
 			self,
