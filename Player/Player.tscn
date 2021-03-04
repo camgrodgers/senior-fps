@@ -3,7 +3,7 @@
 [ext_resource path="res://Player/Player.gd" type="Script" id=1]
 [ext_resource path="res://Player/HUD.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Player/PlayerStats.gd" type="Script" id=3]
-[ext_resource path="res://Equippables/SKS.tscn" type="PackedScene" id=4]
+[ext_resource path="res://Equippables/AK47.tscn" type="PackedScene" id=4]
 [ext_resource path="res://Player/Sound_Player.gd" type="Script" id=5]
 [ext_resource path="res://Sounds/Shell_Shocked.wav" type="AudioStream" id=6]
 [ext_resource path="res://Sounds/Footsteps.wav" type="AudioStream" id=7]
@@ -89,9 +89,9 @@ collision_mask = 69
 collide_with_areas = true
 
 [node name="WeaponHolder" type="Spatial" parent="CameraHolder/Camera"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.438983, -0.238201, -0.790554 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.27342, -0.130831, -0.361414 )
 
-[node name="SKS" parent="CameraHolder/Camera/WeaponHolder" instance=ExtResource( 4 )]
+[node name="AK47" parent="CameraHolder/Camera/WeaponHolder" instance=ExtResource( 4 )]
 
 [node name="ItemHolder" type="Spatial" parent="CameraHolder/Camera"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.632482, -2.1756 )
