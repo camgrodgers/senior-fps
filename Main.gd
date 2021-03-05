@@ -2,10 +2,6 @@ extends Node
 
 var current_level: Navigation = null
 
-func _process(delta):
-	get_tree().paused = true
-	if Input.is_action_just_pressed("escape"):
-		pass
 
 
 func load_level(filename: String):
@@ -14,7 +10,7 @@ func load_level(filename: String):
 	var current_level_scn: Resource = load(filename)
 	current_level = current_level_scn.instance()
 	add_child(current_level)
-	$Menu.visible = false
+	$LevelSelectMenu.visible = false
 
 func _on_Button3_pressed():
 	load_level("res://Levels/TestLevel/TestLevel.tscn")

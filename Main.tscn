@@ -1,12 +1,14 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://Main.gd" type="Script" id=1]
+[ext_resource path="res://Menu/Menu.tscn" type="PackedScene" id=2]
 
 [node name="Main" type="Node"]
-pause_mode = 2
 script = ExtResource( 1 )
 
-[node name="Menu" type="Control" parent="."]
+[node name="Menu" parent="." instance=ExtResource( 2 )]
+
+[node name="LevelSelectMenu" type="Control" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_right = 40.0
@@ -15,13 +17,13 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Menu"]
+[node name="VBoxContainer" type="VBoxContainer" parent="LevelSelectMenu"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_right = 40.0
 margin_bottom = 40.0
 
-[node name="Button" type="Button" parent="Menu/VBoxContainer"]
+[node name="Button" type="Button" parent="LevelSelectMenu/VBoxContainer"]
 margin_right = 1360.0
 margin_bottom = 20.0
 text = "Jacob's Level"
@@ -29,7 +31,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Button2" type="Button" parent="Menu/VBoxContainer"]
+[node name="Button2" type="Button" parent="LevelSelectMenu/VBoxContainer"]
 margin_top = 24.0
 margin_right = 1360.0
 margin_bottom = 44.0
@@ -38,7 +40,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Button3" type="Button" parent="Menu/VBoxContainer"]
+[node name="Button3" type="Button" parent="LevelSelectMenu/VBoxContainer"]
 margin_top = 48.0
 margin_right = 1360.0
 margin_bottom = 68.0
@@ -46,6 +48,6 @@ text = "Test Level"
 __meta__ = {
 "_edit_use_anchors_": false
 }
-[connection signal="pressed" from="Menu/VBoxContainer/Button" to="." method="_on_Button_pressed"]
-[connection signal="pressed" from="Menu/VBoxContainer/Button2" to="." method="_on_Button2_pressed"]
-[connection signal="pressed" from="Menu/VBoxContainer/Button3" to="." method="_on_Button3_pressed"]
+[connection signal="pressed" from="LevelSelectMenu/VBoxContainer/Button" to="." method="_on_Button_pressed"]
+[connection signal="pressed" from="LevelSelectMenu/VBoxContainer/Button2" to="." method="_on_Button2_pressed"]
+[connection signal="pressed" from="LevelSelectMenu/VBoxContainer/Button3" to="." method="_on_Button3_pressed"]

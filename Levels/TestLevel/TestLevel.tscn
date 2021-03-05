@@ -171,7 +171,7 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -15.8064, 2.34, 18.1824 )
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -17.0098, 2.34, -36.2199 )
 
 [node name="PatrolNode3" parent="PatrolRoutes/PatrolRoute1" instance=ExtResource( 11 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.640676, 2.34, -37.2227 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.640677, 2.34, -37.2227 )
 
 [node name="PatrolRoute2" parent="PatrolRoutes" instance=ExtResource( 7 )]
 loop = false
