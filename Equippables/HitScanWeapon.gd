@@ -2,9 +2,8 @@ extends Spatial
 class_name HitScanWeapon
 
 signal recoil(force)
-signal expose_ammo_count()
+signal expose_ammo_count(loaded, backup, per_mag)
 signal hide_ammo_count()
-signal update_ammo_count(loaded, backup, per_mag)
 
 var _is_active: bool = false
 var _ray: RayCast
@@ -17,6 +16,7 @@ export var chambering: float = 0.0
 var ammo_loaded: int
 var ammo_backup: int
 var AMMO_PER_MAG: int
+export var enabled: bool = false
 
 func set_ray(ray: RayCast) -> void:
 	_ray = ray

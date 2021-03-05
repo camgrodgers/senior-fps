@@ -67,14 +67,11 @@ func update_enemy_distance_indicator():
 		label.margin_top = offset.z
 		label.text = "%3.1fm" % e.player_distance
 
-func _on_expose_ammo_count():
+func _on_expose_ammo_count(loaded: int, backup: int, per_mag: int) -> void:
+	$AmmoPanel/AmmoLabel.text = (
+		"(%d / %d)   %d" % [loaded, per_mag, backup]
+	)
 	$AmmoPanel.visible = true
 
 func _on_hide_ammo_count():
 	$AmmoPanel.visible = false
-
-func _on_update_ammo_count(loaded: int, backup: int, per_mag: int) -> void:
-	$AmmoPanel/AmmoLabel.text = (
-		"(%d / %d)   %d" % [loaded, per_mag, backup]
-	)
-

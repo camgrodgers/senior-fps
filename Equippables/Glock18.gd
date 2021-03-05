@@ -1,16 +1,16 @@
 extends HitScanWeapon
-class_name AK47
+class_name Glock18
 
 
 func _ready():
-	ammo_loaded = 20
-	AMMO_PER_MAG = 20
+	ammo_loaded = 15
+	AMMO_PER_MAG = 15
 	ammo_backup = 100
 	$AnimationPlayer.play_backwards("Raise")
 	
 
 func _physics_process(delta):
-	chambering = clamp(chambering - delta, 0, 0.15)
+	chambering = clamp(chambering - delta, 0, 0.3)
 	_is_active = false
 	
 	if $AnimationPlayer.is_playing():
@@ -40,9 +40,9 @@ func _physics_process(delta):
 		$AnimationPlayer.play("Fire")
 		_spend_round()
 		emit_signal("expose_ammo_count", ammo_loaded, ammo_backup, AMMO_PER_MAG)
-		chambering = 0.15
+		chambering = 0.3
 		_fire_ray(1, 1)
-		emit_signal("recoil", 4)
+		emit_signal("recoil", 8)
 
 func unequip():
 	self.queue_free()

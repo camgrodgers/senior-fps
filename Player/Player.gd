@@ -4,29 +4,27 @@ class_name Player
 onready var PlayerStats: Node = $PlayerStats
 
 var is_dead: bool = false
-var debug: bool = false
-var devmode: bool = false
-
-var playerAltLevel = 1
+var invincibility: bool = false
+var flying: bool = false
 
 onready var ray = $CameraHolder/Camera/RayCast
 onready	var weapon_holder = $CameraHolder/Camera/WeaponHolder
 onready var item_holder = $CameraHolder/Camera/ItemHolder
+var held_weapon: HitScanWeapon = null
+
 
 func _ready() -> void:
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	
 	$HUD.camera = $CameraHolder
 	$HUD.player = self
-	var weapon: HitScanWeapon = $CameraHolder/Camera/WeaponHolder/AK47
-	weapon.connect(
-			"recoil",
-			self,
-			"_on_weapon_recoil")
-	weapon.connect("expose_ammo_count", $HUD, "_on_expose_ammo_count")
-	weapon.connect("hide_ammo_count", $HUD, "_on_hide_ammo_count")
-	weapon.connect("update_ammo_count", $HUD, "_on_update_ammo_count")
-	
+	for weapon in weapon_holder.get_children():
+		weapon.connect("recoil", self, "_on_weapon_recoil")
+		weapon.connect("expose_ammo_count", $HUD, "_on_expose_ammo_count")
+		weapon.connect("hide_ammo_count", $HUD, "_on_hide_ammo_count")
+		weapon.set_ray(ray)
+		_unequip_weapon(weapon)
+	_equip_weapon(weapon_holder.get_node("Glock18"))
 	
 	turn_factor = turn_speed / 10000.0
 	if (inverse_x):
@@ -50,9 +48,9 @@ func _process(delta) -> void:
 
 func _physics_process(delta) -> void:
 	if Input.is_action_just_pressed("flymode"):
-		devmode = !devmode
+		flying = !flying
 		
-	if PlayerStats.danger_level >= 100 && !debug:
+	if PlayerStats.danger_level >= 100 && !invincibility:
 		is_dead = true
 		$HUD.player_dead_message()
 		$Danger_Player.stop()
@@ -63,7 +61,7 @@ func _physics_process(delta) -> void:
 		return
 	
 	# Movement
-	if(devmode):
+	if(flying):
 		_fly(delta)
 	else:
 		_process_movement(delta)
@@ -75,7 +73,7 @@ func _physics_process(delta) -> void:
 	_process_recoil(delta)
 	
 	if Input.is_action_just_pressed("debug"):
-		debug = !debug
+		invincibility = !invincibility
 
 # Movement
 const GRAVITY: float = -40.0
@@ -203,9 +201,18 @@ func _process_movement(delta: float) -> void:
 # Weapons/item use
 func _process_item_use(_delta: float) -> void:
 	# Using items/weapons
-	var held_weapon: HitScanWeapon = (
-		weapon_holder.get_child(0) if weapon_holder.get_child_count() > 0
-		else null)
+	var items_in_slots = weapon_holder.get_children()
+	if Input.is_action_pressed("slot0"):
+		if items_in_slots[0] != null: _switch_to_weapon(items_in_slots[0])
+	if Input.is_action_pressed("slot1"):
+		if items_in_slots[1] != null: _switch_to_weapon(items_in_slots[1])
+	if Input.is_action_pressed("slot2"):
+		if items_in_slots[2] != null: _switch_to_weapon(items_in_slots[2])
+	if Input.is_action_pressed("slot3"):
+		if items_in_slots[3] != null: _switch_to_weapon(items_in_slots[3])
+	if Input.is_action_pressed("slot4"):
+		if items_in_slots[4] != null: _switch_to_weapon(items_in_slots[4])
+	
 	var held_item = (
 		item_holder.get_child(0) if item_holder.get_child_count() > 0
 		else null)
@@ -225,7 +232,6 @@ func _process_item_use(_delta: float) -> void:
 		return
 	
 	if held_weapon != null:
-		held_weapon.set_ray(ray)
 		held_weapon.set_inputs(use_item_pressed,
 				use_item_alt_pressed,
 				reload_pressed)
@@ -246,7 +252,7 @@ func _process_item_use(_delta: float) -> void:
 		
 		if obj.has_method("interact"):
 			var loot = obj.interact()
-			if loot.empty(): 
+			if loot == null or loot.empty(): 
 				return
 			held_weapon.ammo_backup += loot["SKS_ammo"]
 			
@@ -255,7 +261,25 @@ func _process_item_use(_delta: float) -> void:
 			$CameraHolder/Camera/ItemHolder.add_child(obj)
 			obj.pick_up()
 
+func _equip_weapon(weapon: HitScanWeapon) -> void:
+	if not weapon.enabled:
+		return
+	weapon.visible = true
+	weapon.set_physics_process(true)
+	held_weapon = weapon
 
+func _unequip_weapon(weapon: HitScanWeapon) -> void:
+	if weapon == null:
+		return
+	weapon.visible = false
+	weapon.set_physics_process(false)
+	held_weapon = null
+
+func _switch_to_weapon(weapon: HitScanWeapon) -> void:
+	if not weapon.enabled:
+		return
+	_unequip_weapon(held_weapon)
+	_equip_weapon(weapon)
 
 
 # Camera motion
