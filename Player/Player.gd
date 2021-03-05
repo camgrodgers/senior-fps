@@ -22,11 +22,9 @@ func _ready() -> void:
 		weapon.connect("recoil", self, "_on_weapon_recoil")
 		weapon.connect("expose_ammo_count", $HUD, "_on_expose_ammo_count")
 		weapon.connect("hide_ammo_count", $HUD, "_on_hide_ammo_count")
-		weapon.connect("update_ammo_count", $HUD, "_on_update_ammo_count")
 		weapon.set_ray(ray)
-		
-		
-	
+		_unequip_weapon(weapon)
+	_equip_weapon(weapon_holder.get_node("Glock18"))
 	
 	turn_factor = turn_speed / 10000.0
 	if (inverse_x):
@@ -201,13 +199,20 @@ func _process_movement(delta: float) -> void:
 	
 
 # Weapons/item use
-var ammo: Dictionary = {
-	"Glock1": 
-}
-
-
 func _process_item_use(_delta: float) -> void:
 	# Using items/weapons
+	var items_in_slots = weapon_holder.get_children()
+	if Input.is_action_pressed("slot0"):
+		if items_in_slots[0] != null: _switch_to_weapon(items_in_slots[0])
+	if Input.is_action_pressed("slot1"):
+		if items_in_slots[1] != null: _switch_to_weapon(items_in_slots[1])
+	if Input.is_action_pressed("slot2"):
+		if items_in_slots[2] != null: _switch_to_weapon(items_in_slots[2])
+	if Input.is_action_pressed("slot3"):
+		if items_in_slots[3] != null: _switch_to_weapon(items_in_slots[3])
+	if Input.is_action_pressed("slot4"):
+		if items_in_slots[4] != null: _switch_to_weapon(items_in_slots[4])
+	
 	var held_item = (
 		item_holder.get_child(0) if item_holder.get_child_count() > 0
 		else null)
@@ -257,14 +262,24 @@ func _process_item_use(_delta: float) -> void:
 			obj.pick_up()
 
 func _equip_weapon(weapon: HitScanWeapon) -> void:
+	if not weapon.enabled:
+		return
 	weapon.visible = true
 	weapon.set_physics_process(true)
 	held_weapon = weapon
 
 func _unequip_weapon(weapon: HitScanWeapon) -> void:
+	if weapon == null:
+		return
 	weapon.visible = false
 	weapon.set_physics_process(false)
 	held_weapon = null
+
+func _switch_to_weapon(weapon: HitScanWeapon) -> void:
+	if not weapon.enabled:
+		return
+	_unequip_weapon(held_weapon)
+	_equip_weapon(weapon)
 
 
 # Camera motion

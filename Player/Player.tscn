@@ -37,9 +37,6 @@ albedo_color = Color( 0.984314, 0, 0, 0.784314 )
 ]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.06338, 0 )
 script = ExtResource( 1 )
-turn_speed = null
-inverse_x = null
-inverse_y = null
 
 [node name="HUD" parent="." instance=ExtResource( 2 )]
 
@@ -96,8 +93,10 @@ collide_with_areas = true
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.27342, -0.130831, -0.361414 )
 
 [node name="Glock18" parent="CameraHolder/Camera/WeaponHolder" instance=ExtResource( 8 )]
+enabled = true
 
 [node name="AK47" parent="CameraHolder/Camera/WeaponHolder" instance=ExtResource( 4 )]
+enabled = true
 
 [node name="ItemHolder" type="Spatial" parent="CameraHolder/Camera"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.632482, -2.1756 )
