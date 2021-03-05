@@ -10,7 +10,6 @@
 [ext_resource path="res://textures/PNG/Light/texture_06.png" type="Texture" id=8]
 [ext_resource path="res://textures/PNG/Orange/texture_10.png" type="Texture" id=9]
 [ext_resource path="res://textures/PNG/Dark/texture_04.png" type="Texture" id=10]
-[ext_resource path="res://Player/Player.tscn" type="PackedScene" id=11]
 
 [sub_resource type="CubeMesh" id=1]
 size = Vector3( 90, 0.5, 90 )
@@ -73,6 +72,8 @@ albedo_texture = ExtResource( 1 )
 
 [sub_resource type="SpatialMaterial" id=19]
 albedo_texture = ExtResource( 8 )
+
+[sub_resource type="Environment" id=20]
 
 [node name="MainScene" type="Spatial"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.435333, 0.225521, -0.140871 )
@@ -200,5 +201,11 @@ operation = 2
 transform = Transform( 7.08036, 0, 0, 0, 3.70962, 0, 0, 0, 0.618458, 29.0149, 4.01343, -27.746 )
 material = SubResource( 19 )
 
-[node name="Player" parent="." instance=ExtResource( 11 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -5.48341, 1.38579, 1.23492 )
+[node name="Camera" type="Camera" parent="."]
+transform = Transform( -0.692043, 0, -0.721857, 0, 1, 0, 0.721857, 0, -0.692043, -17.4816, 3.9628, -13.7416 )
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource( 20 )
+
+[node name="DirectionalLight" type="DirectionalLight" parent="."]
+transform = Transform( 1, 0, 0, 0, -0.451983, 0.892026, 0, -0.892026, -0.451983, 0, 8.64516, -4.47035e-08 )

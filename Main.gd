@@ -1,8 +1,11 @@
 extends Node
 
-var current_level: Navigation = null
+var current_level = null
+var in_game: bool = false
 
-
+func _ready():
+	load_level("res://Levels/JacobLevel2/JacobLevel2.tscn")
+	$Menu.visible = true
 
 func load_level(filename: String):
 	if current_level != null:
@@ -10,13 +13,8 @@ func load_level(filename: String):
 	var current_level_scn: Resource = load(filename)
 	current_level = current_level_scn.instance()
 	add_child(current_level)
-	$LevelSelectMenu.visible = false
 
-func _on_Button3_pressed():
-	load_level("res://Levels/TestLevel/TestLevel.tscn")
-
-func _on_Button_pressed():
-	load_level("res://Levels/JacobLevel1/GameLevel.tscn")
-
-func _on_Button2_pressed():
-	load_level("res://Levels/CamLevel1/CamLevel1.tscn")
+func _on_Menu_level_selected(filename: String) -> void:
+	load_level(filename)
+	$Menu.visible = false
+	in_game = true
