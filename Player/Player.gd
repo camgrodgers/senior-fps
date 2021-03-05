@@ -2,10 +2,9 @@ extends KinematicBody
 class_name Player
 
 onready var PlayerStats: Node = $PlayerStats
+onready var settings: Settings = get_node("/root/Settings")
 
 var is_dead: bool = false
-var invincibility: bool = false
-var flying: bool = false
 
 onready var ray = $CameraHolder/Camera/RayCast
 onready	var weapon_holder = $CameraHolder/Camera/WeaponHolder
@@ -26,11 +25,6 @@ func _ready() -> void:
 		_unequip_weapon(weapon)
 	_equip_weapon(weapon_holder.get_node("Glock18"))
 	
-	turn_factor = turn_speed / 10000.0
-	if (inverse_x):
-		inverse_x_factor = 1
-	if (inverse_y):
-		inverse_y_factor = 1
 	
 	$Sound_Player.play_sound($Sound_Player.gun_cock)
 
@@ -48,9 +42,9 @@ func _process(delta) -> void:
 
 func _physics_process(delta) -> void:
 	if Input.is_action_just_pressed("flymode"):
-		flying = !flying
+		settings.flying = !settings.flying
 		
-	if PlayerStats.danger_level >= 100 && !invincibility:
+	if PlayerStats.danger_level >= 100 && !settings.invincibility:
 		is_dead = true
 		$HUD.player_dead_message()
 		$Danger_Player.stop()
@@ -61,7 +55,7 @@ func _physics_process(delta) -> void:
 		return
 	
 	# Movement
-	if(flying):
+	if(settings.flying):
 		_fly(delta)
 	else:
 		_process_movement(delta)
@@ -73,7 +67,7 @@ func _physics_process(delta) -> void:
 	_process_recoil(delta)
 	
 	if Input.is_action_just_pressed("debug"):
-		invincibility = !invincibility
+		settings.invincibility = !settings.invincibility
 
 # Movement
 const GRAVITY: float = -40.0
@@ -283,16 +277,8 @@ func _switch_to_weapon(weapon: HitScanWeapon) -> void:
 
 
 # Camera motion
-export var turn_speed: int = 50
-export var inverse_x: bool = false
-export var inverse_y: bool = false
-
 var aim_x: float = 0.00
 var aim_y: float = 0.00
-
-var turn_factor: float
-var inverse_x_factor: int = -1
-var inverse_y_factor: int = -1
 
 var aim_shake_width: float = .005
 var aim_shake_speed: float = 5
@@ -340,11 +326,15 @@ func _input(event: InputEvent) -> void:
 	if !event is InputEventMouseMotion:
 		return
 	
-	aim_x += event.relative.x * turn_factor * inverse_x_factor
-	aim_y += event.relative.y * turn_factor * inverse_y_factor
-	aim_y = clamp(aim_y, -1.5, 1.5)
+	var inverse_x_factor: int = 1 if settings.inverse_x else -1
+	var inverse_y_factor: int = 1 if settings.inverse_y else -1
+	var turn_speed: float = settings.mouse_sensitivity / 50
 	
-	$CameraHolder.set_rotation(Vector3(aim_y, aim_x, 0))
+	aim_x += event.relative.x * turn_speed * inverse_x_factor
+	aim_y += event.relative.y * turn_speed * inverse_y_factor
+	aim_y = clamp(aim_y, -89.9, 89.9)
+	
+	$CameraHolder.set_rotation(Vector3(deg2rad(aim_y), deg2rad(aim_x), 0))
 
 ## Enemy/hazard interactions ##
 func hitboxes() -> Array:

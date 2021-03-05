@@ -2,6 +2,12 @@ extends Node
 
 var current_level: Navigation = null
 
+func _process(delta):
+	get_tree().paused = true
+	if Input.is_action_just_pressed("escape"):
+		pass
+
+
 func load_level(filename: String):
 	if current_level != null:
 		current_level.queue_free()
