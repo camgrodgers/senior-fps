@@ -15,7 +15,6 @@ var currentNode = null
 
 # Relations to player
 var player_distance: float = 0.0
-var can_see_player: bool = false
 var player_danger: float = 0.0
 # TODO: is it possible to move this up the tree somehow?
 var last_player_position: Vector3 = Vector3(-1000, -1000, -1000)
@@ -112,16 +111,14 @@ func prep_node(node):
 func check_vision() -> bool:
 	var collisions = $VisionCone.get_overlapping_areas()
 	if collisions.empty():
-		can_see_player = false
 		world_state["can_see_player"] = false
 		return false
 	
-	can_see_player = cast_to_player_hitboxes()
-	world_state["can_see_player"] = can_see_player
+	world_state["can_see_player"] = cast_to_player_hitboxes()
 	if not world_state["has_target"]:
-		world_state["has_target"] = can_see_player
+		world_state["has_target"] = world_state["can_see_player"]
 #			target = collider
-	return can_see_player
+	return world_state["can_see_player"]
 
 # If it returns true, a raycast can hit the player's hitboxes
 func cast_to_player_hitboxes() -> bool:
@@ -148,8 +145,8 @@ func cast_to_player_hitboxes() -> bool:
 
 # If can see player, turn to look at the player
 func aim_at_player(_delta):
-	can_see_player = cast_to_player_hitboxes()
-	if not can_see_player: return
+	world_state["can_see_player"] = cast_to_player_hitboxes()
+	if not world_state["can_see_player"]: return
 	player_distance = player.translation.distance_to(translation)
 	last_player_position = player.translation
 	# TODO: Could be changed to work in an area radius
@@ -181,11 +178,12 @@ func go_to_next_action():
 
 func _process(delta):
 	
-	if state != IDLE and ($ReplanTimer.get_time_left() == 0 or not $GOAP_Planner.check_current_goal(world_state)):
+	#if state != IDLE and ($ReplanTimer.get_time_left() == 0 or not $GOAP_Planner.check_current_goal(world_state)):
+	if state != IDLE and not $GOAP_Planner.check_current_goal(world_state):
 		state = IDLE
 		action_index = 0
 		rng.randomize()
-		$ReplanTimer.set_wait_time(rng.randf_range(0.6, 1.5))
+		$ReplanTimer.set_wait_time(rng.randf_range(3.5, 5.0))
 		$ReplanTimer.start()
 	
 	match state:
@@ -293,6 +291,7 @@ func clear_node_data() -> void:
 var HP: int = 2
 
 func take_damage() -> void:
+	world_state["has_target"] = true
 	alert_comrades()
 	HP -= 1
 	if HP > 0:

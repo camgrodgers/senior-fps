@@ -25,7 +25,7 @@ func danger_update(delta):
 		hidden_from_enemies = true
 		known_cover_position = false
 	for e in enemies:
-		if e.can_see_player:
+		if e.world_state["can_see_player"]:
 			hidden_from_enemies = false
 			danger_decrease_velocity = 0
 		if e.last_player_position.distance_to(player_position) < 6:
@@ -35,7 +35,7 @@ func danger_update(delta):
 	for e in enemies:
 		var rate = rate_of_danger_increase(e)
 		e.player_danger = clamp(e.player_danger + (rate * delta), 0, 100)
-		if ((not e.can_see_player)
+		if ((not e.world_state["can_see_player"])
 				and e.last_player_position.distance_to(player_position) < 6):
 			e.player_danger -= 3 * delta
 			danger_level_orange += e.player_danger
@@ -56,7 +56,7 @@ func rate_of_danger_increase(enemy) -> float:
 	var player_speed: float = get_parent().vel.abs().length()
 #	print(player_speed)
 	
-	if not enemy.can_see_player:
+	if not enemy.world_state["can_see_player"]:
 		return 0.0
 	
 	var rate: float = 0

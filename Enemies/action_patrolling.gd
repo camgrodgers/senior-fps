@@ -18,10 +18,11 @@ func move_to(enemy: KinematicBody, delta: float):
 		path_updated = true
 	enemy.move_along_path(delta, true)
 	enemy.check_vision()
-	if enemy.world_state["can_see_player"]:
+	if enemy.world_state["has_target"]:
 		enemy.world_state["patrolling"] = false
 		enemy.alert_comrades()
 		path_updated = false
+		enemy.clear_node_data()
 		enemy.replan_actions()
 	if enemy.path.empty() :
 		path_updated = false
@@ -31,6 +32,13 @@ func move_to(enemy: KinematicBody, delta: float):
 	return false
 
 func take_action(enemy: KinematicBody, delta: float):
+	
+	enemy.check_vision()
+	if enemy.world_state["has_target"]:
+		enemy.world_state["patrolling"] = false
+		enemy.alert_comrades()
+		enemy.clear_node_data()
+		enemy.replan_actions()
 	
 	if enemy.get_node("PatrolTimer").is_paused():
 		enemy.get_node("PatrolTimer").set_paused(false)

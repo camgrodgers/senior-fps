@@ -14,14 +14,20 @@ var path_updated = false
 
 func move_to(enemy: KinematicBody, delta: float) -> bool:
 	
-	if not path_updated or enemy.currentNode.visible_to_player:
+	if enemy.coverNodes.empty():
+		enemy.ready_for_action()
+		path_updated = false
+		return true
+	if not path_updated:
 		enemy.prep_node(enemy.get_shortest_node())
+		path_updated = true
+	enemy.move_along_path(delta)
 	enemy.check_vision()
+	enemy.aim_at_player(delta)
 	if enemy.world_state["can_see_player"] == true:
-		enemy.aim_at_player(delta)
 		if not enemy.get_node("Enemy_audio_player").playing():
 			enemy.get_node("Enemy_audio_player").play_sound(enemy.get_node("Enemy_audio_player").enemy_shot)
-	enemy.move_along_path(delta)
+	
 	if enemy.path.empty():
 		enemy.ready_for_action()
 		path_updated = false
