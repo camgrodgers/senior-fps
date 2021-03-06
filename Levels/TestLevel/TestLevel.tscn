@@ -163,7 +163,6 @@ shadow_enabled = true
 [node name="PatrolRoutes" type="Spatial" parent="."]
 
 [node name="PatrolRoute1" parent="PatrolRoutes" instance=ExtResource( 7 )]
-loop = true
 
 [node name="PatrolNode" parent="PatrolRoutes/PatrolRoute1" instance=ExtResource( 11 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -15.8064, 2.34, 18.1824 )

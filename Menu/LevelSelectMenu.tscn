@@ -1,0 +1,42 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://Menu/LevelSelectMenu.gd" type="Script" id=1]
+
+[node name="LevelSelectMenu" type="VBoxContainer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_right = 40.0
+margin_bottom = 40.0
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="JacobsLevel" type="Button" parent="."]
+margin_right = 1320.0
+margin_bottom = 20.0
+text = "Jacob's Level"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="CameronsLevel" type="Button" parent="."]
+margin_top = 24.0
+margin_right = 1320.0
+margin_bottom = 44.0
+text = "Cameron's Level"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TestLevel" type="Button" parent="."]
+margin_top = 48.0
+margin_right = 1320.0
+margin_bottom = 68.0
+text = "Test Level"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+[connection signal="pressed" from="JacobsLevel" to="." method="_on_JacobsLevel_pressed"]
+[connection signal="pressed" from="CameronsLevel" to="." method="_on_CameronsLevel_pressed"]
+[connection signal="pressed" from="TestLevel" to="." method="_on_TestLevel_pressed"]

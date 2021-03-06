@@ -4,7 +4,6 @@ class_name Enemy
 var ENEMY_SPEED: int = 6
 
 var nav: Navigation = null
-var target = null
 var player = null
 export var patrolNodes: Array = []
 export var coverNodes: Array = []
@@ -114,11 +113,13 @@ func check_vision() -> bool:
 		world_state["can_see_player"] = false
 		return false
 	
+
 	world_state["can_see_player"] = cast_to_player_hitboxes()
 	if not world_state["has_target"]:
 		world_state["has_target"] = world_state["can_see_player"]
-#			target = collider
+
 	return world_state["can_see_player"]
+
 
 # If it returns true, a raycast can hit the player's hitboxes
 func cast_to_player_hitboxes() -> bool:
@@ -288,12 +289,14 @@ func clear_node_data() -> void:
 		currentNode.occupied_by = null
 
 # Respond to player attacks
-var HP: int = 2
+var HP: float = 2.0
+
 
 func take_damage() -> void:
 	world_state["has_target"] = true
+
 	alert_comrades()
-	HP -= 1
+	HP -= damage
 	if HP > 0:
 		$CSGCombiner/CSGCylinder.visible = false
 		$CSGCombiner/CSGCylinder2.visible = true

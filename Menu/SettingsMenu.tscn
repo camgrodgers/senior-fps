@@ -1,0 +1,67 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://Menu/SettingsMenu.gd" type="Script" id=1]
+
+[node name="SettingsMenu" type="VBoxContainer"]
+margin_top = 396.0
+margin_right = 618.0
+margin_bottom = 396.0
+custom_constants/separation = 10
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="InvertMouseX" type="CheckBox" parent="."]
+margin_right = 618.0
+margin_bottom = 24.0
+text = "Invert Mouse X"
+
+[node name="InvertMouseY" type="CheckBox" parent="."]
+margin_top = 34.0
+margin_right = 618.0
+margin_bottom = 58.0
+text = "Invert Mouse Y"
+
+[node name="MouseSlider" type="HBoxContainer" parent="."]
+margin_top = 68.0
+margin_right = 618.0
+margin_bottom = 84.0
+
+[node name="Label" type="Label" parent="MouseSlider"]
+margin_top = 1.0
+margin_right = 113.0
+margin_bottom = 15.0
+text = "Mouse Sensitivity"
+
+[node name="HSlider" type="HSlider" parent="MouseSlider"]
+margin_left = 117.0
+margin_right = 614.0
+margin_bottom = 16.0
+size_flags_horizontal = 3
+min_value = 5.0
+max_value = 50.0
+value = 5.0
+rounded = true
+tick_count = 50
+
+[node name="ValueLabel" type="Label" parent="MouseSlider"]
+margin_left = 618.0
+margin_top = 1.0
+margin_right = 618.0
+margin_bottom = 15.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Invincibility" type="CheckBox" parent="."]
+margin_top = 94.0
+margin_right = 618.0
+margin_bottom = 118.0
+text = "Invincibility"
+
+[node name="Flying" type="CheckBox" parent="."]
+margin_top = 128.0
+margin_right = 618.0
+margin_bottom = 152.0
+text = "Flying"

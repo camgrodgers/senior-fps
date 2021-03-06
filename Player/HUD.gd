@@ -5,31 +5,17 @@ onready var known_cover_label: Label = $KnownCover
 onready var danger_meter: TextureProgress = $RedProgress
 onready var danger_meter_yellow: TextureProgress = $YellowProgress
 onready var danger_meter_orange: TextureProgress = $OrangeProgress
-var crosshair_coordinates = Vector2.ZERO
+#var crosshair_coordinates = Vector2.ZERO
 
 func _ready():
 	danger_meter.visible = false
-	
-func zoomIn():
-#	$CenterContainer/Crosshair.rect_scale *= 0.5
-#	$CenterContainer/Crosshair.rect_position.x += 25
-	pass
-
-func zoomOut():
-#	$CenterContainer/Crosshair.rect_scale *= 2
-#	$CenterContainer/Crosshair.rect_position.x -= 25
-	pass
 
 func player_dead_message():
-	$CenterContainer/Label.visible = true
+	$CenterContainer/DeadMessage.visible = true
 
 func _process(_delta):
 	margin_right = get_viewport().size.x
 	margin_bottom = get_viewport().size.y
-	$CenterContainer.margin_right = get_viewport().size.x
-	$CenterContainer.margin_bottom = get_viewport().size.y
-	$Crosshair.margin_top = crosshair_coordinates.y - $Crosshair.rect_size.y / 2
-	$Crosshair.margin_left = crosshair_coordinates.x - $Crosshair.rect_size.x / 2
 	update_danger_meter()
 	update_enemy_distance_indicator()
 	
@@ -58,29 +44,34 @@ class DistanceSorter:
 			return true
 		return false
 
+var camera
+var player
+
 func update_enemy_distance_indicator():
-	for label in danger_meter.get_children():
+	var enemies: Array = get_tree().get_nodes_in_group("enemies")
+	var center: Control = $CenterContainer/Control
+	for label in center.get_children():
 		label.queue_free()
 
-	var enemies: Array = get_tree().get_nodes_in_group("enemies")
-	enemies.sort_custom(DistanceSorter, "sort_ascending")
-	var last_distance: float = -10.0
-	var last_height: float = 0
 	for e in enemies:
 		if e.player_danger == 0 or not e.world_state["can_see_player"]:
 			continue
 		
-		var label: Label = Label.new()
-		danger_meter.add_child(label)
-		var label_height = -12
-		if abs(e.player_distance - last_distance) < 10:
-			last_height -= 10
-			label_height += last_height
-		else:
-			last_height = 0
-		label.margin_top = label_height
-		label.anchor_left = clamp(e.player_distance / 100, 0.01, 0.9)
-		label.text = "%3.1fm" % e.player_distance
+		var offset = e.translation - player.translation
+		offset.y = 0
+		offset = offset.normalized().rotated(Vector3(0, -1, 0), camera.rotation.y) * 150
 		
-		last_distance = e.player_distance
+		var label: Label = Label.new()
+		center.add_child(label)
+		label.margin_left = offset.x
+		label.margin_top = offset.z
+		label.text = "%3.1fm" % e.player_distance
 
+func _on_expose_ammo_count(loaded: int, backup: int, per_mag: int) -> void:
+	$AmmoPanel/AmmoLabel.text = (
+		"(%d / %d)   %d" % [loaded, per_mag, backup]
+	)
+	$AmmoPanel.visible = true
+
+func _on_hide_ammo_count():
+	$AmmoPanel.visible = false
