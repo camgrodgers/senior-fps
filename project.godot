@@ -42,7 +42,7 @@ _global_script_classes=[ {
 "base": "Control",
 "class": "Menu",
 "language": "GDScript",
-"path": "res://Menu.gd"
+"path": "res://Menu/Menu.gd"
 }, {
 "base": "CSGSphere",
 "class": "PatrolNode",

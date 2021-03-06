@@ -4,7 +4,7 @@ signal level_selected(filename)
 
 
 func _on_JacobsLevel_pressed():
-	emit_signal("level_selected", "res://Levels/JacobLevel1/JacobLevel1.tscn")
+	emit_signal("level_selected", "res://Levels/JacobLevel1/GameLevel.tscn")
 
 
 func _on_CameronsLevel_pressed():
