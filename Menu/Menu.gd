@@ -8,8 +8,8 @@ signal quit()
 onready var main = get_parent()
 onready var resume = $MarginContainer/HBoxContainer/Buttons/Resume
 onready var restart = $MarginContainer/HBoxContainer/Buttons/Restart
-onready var level_select_menu = $MarginContainer/HBoxContainer/VBoxContainer/LevelSelectMenu
-onready var settings_menu = $MarginContainer/HBoxContainer/VBoxContainer/SettingsMenu
+onready var level_select_menu = $MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/LevelSelectMenu
+onready var settings_menu = $MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/SettingsMenu
 
 func _process(delta):
 	resume.visible = main.in_game
@@ -36,10 +36,12 @@ func _on_LevelSelectMenu_level_selected(filename):
 
 func _on_LevelSelect_pressed():
 	level_select_menu.visible = not level_select_menu.visible
+	$MarginContainer/HBoxContainer/PanelContainer.visible = level_select_menu.visible
 	settings_menu.visible = false
 
 func _on_Settings_pressed():
 	settings_menu.visible = not settings_menu.visible
+	$MarginContainer/HBoxContainer/PanelContainer.visible = settings_menu.visible
 	level_select_menu.visible = false
 
 func _on_Resume_pressed():
