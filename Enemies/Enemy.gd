@@ -292,7 +292,7 @@ func clear_node_data() -> void:
 var HP: float = 2.0
 
 
-func take_damage() -> void:
+func take_damage(damage: float) -> void:
 	world_state["has_target"] = true
 
 	alert_comrades()

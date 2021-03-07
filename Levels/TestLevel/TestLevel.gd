@@ -32,7 +32,6 @@ func spawn_enemies():
 		
 		enemy_instance.nav = self
 		enemy_instance.replan_actions()
-		enemy_instance.target = player
 		enemy_instance.player = player
 		enemy_instance.translation = get_closest_point(Vector3(spawn.translation.x, 0, spawn.translation.z))
 		enemy_instance.patrolNodes = $PatrolRoutes.get_child(0).get_children()

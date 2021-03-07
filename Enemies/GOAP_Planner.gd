@@ -182,10 +182,10 @@ func plan_actions(current_state: Dictionary):
 					if newCost < visited[successor.hash()].given_cost:
 						visited[successor.hash()].given_cost = newCost
 						visited[successor.hash()].final_cost = visited[successor].heuristic_cost + newCost
-						visited[successor.hash()].parent = current_node.vertex
+						visited[successor.hash()].parent = current_node
 						visited[successor.hash()].action = action
 						##will resort queue if present in queue, insert if not
-						$PriorityQueue.insert_or_resort(visited[successor.hash()])	
+						$PriorityQueue.insert_or_resort(visited[successor.hash()])
 	##what should be returned if no solution found?
 	return []
 
