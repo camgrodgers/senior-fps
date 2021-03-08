@@ -8,9 +8,9 @@ func _ready():
 
 func _process(delta):
 	var settings = get_node("/root/Settings")
-	settings.inverse_x =  $InvertMouseX.pressed
-	settings.inverse_y =  $InvertMouseY.pressed
-	settings.mouse_sensitivity = $MouseSlider/HSlider.value
+	settings.set_inverse_x($InvertMouseX.pressed)
+	settings.set_inverse_y($InvertMouseY.pressed)
+	settings.set_mouse_sensitivity($MouseSlider/HSlider.value)
 	$MouseSlider/ValueLabel.text = "%d" % settings.mouse_sensitivity
 	settings.invincibility = $Invincibility.pressed
 	settings.flying = $Flying.pressed
