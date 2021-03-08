@@ -30,12 +30,6 @@ var action_index: int = 0
 
 ##IDLE, MOVETO, TAKEACTION BELONG TO GOAP Logic
 enum {
-	FIND,
-	HOLD,
-	PATROL,
-	FIND_COVER,
-	TAKE_COVER,
-	SHOOT,
 	IDLE,
 	MOVE_TO,
 	TAKE_ACTION
@@ -162,7 +156,7 @@ var cover_timer = 0
 var cover_timer_limit = 3
 
 func check_goal() -> bool:
-	return $GOAP_Planner.check_current_goal()
+	return $GOAP_Planner.check_current_goal(world_state)
 
 func replan_actions():
 	state = IDLE
@@ -198,74 +192,6 @@ func _process(delta):
 			action_plan[action_index].take_action(self, delta)
 	
 	return
-#	match state:
-#		FIND:
-#			if can_see_player:
-#				cover_timer += delta
-#				var distance = translation.distance_to(player.translation)
-#				if distance <= 10:
-#					state = FIND_COVER
-#					cover_timer = 0
-#					return
-#			if cover_timer > 3:
-#				cover_timer = 0
-#				state = FIND_COVER
-#				return
-#			aim_at_player(delta)
-#			update_path(player.translation)
-#			move_along_path(delta)
-#
-##				path.clear()
-#		HOLD:
-#			aim_at_player(delta)
-#			var distance = translation.distance_to(player.translation)
-#			if distance > 10:
-#				state = FIND
-#		PATROL:
-#			if check_vision():
-#				alert_comrades()
-#				state = FIND_COVER
-#				clear_node_data()
-#				return
-#			if $PatrolTimer.get_time_left() > 0:
-#				return
-#			else:
-#				prep_node(patrolNodes[patrolNodeIndex])
-#				move_along_path(delta, true)
-#				if path.size() < 1:
-#					prep_node(patrolNodes[patrolNodeIndex])
-#					if patrolNodeIndex == patrolNodes.size() - 1:
-#						patrolNodeIndex = 0
-#					else:
-#						patrolNodeIndex += 1
-#					$PatrolTimer.start()
-#		FIND_COVER:
-#			prep_node(get_shortest_node())
-#
-#			state = TAKE_COVER
-#		TAKE_COVER:
-#			if currentNode.visible_to_player:
-#				state = FIND_COVER
-#				return
-#			move_along_path(delta)
-#			aim_at_player(delta)
-#			if path.empty():
-#
-#				state = SHOOT
-#				return
-#		SHOOT:
-#			###TO DO: ADD POPPING OUT OF COVER###
-#			if can_see_player and not $Enemy_audio_player.playing():
-#				$Enemy_audio_player.play_sound($Enemy_audio_player.enemy_shot)
-#			aim_at_player(delta)
-#			cover_timer += delta
-#			if cover_timer > cover_timer_limit:
-#				state = FIND
-#				cover_timer = 0
-#				return
-#			if currentNode.visible_to_player:
-#				state = FIND_COVER
-#				return
 
 
 # Length of path to a point

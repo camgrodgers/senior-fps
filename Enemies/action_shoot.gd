@@ -1,9 +1,7 @@
 extends Node
 
 
-# Declare member variables here. Examples:
-# var a = 2
-# var b = "text"
+
 var preconditions = {
 	"has_target" : true,
 	"in_cover": true
