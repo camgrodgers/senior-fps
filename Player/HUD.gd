@@ -54,7 +54,7 @@ func update_enemy_distance_indicator():
 		label.queue_free()
 
 	for e in enemies:
-		if e.player_danger == 0 or not e.can_see_player:
+		if e.player_danger == 0 or not e.world_state["can_see_player"]:
 			continue
 		
 		var offset = e.translation - player.translation

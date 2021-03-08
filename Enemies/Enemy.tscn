@@ -1,7 +1,14 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://Enemies/Enemy.gd" type="Script" id=1]
 [ext_resource path="res://Enemies/Enemy_audio_player.gd" type="Script" id=2]
+[ext_resource path="res://Enemies/GOAP_Planner.gd" type="Script" id=3]
+[ext_resource path="res://Enemies/action_shoot.gd" type="Script" id=4]
+[ext_resource path="res://Enemies/action_find_cover.gd" type="Script" id=5]
+[ext_resource path="res://Enemies/action_patrolling.gd" type="Script" id=6]
+[ext_resource path="res://Enemies/PriorityQueue.gd" type="Script" id=7]
+[ext_resource path="res://Enemies/goal_kill_player.gd" type="Script" id=8]
+[ext_resource path="res://Enemies/goal_patrol.gd" type="Script" id=9]
 
 [sub_resource type="CapsuleShape" id=1]
 radius = 0.5
@@ -88,3 +95,32 @@ script = ExtResource( 2 )
 [node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="Enemy_audio_player"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0 )
 unit_db = 30.0
+
+[node name="GOAP_Planner" type="Node" parent="."]
+script = ExtResource( 3 )
+
+[node name="PriorityQueue" type="Node" parent="GOAP_Planner"]
+script = ExtResource( 7 )
+
+[node name="Actions" type="Node" parent="GOAP_Planner"]
+
+[node name="action_shoot" type="Node" parent="GOAP_Planner/Actions"]
+script = ExtResource( 4 )
+
+[node name="action_find_cover" type="Node" parent="GOAP_Planner/Actions"]
+script = ExtResource( 5 )
+
+[node name="action_patrolling" type="Node" parent="GOAP_Planner/Actions"]
+script = ExtResource( 6 )
+
+[node name="Goals" type="Node" parent="GOAP_Planner"]
+
+[node name="goal_kill_player" type="Node" parent="GOAP_Planner/Goals"]
+script = ExtResource( 8 )
+
+[node name="goal_patrol" type="Node" parent="GOAP_Planner/Goals"]
+script = ExtResource( 9 )
+
+[node name="ReplanTimer" type="Timer" parent="."]
+wait_time = 1.5
+one_shot = true

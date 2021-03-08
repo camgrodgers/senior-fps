@@ -5,36 +5,43 @@ var ENEMY_SPEED: int = 6
 
 var nav: Navigation = null
 var player = null
-var patrolNodes: Array = []
-var coverNodes: Array = []
+export var patrolNodes: Array = []
+export var coverNodes: Array = []
 var path: Array = []
 
-var patrolNodeIndex = 1
+export var patrolNodeIndex = 1
 var currentNode = null
-
-var TestNodeIndex = 0
 
 # Relations to player
 var player_distance: float = 0.0
-var can_see_player: bool = false
 var player_danger: float = 0.0
 # TODO: is it possible to move this up the tree somehow?
 var last_player_position: Vector3 = Vector3(-1000, -1000, -1000)
 
-enum {
-	FIND,
-	HOLD,
-	PATROL,
-	FIND_COVER,
-	TAKE_COVER,
-	SHOOT
+var world_state: Dictionary = {
+	"can_see_player" : false, 
+	"in_cover" : false,
+	"has_target" : false,
+	"patrolling" : true
 }
 
-var state = PATROL
+var action_plan: Array
+var action_index: int = 0
+
+##IDLE, MOVETO, TAKEACTION BELONG TO GOAP Logic
+enum {
+	IDLE,
+	MOVE_TO,
+	TAKE_ACTION
+}
+
+var state = IDLE
+
 
 func _ready():
 	rng.randomize()
 	cover_timer_limit = rng.randf_range(1, 10)
+	$PatrolTimer.set_paused(true)
 
 # Updates the path variable to lead to a new destination
 func update_path(goal: Vector3) -> void:
@@ -97,11 +104,16 @@ func prep_node(node):
 func check_vision() -> bool:
 	var collisions = $VisionCone.get_overlapping_areas()
 	if collisions.empty():
-		can_see_player = false
+		world_state["can_see_player"] = false
 		return false
 	
-	can_see_player = cast_to_player_hitboxes()
-	return can_see_player
+
+	world_state["can_see_player"] = cast_to_player_hitboxes()
+	if not world_state["has_target"]:
+		world_state["has_target"] = world_state["can_see_player"]
+
+	return world_state["can_see_player"]
+
 
 # If it returns true, a raycast can hit the player's hitboxes
 func cast_to_player_hitboxes() -> bool:
@@ -128,8 +140,8 @@ func cast_to_player_hitboxes() -> bool:
 
 # If can see player, turn to look at the player
 func aim_at_player(_delta):
-	can_see_player = cast_to_player_hitboxes()
-	if not can_see_player: return
+	world_state["can_see_player"] = cast_to_player_hitboxes()
+	if not world_state["can_see_player"]: return
 	player_distance = player.translation.distance_to(translation)
 	last_player_position = player.translation
 	# TODO: Could be changed to work in an area radius
@@ -143,74 +155,43 @@ var rng = RandomNumberGenerator.new()
 var cover_timer = 0
 var cover_timer_limit = 3
 
-func _process(delta):
-	match state:
-		FIND:
-			if can_see_player:
-				cover_timer += delta
-				var distance = translation.distance_to(player.translation)
-				if distance <= 10:
-					state = FIND_COVER
-					cover_timer = 0
-					return
-			if cover_timer > 3:
-				cover_timer = 0
-				state = FIND_COVER
-				return
-			aim_at_player(delta)
-			update_path(player.translation)
-			move_along_path(delta)
+func check_goal() -> bool:
+	return $GOAP_Planner.check_current_goal(world_state)
 
-#				path.clear()
-		HOLD:
-			aim_at_player(delta)
-			var distance = translation.distance_to(player.translation)
-			if distance > 10:
-				state = FIND
-		PATROL:
-			if check_vision():
-				alert_comrades()
-				state = FIND_COVER
-				clear_node_data()
-				return
-			if $PatrolTimer.get_time_left() > 0:
-				return
-			else:
-				prep_node(patrolNodes[patrolNodeIndex])
-				move_along_path(delta, true)
-				if path.size() < 1:
-					prep_node(patrolNodes[patrolNodeIndex])
-					if patrolNodeIndex == patrolNodes.size() - 1:
-						patrolNodeIndex = 0
-					else:
-						patrolNodeIndex += 1
-					$PatrolTimer.start()
-		FIND_COVER:
-			prep_node(get_shortest_node())
-			
-			state = TAKE_COVER
-		TAKE_COVER:
-			if currentNode.visible_to_player:
-				state = FIND_COVER
-				return
-			move_along_path(delta)
-			aim_at_player(delta)
-			if path.empty():
-				state = SHOOT
-				return
-		SHOOT:
-			###TO DO: ADD POPPING OUT OF COVER###
-			if can_see_player and not $Enemy_audio_player.playing():
-				$Enemy_audio_player.play_sound($Enemy_audio_player.enemy_shot)
-			aim_at_player(delta)
-			cover_timer += delta
-			if cover_timer > cover_timer_limit:
-				state = FIND
-				cover_timer = 0
-				return
-			if currentNode.visible_to_player:
-				state = FIND_COVER
-				return
+func replan_actions():
+	state = IDLE
+
+func ready_for_action():
+	state = TAKE_ACTION
+
+func go_to_next_action():
+	action_index = action_index + 1
+	state = MOVE_TO
+	if action_index > action_plan.size() - 1:
+		action_index = 0
+		state = IDLE
+
+func _process(delta):
+	
+	#if state != IDLE and ($ReplanTimer.get_time_left() == 0 or not $GOAP_Planner.check_current_goal(world_state)):
+	if state != IDLE and not $GOAP_Planner.check_current_goal(world_state):
+		state = IDLE
+		action_index = 0
+		rng.randomize()
+		$ReplanTimer.set_wait_time(rng.randf_range(3.5, 5.0))
+		$ReplanTimer.start()
+	
+	match state:
+		IDLE:
+			action_plan = $GOAP_Planner.plan_actions(world_state)
+			action_index = 0
+			state = MOVE_TO
+		MOVE_TO:
+			action_plan[action_index].move_to(self, delta)
+		TAKE_ACTION:
+			action_plan[action_index].take_action(self, delta)
+	
+	return
 
 
 # Length of path to a point
@@ -236,7 +217,10 @@ func clear_node_data() -> void:
 # Respond to player attacks
 var HP: float = 2.0
 
+
 func take_damage(damage: float) -> void:
+	world_state["has_target"] = true
+
 	alert_comrades()
 	HP -= damage
 	if HP > 0:
@@ -256,8 +240,8 @@ func alert_comrades() -> void:
 	get_tree().call_group("enemies", "alert_to_player")
 	
 func alert_to_player() -> void:
-	if state == PATROL:
-		state = TAKE_COVER
+	world_state["has_target"] = true
+	world_state["patrolling"] = false
 
 func update_last_player_position(position: Vector3) -> void:
 	last_player_position = position
