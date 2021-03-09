@@ -3,7 +3,7 @@
 [ext_resource path="res://models/Wood Brown.material" type="Material" id=1]
 [ext_resource path="res://models/Black.material" type="Material" id=2]
 
-[sub_resource type="ArrayMesh" id=8]
+[sub_resource type="ArrayMesh" id=1]
 resource_name = "AK-47"
 surfaces/0 = {
 "aabb": AABB( -0.25, -0.733013, -4.15, 0.5, 1.23301, 6.008 ),
@@ -30,7 +30,7 @@ surfaces/1 = {
 "vertex_count": 148
 }
 
-[sub_resource type="ArrayMesh" id=9]
+[sub_resource type="ArrayMesh" id=2]
 resource_name = "AK-47magazine"
 surfaces/0 = {
 "aabb": AABB( -0.125, -2.12084, -0.980775, 0.25001, 1.93782, 1.15283 ),
@@ -47,10 +47,10 @@ surfaces/0 = {
 
 [node name="AK-47" type="MeshInstance"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0, 0 )
-mesh = SubResource( 8 )
+mesh = SubResource( 1 )
 material/0 = null
 material/1 = null
 
 [node name="AK-47magazine" type="MeshInstance" parent="."]
-mesh = SubResource( 9 )
+mesh = SubResource( 2 )
 material/0 = null
