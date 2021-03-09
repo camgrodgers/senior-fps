@@ -255,6 +255,18 @@ func _process_item_use(_delta: float) -> void:
 			$CameraHolder/Camera/ItemHolder.add_child(obj)
 			obj.pick_up()
 
+func add_weapon_ammo(weapon_name: String,
+		amount: int,
+		enable_weapon: bool = false) -> void:
+	var weapon: HitScanWeapon
+	if weapon_name == "AK47":
+		weapon = $CameraHolder/Camera/WeaponHolder/AK47
+	elif weapon_name == "Glock18":
+		weapon = $CameraHolder/Camera/WeaponHolder/Glock18
+	else:
+		return
+	weapon.add_ammo(amount, enable_weapon)
+
 func _equip_weapon(weapon: HitScanWeapon) -> void:
 	if not weapon.enabled:
 		return
