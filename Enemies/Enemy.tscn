@@ -124,3 +124,5 @@ script = ExtResource( 9 )
 [node name="ReplanTimer" type="Timer" parent="."]
 wait_time = 1.5
 one_shot = true
+
+[node name="ImmediateGeometry" type="ImmediateGeometry" parent="."]

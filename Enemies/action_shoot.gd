@@ -14,7 +14,7 @@ var effects = {
 var cost = 1
 var path_updated = false
 
-func move_to(enemy: KinematicBody, delta: float) -> bool:
+func move_to(enemy: Enemy, delta: float) -> bool:
 	
 	if not path_updated:
 		enemy.clear_node_data()
@@ -34,6 +34,7 @@ func take_action(enemy: KinematicBody, delta: float) -> bool:
 	
 	enemy.cover_timer += delta
 	enemy.aim_at_player(delta)
+	enemy.shoot_around_player(delta)
 	if enemy.cover_timer > 1.5:
 		enemy.cover_timer = 0
 		enemy.get_node("Enemy_audio_player").play_sound(enemy.get_node("Enemy_audio_player").enemy_shot)

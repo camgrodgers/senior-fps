@@ -1,0 +1,12 @@
+[gd_resource type="SpatialMaterial" format=2]
+
+[resource]
+flags_transparent = true
+flags_do_not_receive_shadows = true
+vertex_color_use_as_albedo = true
+albedo_color = Color( 1, 0.964706, 0.560784, 0.462745 )
+emission_enabled = true
+emission = Color( 1, 0.976471, 0.403922, 1 )
+emission_energy = 2.55
+emission_operator = 0
+emission_on_uv2 = false
