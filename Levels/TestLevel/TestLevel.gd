@@ -15,6 +15,7 @@ func _process(delta):
 	
 	remove_child(enemies)
 	enemies.queue_free()
+	get_tree().call_group("temporary_level_objects", "queue_free")
 	
 	remove_child(player)
 	player.queue_free()

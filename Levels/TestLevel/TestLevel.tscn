@@ -1,7 +1,8 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://default_env.tres" type="Environment" id=1]
 [ext_resource path="res://Levels/TestLevel/TestLevel.gd" type="Script" id=2]
+[ext_resource path="res://Equippables/AK47ItemDrop.tscn" type="PackedScene" id=3]
 [ext_resource path="res://Equippables/Ball.tscn" type="PackedScene" id=4]
 [ext_resource path="res://LevelObjects/NavNode.tscn" type="PackedScene" id=5]
 [ext_resource path="res://LevelObjects/PlayerSpawn.gd" type="Script" id=6]
@@ -166,26 +167,21 @@ shadow_enabled = true
 
 [node name="PatrolNode" parent="PatrolRoutes/PatrolRoute1" instance=ExtResource( 11 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -15.8064, 2.34, 18.1824 )
-time_in_seconds = 1.0
 
 [node name="PatrolNode2" parent="PatrolRoutes/PatrolRoute1" instance=ExtResource( 11 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -17.0098, 2.34, -36.2199 )
-time_in_seconds = 1.0
 
 [node name="PatrolNode3" parent="PatrolRoutes/PatrolRoute1" instance=ExtResource( 11 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.640677, 2.34, -37.2227 )
-time_in_seconds = 1.0
 
 [node name="PatrolRoute2" parent="PatrolRoutes" instance=ExtResource( 7 )]
 loop = false
 
 [node name="PatrolNode" parent="PatrolRoutes/PatrolRoute2" instance=ExtResource( 11 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 18.3501, 2.34, -1.06553 )
-time_in_seconds = 1.0
 
 [node name="PatrolNode2" parent="PatrolRoutes/PatrolRoute2" instance=ExtResource( 11 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -24.1885, 2.34, -5.03587 )
-time_in_seconds = 1.0
 
 [node name="PlayerSpawn" parent="." instance=ExtResource( 9 )]
 transform = Transform( -0.00420633, 0, -0.999991, 0, 1, 0, 0.999991, 0, -0.00420633, 54.6213, 2.49553, 15.4054 )
@@ -219,3 +215,6 @@ material = SubResource( 3 )
 
 [node name="Button" parent="." instance=ExtResource( 10 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 51.6688, 3.1316, 6.59383 )
+
+[node name="AK47ItemDrop" parent="." instance=ExtResource( 3 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 56.0444, 4.90458, 7.01629 )

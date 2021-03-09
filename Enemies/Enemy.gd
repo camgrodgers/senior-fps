@@ -230,8 +230,13 @@ func take_damage(damage: float) -> void:
 	var corpse_scn: Resource = preload("res://Enemies/DeadEnemy.tscn")
 	var corpse = corpse_scn.instance()
 	corpse.transform = self.transform
+	var weapon_drop_scn: Resource = preload("res://Equippables/AK47ItemDrop.tscn")
+	var weapon_drop = weapon_drop_scn.instance()
+	weapon_drop.transform = self.transform
+	weapon_drop.translation.y += 2
 	# TODO: replace this with something that lets the level manage corpses
 	get_parent().get_parent().add_child(corpse)
+	get_parent().get_parent().add_child(weapon_drop)
 	clear_node_data()
 	self.queue_free()
 
