@@ -53,6 +53,10 @@ func _reload() -> void:
 
 func _spend_round() -> void:
 	ammo_loaded = max(0, ammo_loaded - 1)
+	
+func add_ammo(amount: int, enable: bool) -> void:
+	ammo_backup += amount
+	enabled = enable or enabled
 
 func is_active() -> bool:
 	return _is_active
