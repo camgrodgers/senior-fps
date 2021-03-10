@@ -58,6 +58,11 @@ _global_script_classes=[ {
 "class": "Player",
 "language": "GDScript",
 "path": "res://Player/Player.gd"
+}, {
+"base": "ImmediateGeometry",
+"class": "Tracer",
+"language": "GDScript",
+"path": "res://LevelObjects/Tracer.gd"
 } ]
 _global_script_class_icons={
 "AK47": "",
@@ -69,7 +74,8 @@ _global_script_class_icons={
 "Level": "",
 "Menu": "",
 "PatrolNode": "",
-"Player": ""
+"Player": "",
+"Tracer": ""
 }
 
 [application]

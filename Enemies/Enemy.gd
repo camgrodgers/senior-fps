@@ -151,6 +151,37 @@ func aim_at_player(_delta):
 	look_at(player.translation, Vector3(0,1,0))
 	rotation_degrees.x = 0
 
+var _shoot_timer: float = 0
+var _shoot_interval: float = 2
+
+func shoot_around_player(delta):
+	rng.randomize()
+	_shoot_timer += delta
+	if _shoot_timer < _shoot_interval:
+		return
+	_shoot_timer = 0 - rng.randf_range(0, 2)
+	$Enemy_audio_player.play_sound($Enemy_audio_player.enemy_shot)
+
+	if not world_state["can_see_player"]: return
+	var tracer: Tracer = Tracer.new()
+	get_tree().get_nodes_in_group("level")[0].add_child(tracer)
+	var from = $Gun.global_transform.origin
+	var to_vec = from.direction_to(player.global_transform.origin) * (player_distance * 2)
+	rng.randomize()
+	var offset_rotation: Vector3 = Vector3(
+			rng.randf_range(-100, 100),
+			rng.randf_range(-100, 100),
+			rng.randf_range(-100, 100))
+	offset_rotation = offset_rotation.normalized()
+	to_vec = to_vec.rotated(Vector3(0, 0, 1),
+			deg2rad(10 / (player_distance / 10) * offset_rotation.z))
+	to_vec = to_vec.rotated(Vector3(1, 0, 0),
+			deg2rad(10 / (player_distance / 10) * offset_rotation.x))
+	var to = from + to_vec.rotated(Vector3(0, 1, 0),
+			deg2rad(10 / (player_distance / 10) * offset_rotation.y))
+	tracer.set_coordinates(from, to)
+
+
 var rng = RandomNumberGenerator.new()
 var cover_timer = 0
 var cover_timer_limit = 3
