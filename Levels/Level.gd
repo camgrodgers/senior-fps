@@ -8,6 +8,9 @@ var coverNodes: Array = []
 var enemies: Spatial = null
 var player: Player = null
 
+func _init():
+	self.add_to_group("level")
+
 # TODO: This could possibly be improved by moving it into the player and
 # 		having a front vision, flanking, and rear area that detect nodes
 func update_cover() -> void:

@@ -164,7 +164,7 @@ func shoot_around_player(delta):
 
 	if not world_state["can_see_player"]: return
 	var tracer: Tracer = Tracer.new()
-	get_parent().get_parent().add_child(tracer)
+	get_tree().get_nodes_in_group("level")[0].add_child(tracer)
 	var from = $Gun.global_transform.origin
 	var to_vec = from.direction_to(player.global_transform.origin) * (player_distance * 2)
 	rng.randomize()

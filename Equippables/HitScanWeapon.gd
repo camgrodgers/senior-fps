@@ -33,6 +33,10 @@ func _fire_ray(damage: float, force_multiply: float) -> void:
 	if !_ray.is_colliding(): return
 	
 	var obj = _ray.get_collider()
+	var tracer: Tracer = Tracer.new()
+	get_tree().get_nodes_in_group("level")[0].add_child(tracer)
+	tracer.set_coordinates($OmniLight.global_transform.origin,
+			_ray.get_collision_point())
 	if obj.has_method("take_damage"):
 		obj.take_damage(damage)
 	if obj is RigidBody:
