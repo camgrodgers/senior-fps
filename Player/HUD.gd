@@ -1,5 +1,7 @@
 extends Control
 
+onready var signals = get_node("/root/Signals")
+
 onready var player_stats = get_parent().get_node("PlayerStats")
 onready var known_cover_label: Label = $KnownCover
 onready var danger_meter: TextureProgress = $RedProgress
@@ -9,6 +11,8 @@ onready var danger_meter_orange: TextureProgress = $OrangeProgress
 
 func _ready():
 	danger_meter.visible = false
+	signals.connect("expose_ammo_count", self, "_on_expose_ammo_count")
+	signals.connect("hide_ammo_count", self, "_on_hide_ammo_count")
 
 func player_dead_message():
 	$CenterContainer/DeadMessage.visible = true

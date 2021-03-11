@@ -231,8 +231,8 @@ surfaces/0 = {
 extents = Vector3( 0.293948, 0.191559, 1 )
 
 [node name="AK47" type="Spatial"]
+transform = Transform( 0.576132, -0.424038, 0.698759, -0.27411, 0.705156, 0.653925, -0.770023, -0.568284, 0.29003, 0.0561764, -0.395012, 0 )
 script = ExtResource( 1 )
-raised = true
 
 [node name="OmniLight" type="OmniLight" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0061743, -0.767362 )

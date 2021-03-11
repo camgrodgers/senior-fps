@@ -1,9 +1,7 @@
 extends Spatial
 class_name HitScanWeapon
 
-signal recoil(force)
-signal expose_ammo_count(loaded, backup, per_mag)
-signal hide_ammo_count()
+onready var signals = get_node("/root/Signals")
 
 var _is_active: bool = false
 var _ray: RayCast

@@ -3,6 +3,7 @@ class_name Player
 
 onready var PlayerStats: Node = $PlayerStats
 onready var settings: Settings = get_node("/root/Settings")
+onready var signals = get_node("/root/Signals")
 
 var is_dead: bool = false
 
@@ -17,10 +18,8 @@ func _ready() -> void:
 	
 	$HUD.camera = $CameraHolder
 	$HUD.player = self
+	signals.connect("recoil", self, "_on_weapon_recoil")
 	for weapon in weapon_holder.get_children():
-		weapon.connect("recoil", self, "_on_weapon_recoil")
-		weapon.connect("expose_ammo_count", $HUD, "_on_expose_ammo_count")
-		weapon.connect("hide_ammo_count", $HUD, "_on_hide_ammo_count")
 		weapon.set_ray(ray)
 		_unequip_weapon(weapon)
 	_equip_weapon(weapon_holder.get_node("Glock18"))
