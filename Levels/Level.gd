@@ -1,15 +1,22 @@
 extends Navigation
 class_name Level
 
+onready var signals: Signals = get_node("/root/Signals")
+
 onready var player_scn: Resource = preload("res://Player/Player.tscn")
 onready var enemy_scn: Resource = preload("res://Enemies/Enemy.tscn")
 
 var coverNodes: Array = []
 var enemies: Spatial = null
 var player: Player = null
+var temporary_nodes: Spatial = Spatial.new()
 
 func _init():
 	self.add_to_group("level")
+	add_child(temporary_nodes)
+	signals.connect("temporary_item_spawned",
+			self,
+			"_on_temporary_item_spawned")
 
 # TODO: This could possibly be improved by moving it into the player and
 # 		having a front vision, flanking, and rear area that detect nodes
@@ -58,3 +65,6 @@ func spawn_enemy(spawn_pos: Vector3, state: int, patrol_route: Array) -> void:
 	instance.player = player
 	instance.patrolNodes = patrol_route
 	instance.coverNodes = coverNodes
+
+func _on_temporary_object_spawned(obj):
+	temporary_nodes.add_child(obj)
