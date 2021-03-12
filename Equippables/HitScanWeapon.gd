@@ -13,11 +13,6 @@ var _reload_pressed: bool = false
 export var raised: bool = false
 export var chambering: float = 0.0
 
-var bullet_scene = preload("res://Equippables/Bullet.tscn")
-var BulletReloadTimer = 0
-var BulletCount = 0
-
-
 var ammo_loaded: int
 var ammo_backup: int
 var AMMO_PER_MAG: int
@@ -34,13 +29,6 @@ func set_inputs(primary_pressed: bool,
 	_reload_pressed = reload_pressed
 
 func _fire_ray(damage: float, force_multiply: float) -> void:
-	#bullet movement
-	var bullet = bullet_scene.instance()
-	get_parent().add_child(bullet)
-	bullet.transform = _ray.global_transform
-	bullet.velocity = -bullet.transform.basis.z * bullet.muzzle_velocity
-	
-	
 	_ray.force_raycast_update()
 	if !_ray.is_colliding(): return
 	

@@ -15,10 +15,12 @@ var held_weapon: HitScanWeapon = null
 func _ready() -> void:
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	
+	
 	$HUD.camera = $CameraHolder
 	$HUD.player = self
 	for weapon in weapon_holder.get_children():
 		weapon.connect("recoil", self, "_on_weapon_recoil")
+		weapon.connect("sniper_raised",self,"_on_sniper_raise")
 		weapon.connect("expose_ammo_count", $HUD, "_on_expose_ammo_count")
 		weapon.connect("hide_ammo_count", $HUD, "_on_hide_ammo_count")
 		weapon.set_ray(ray)
@@ -261,6 +263,10 @@ func _equip_weapon(weapon: HitScanWeapon) -> void:
 	weapon.visible = true
 	weapon.set_physics_process(true)
 	held_weapon = weapon
+	
+	
+	
+	
 
 func _unequip_weapon(weapon: HitScanWeapon) -> void:
 	if weapon == null:
@@ -297,6 +303,14 @@ func _aim_shake(delta: float) -> void:
 var _goal_recoil: float = 0
 var _recoil: float = 0
 const RECOIL_MAX_ANGLE: float = 15.0
+
+func _on_sniper_raise(raise:bool)-> void:
+	var camera = $CameraHolder/Camera
+	if raise == true:
+		$CameraHolder/Camera.fov = 30.0
+	else:
+		$CameraHolder/Camera.fov = 70.0
+
 
 func _on_weapon_recoil(force: float) -> void:
 	_goal_recoil = clamp(_goal_recoil + force, 0, RECOIL_MAX_ANGLE)
@@ -343,3 +357,4 @@ func hitboxes() -> Array:
 	else:
 		return $StandingHitboxes.get_children()
 		
+	
