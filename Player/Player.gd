@@ -38,6 +38,13 @@ func _physics_process(delta) -> void:
 	if Input.is_action_just_pressed("flymode"):
 		devmode = !devmode
 		
+	if((100 - PlayerStats.danger_level) < 40):
+		Engine.time_scale = 0.5
+		slowMo = true
+	else:
+		Engine.time_scale = 1
+		slowMo = false
+		
 	if PlayerStats.danger_level >= 100 && !debug:
 		is_dead = true
 		$HUD.player_dead_message()
@@ -128,22 +135,12 @@ func process_movement(delta: float) -> void:
 	if Input.is_action_pressed("move_right"):
 		direction += aiming[0]
 	if Input.is_action_pressed("move_left"):
-<<<<<<< Updated upstream
 		direction -= aiming[0]
-	
-=======
 		direction -= aiming.x
 		
-	if Input.is_action_pressed("slowmo"):
-		if(slowMo):
-			Engine.time_scale *= 2
-		else:
-			Engine.time_scale *= 0.5
-		slowMo = !slowMo
 	
 
 	direction.y = 0
->>>>>>> Stashed changes
 	direction = direction.normalized()
 	var hvel: Vector3 = vel
 	hvel.y = 0
