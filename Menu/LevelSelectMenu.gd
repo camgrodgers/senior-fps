@@ -1,15 +1,14 @@
 extends VBoxContainer
 
-signal level_selected(filename)
-
+onready var signals = get_node("/root/Signals")
 
 func _on_JacobsLevel_pressed():
-	emit_signal("level_selected", "res://Levels/JacobLevel1/GameLevel.tscn")
+	signals.emit_signal("level_selected", "res://Levels/JacobLevel1/GameLevel.tscn")
 
 
 func _on_CameronsLevel_pressed():
-	emit_signal("level_selected", "res://Levels/CamLevel1/CamLevel1.tscn")
+	signals.emit_signal("level_selected", "res://Levels/CamLevel1/CamLevel1.tscn")
 
 
 func _on_TestLevel_pressed():
-	emit_signal("level_selected", "res://Levels/TestLevel/TestLevel.tscn")
+	signals.emit_signal("level_selected", "res://Levels/TestLevel/TestLevel.tscn")

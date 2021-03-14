@@ -121,4 +121,3 @@ margin_bottom = 152.0
 [connection signal="pressed" from="MarginContainer/HBoxContainer/Buttons/LevelSelect" to="." method="_on_LevelSelect_pressed"]
 [connection signal="pressed" from="MarginContainer/HBoxContainer/Buttons/Settings" to="." method="_on_Settings_pressed"]
 [connection signal="pressed" from="MarginContainer/HBoxContainer/Buttons/Quit" to="." method="_on_Quit_pressed"]
-[connection signal="level_selected" from="MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/LevelSelectMenu" to="." method="_on_LevelSelectMenu_level_selected"]

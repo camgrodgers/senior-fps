@@ -22,13 +22,13 @@ func _physics_process(delta):
 		
 	if _secondary_pressed:
 		_is_active = true
-		emit_signal("expose_ammo_count", ammo_loaded, ammo_backup, AMMO_PER_MAG)
+		signals.emit_signal("expose_ammo_count", ammo_loaded, ammo_backup, AMMO_PER_MAG)
 		if not raised:
 			$AnimationPlayer.play("Raise")
 	else:
 		if raised:
 			$AnimationPlayer.play_backwards("Raise")
-			emit_signal("hide_ammo_count")
+			signals.emit_signal("hide_ammo_count")
 		
 	if _primary_pressed:
 		if not _secondary_pressed:
@@ -39,10 +39,10 @@ func _physics_process(delta):
 		
 		$AnimationPlayer.play("Fire")
 		_spend_round()
-		emit_signal("expose_ammo_count", ammo_loaded, ammo_backup, AMMO_PER_MAG)
+		signals.emit_signal("expose_ammo_count", ammo_loaded, ammo_backup, AMMO_PER_MAG)
 		chambering = 0.3
 		_fire_ray(1, 1)
-		emit_signal("recoil", 8)
+		signals.emit_signal("recoil", 8)
 
 func unequip():
 	self.queue_free()
