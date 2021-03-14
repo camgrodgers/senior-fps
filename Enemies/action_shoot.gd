@@ -4,7 +4,8 @@ extends Node
 
 var preconditions = {
 	"has_target" : true,
-	"in_cover": true
+	"in_cover": true,
+	"in_range": true,
 }
 
 var effects = {
@@ -31,6 +32,10 @@ func move_to(enemy: Enemy, delta: float) -> bool:
 	return false
 	
 func take_action(enemy: KinematicBody, delta: float) -> bool:
+	if not enemy.check_range():
+		enemy.replan_actions()
+		enemy.clear_node_data()
+	
 	if enemy.world_state["can_see_player"]:
 		enemy.shoot_around_player(delta)
 	
@@ -39,6 +44,7 @@ func take_action(enemy: KinematicBody, delta: float) -> bool:
 	if enemy.cover_timer > 1.5:
 		enemy.cover_timer = 0
 		enemy.world_state["in_cover"] = false
+		enemy.clear_node_data()
 		enemy.go_to_next_action()
 		return true
 	return false

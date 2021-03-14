@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=2]
+[gd_scene load_steps=16 format=2]
 
 [ext_resource path="res://Enemies/Enemy.gd" type="Script" id=1]
 [ext_resource path="res://Enemies/Enemy_audio_player.gd" type="Script" id=2]
@@ -9,6 +9,7 @@
 [ext_resource path="res://Enemies/PriorityQueue.gd" type="Script" id=7]
 [ext_resource path="res://Enemies/goal_kill_player.gd" type="Script" id=8]
 [ext_resource path="res://Enemies/goal_patrol.gd" type="Script" id=9]
+[ext_resource path="res://Enemies/action_get_in_range.gd" type="Script" id=10]
 
 [sub_resource type="CapsuleShape" id=1]
 radius = 0.5
@@ -69,7 +70,13 @@ sides = 20
 material = SubResource( 3 )
 
 [node name="Gun" type="CSGCylinder" parent="."]
-transform = Transform( 2.65431e-14, 1.62921e-07, 1, 1, -1.62921e-07, 0, 1.62921e-07, 1, -1.62921e-07, 0.296382, 1.53826, -0.562953 )
+transform = Transform( 2.65431e-14, 1.62921e-07, 1, 1, -1.62921e-07, 0, 1.62921e-07, 1, -1.62921e-07, -0.0133731, 1.53826, -0.562953 )
+visible = false
+radius = 0.0676291
+height = 0.774024
+
+[node name="GunVisual" type="CSGCylinder" parent="."]
+transform = Transform( 2.65431e-14, 1.62921e-07, 1, 1, -1.62921e-07, 0, 1.62921e-07, 1, -1.62921e-07, 0.250681, 1.53826, -0.562953 )
 radius = 0.0676291
 height = 0.774024
 
@@ -109,6 +116,9 @@ script = ExtResource( 4 )
 
 [node name="action_find_cover" type="Node" parent="GOAP_Planner/Actions"]
 script = ExtResource( 5 )
+
+[node name="action_get_in_range" type="Node" parent="GOAP_Planner/Actions"]
+script = ExtResource( 10 )
 
 [node name="action_patrolling" type="Node" parent="GOAP_Planner/Actions"]
 script = ExtResource( 6 )

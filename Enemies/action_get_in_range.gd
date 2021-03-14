@@ -1,38 +1,33 @@
 extends Node
 
 var preconditions = {
-	"in_cover": false,
-	"in_range": true,
+	"in_range": false,
 }
 
 var effects = {
-	"in_cover" : true
+	"in_range" : true
 }
 
 var cost = 1
 var path_updated = false
+var last_player_position = null
 
 
 func move_to(enemy: KinematicBody, delta: float) -> bool:
 	
-	if enemy.coverNodes.empty():
-		enemy.ready_for_action()
-		path_updated = false
-		return true
-	if not path_updated:
-		enemy.prep_node(enemy.get_shortest_node())
+	if not path_updated or last_player_position.distance_to(enemy.player.translation) > 10:
+		enemy.update_path(enemy.player.translation)
+		last_player_position = enemy.player.translation
+		enemy.world_state["in_cover"] = false
 		path_updated = true
 	enemy.move_along_path(delta)
-	if enemy.check_vision():
-		enemy.aim_at_player(delta)
-		enemy.shoot_around_player(delta)
+	enemy.aim_at_player(delta)
 	
-	if enemy.path.empty():
+	if enemy.check_range():
 		enemy.ready_for_action()
 		path_updated = false
 		return true
 	return false
 
 func take_action(enemy: KinematicBody, delta: float):
-	enemy.world_state["in_cover"] = true
 	enemy.go_to_next_action()

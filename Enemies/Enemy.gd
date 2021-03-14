@@ -2,6 +2,7 @@ extends KinematicBody
 class_name Enemy
 
 var ENEMY_SPEED: int = 6
+var ENEMY_RANGE: float = 60.0
 
 var nav: Navigation = null
 var player = null
@@ -22,7 +23,8 @@ var world_state: Dictionary = {
 	"can_see_player" : false, 
 	"in_cover" : false,
 	"has_target" : false,
-	"patrolling" : true
+	"patrolling" : true,
+	"in_range" : false,
 }
 
 var action_plan: Array
@@ -191,6 +193,9 @@ func check_goal() -> bool:
 
 func replan_actions():
 	state = IDLE
+	check_range()
+	check_vision()
+	check_cover()
 
 func ready_for_action():
 	state = TAKE_ACTION
@@ -204,13 +209,17 @@ func go_to_next_action():
 
 func _process(delta):
 	
-	#if state != IDLE and ($ReplanTimer.get_time_left() == 0 or not $GOAP_Planner.check_current_goal(world_state)):
-	if state != IDLE and not $GOAP_Planner.check_current_goal(world_state):
+	if player != null and player.is_dead:
+		return
+	
+	if state != IDLE and not check_goal():
 		state = IDLE
 		action_index = 0
 		rng.randomize()
-		$ReplanTimer.set_wait_time(rng.randf_range(3.5, 5.0))
-		$ReplanTimer.start()
+		#ReplanTimer currently does nothing
+		#Functionality in place to possibly replan actions at semi-random time intervals
+#		$ReplanTimer.set_wait_time(rng.randf_range(3.5, 5.0))
+#		$ReplanTimer.start()
 	
 	match state:
 		IDLE:
@@ -224,6 +233,17 @@ func _process(delta):
 	
 	return
 
+func check_cover():
+	if currentNode == null or translation.distance_to(currentNode.translation) > 1:
+		world_state["in_cover"] = false
+		
+
+func check_range():
+	if player == null:
+		world_state["in_range"] = false
+	else:
+		world_state["in_range"] = translation.distance_to(player.translation) < ENEMY_RANGE
+	return world_state["in_range"]
 
 # Length of path to a point
 func get_path_distance_to(goal: Vector3) -> float:
