@@ -18,7 +18,6 @@ var path_updated = false
 func move_to(enemy: Enemy, delta: float) -> bool:
 	
 	if not path_updated:
-		enemy.clear_node_data()
 		enemy.update_path(enemy.player.translation)
 		path_updated = true
 	enemy.move_along_path(delta)
