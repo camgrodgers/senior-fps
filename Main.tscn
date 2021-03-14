@@ -9,6 +9,3 @@ script = ExtResource( 1 )
 [node name="Level" type="Spatial" parent="."]
 
 [node name="Menu" parent="." instance=ExtResource( 2 )]
-[connection signal="level_selected" from="Menu" to="." method="_on_Menu_level_selected"]
-[connection signal="quit" from="Menu" to="." method="_on_Menu_quit"]
-[connection signal="restart_level" from="Menu" to="." method="_on_Menu_restart_level"]

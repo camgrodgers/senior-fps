@@ -19,6 +19,8 @@ func _ready() -> void:
 	$HUD.camera = $CameraHolder
 	$HUD.player = self
 	signals.connect("recoil", self, "_on_weapon_recoil")
+	signals.connect("camera_zoom",self,"_on_zoom_camera")
+	signals.connect("camera_unzoom",self,"_on_unzoom_camera")
 	for weapon in weapon_holder.get_children():
 		weapon.set_ray(ray)
 		_unequip_weapon(weapon)
@@ -294,6 +296,7 @@ var aim_y: float = 0.00
 var aim_shake_width: float = .005
 var aim_shake_speed: float = 5
 var _aim_shake_counter: float = 0.5
+var _zoomed: bool = false
 
 func _aim_shake(delta: float) -> void:
 	if _aim_shake_counter == INF:
@@ -309,6 +312,14 @@ var _goal_recoil: float = 0
 var _recoil: float = 0
 const RECOIL_MAX_ANGLE: float = 15.0
 
+func _on_zoom_camera(amount: int) -> void:
+	$CameraHolder/Camera.fov = amount
+	_zoomed = true
+
+func _on_unzoom_camera() -> void:
+	$CameraHolder/Camera.fov = 90
+	_zoomed = false
+	
 func _on_weapon_recoil(force: float) -> void:
 	_goal_recoil = clamp(_goal_recoil + force, 0, RECOIL_MAX_ANGLE)
 
@@ -339,7 +350,8 @@ func _input(event: InputEvent) -> void:
 	
 	var inverse_x_factor: int = 1 if settings.inverse_x else -1
 	var inverse_y_factor: int = 1 if settings.inverse_y else -1
-	var turn_speed: float = settings.mouse_sensitivity / 50
+	var turn_speed: float = (settings.mouse_sensitivity / 
+		(50 if not _zoomed else 100))
 	
 	aim_x += event.relative.x * turn_speed * inverse_x_factor
 	aim_y += event.relative.y * turn_speed * inverse_y_factor
