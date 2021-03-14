@@ -1,7 +1,8 @@
 extends HitScanWeapon
 class_name SNIPER
 
-signal sniper_raise(raise)
+signal camera_zoom(amount)
+signal camera_unzoom;
 
 
 func _ready():
@@ -27,12 +28,12 @@ func _physics_process(delta):
 		emit_signal("expose_ammo_count", ammo_loaded, ammo_backup, AMMO_PER_MAG)
 		if not raised:
 			$AnimationPlayer.play("Raise")
-			emit_signal("sniper_raise",true)
+			emit_signal("camera_zoom",40)
 	else:
 		if raised:
 			$AnimationPlayer.play_backwards("Raise")
 			emit_signal("hide_ammo_count")
-			emit_signal("sniper_raise",false)
+			emit_signal("camera_unzoom")
 		
 	if _primary_pressed:
 		if not _secondary_pressed:
