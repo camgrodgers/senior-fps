@@ -19,6 +19,8 @@ func _ready() -> void:
 	$HUD.player = self
 	for weapon in weapon_holder.get_children():
 		weapon.connect("recoil", self, "_on_weapon_recoil")
+		weapon.connect("camera_zoom",self,"_on_zoom_camera")
+		weapon.connect("camera_unzoom",self,"_on_unzoom_camera")
 		weapon.connect("expose_ammo_count", $HUD, "_on_expose_ammo_count")
 		weapon.connect("hide_ammo_count", $HUD, "_on_hide_ammo_count")
 		weapon.set_ray(ray)
@@ -310,6 +312,12 @@ var _goal_recoil: float = 0
 var _recoil: float = 0
 const RECOIL_MAX_ANGLE: float = 15.0
 
+func _on_zoom_camera(amount: int) -> void:
+	$CameraHolder/Camera.fov = amount
+
+func _on_unzoom_camera() -> void:
+	$CameraHolder/Camera.fov = 90
+	
 func _on_weapon_recoil(force: float) -> void:
 	_goal_recoil = clamp(_goal_recoil + force, 0, RECOIL_MAX_ANGLE)
 
