@@ -12,9 +12,10 @@ var effects = {
 	"has_target" : false
 }
 
-var cost = 1
+var cost = 2
 var path_updated = false
 var crouched = false
+var peek_timer = 0.0
 var crouch_timer = 0.0
 var crouch_distance = 1.0
 
@@ -24,6 +25,7 @@ func move_to(enemy: Enemy, delta: float) -> bool:
 	if enemy.world_state["can_see_player"] == true && not path_updated && enemy.currentNode in enemy.coverNodes:
 		enemy.translation.y -= crouch_distance
 		crouched = true
+		enemy.set_damage(0.0)
 		enemy.ready_for_action()
 		return true
 	
@@ -32,11 +34,13 @@ func move_to(enemy: Enemy, delta: float) -> bool:
 		path_updated = true
 	enemy.move_along_path(delta)
 	enemy.aim_at_player(delta)
-	enemy.check_vision()
+	if enemy.check_vision():
+		peek_timer += delta
 	
-	if enemy.world_state["can_see_player"] == true:
+	if enemy.world_state["can_see_player"] == true and peek_timer > 0.5:
 		enemy.ready_for_action()
 		path_updated = false
+		peek_timer = 0.0
 		return true
 	return false
 	
@@ -47,10 +51,10 @@ func take_action(enemy: KinematicBody, delta: float) -> bool:
 		if crouched:
 			enemy.translation.y += crouch_distance
 			crouched = false
+			enemy.reset_damage()
 			return true
 	
 	if crouched:
-		enemy._shoot_timer += delta
 		crouch_timer += delta
 		if not (enemy.currentNode in enemy.coverNodes):
 			enemy.shoot_around_player(delta)
@@ -58,18 +62,21 @@ func take_action(enemy: KinematicBody, delta: float) -> bool:
 			enemy.translation.y += crouch_distance
 			crouch_timer = 0.0
 			crouched = false
+			enemy.reset_damage()
 			return true
-		if crouch_timer < 3.0 or enemy._shoot_timer < enemy._shoot_interval:
+		if crouch_timer < 3.0:
 			return false
 		crouch_timer = 0.0
 		enemy.translation.y += crouch_distance
 		crouched = false
+		enemy.reset_damage()
 	
+	enemy.check_vision()
+	enemy.aim_at_player(delta)
 	if enemy.world_state["can_see_player"]:
 		enemy.shoot_around_player(delta)
 	
 	enemy.cover_timer += delta
-	enemy.aim_at_player(delta)
 	if enemy.cover_timer > 1.5:
 		enemy.cover_timer = 0
 		if enemy.translation.distance_to(enemy.currentNode.translation) > 1:

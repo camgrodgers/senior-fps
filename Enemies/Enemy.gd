@@ -7,6 +7,7 @@ var ENEMY_SPEED: int = 6
 var ENEMY_RANGE: float = 60.0
 var MAX_HP: float = 2.0
 var DAMAGE_MULTIPLIER: float = 1.0
+var current_damage_mult = DAMAGE_MULTIPLIER
 
 var nav: Navigation = null
 var player = null
@@ -310,3 +311,8 @@ func alert_to_player() -> void:
 
 func update_last_player_position(position: Vector3) -> void:
 	last_player_position = position
+
+func set_damage(d_mult: float):
+	current_damage_mult = d_mult
+func reset_damage():
+	current_damage_mult = DAMAGE_MULTIPLIER

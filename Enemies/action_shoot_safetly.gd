@@ -18,6 +18,7 @@ var safety_cover_timer = 0
 var crouched = false
 var crouch_timer = 0.0
 var crouch_distance = 1.0
+var peek_timer = 0.0
 
 func move_to(enemy: Enemy, delta: float) -> bool:
 	
@@ -25,10 +26,6 @@ func move_to(enemy: Enemy, delta: float) -> bool:
 	if not (enemy.currentNode in enemy.coverNodes):
 		enemy.clear_node_data()
 		enemy.replan_actions()
-		if crouched:
-			enemy.translation.y += crouch_distance
-			crouched = false
-			crouch_timer = 0.0
 		safety_cover_timer = 0
 		path_updated = false
 		return true
@@ -37,6 +34,7 @@ func move_to(enemy: Enemy, delta: float) -> bool:
 	if enemy.world_state["can_see_player"] == true && not path_updated && enemy.currentNode in enemy.coverNodes:
 		enemy.translation.y -= crouch_distance
 		crouched = true
+		enemy.set_damage(0.0)
 		enemy.ready_for_action()
 		return true
 	if not path_updated and safety_cover_timer > 3.5:
@@ -46,11 +44,13 @@ func move_to(enemy: Enemy, delta: float) -> bool:
 	if path_updated:
 		enemy.move_along_path(delta)
 		enemy.aim_at_player(delta)
-		enemy.check_vision()
+		if enemy.check_vision():
+			peek_timer += delta
 	
-	if enemy.world_state["can_see_player"] == true:
+	if enemy.world_state["can_see_player"] == true and peek_timer > 0.5:
 		enemy.ready_for_action()
 		path_updated = false
+		peek_timer = 0.0
 		return true
 	return false
 	
@@ -61,9 +61,9 @@ func take_action(enemy: KinematicBody, delta: float) -> bool:
 		if crouched:
 			enemy.translation.y += crouch_distance
 			crouched = false
+			enemy.reset_damage()
 			return true
 	if crouched:
-		enemy._shoot_timer += delta
 		crouch_timer += delta
 		if not (enemy.currentNode in enemy.coverNodes):
 			enemy.shoot_around_player(delta)
@@ -71,17 +71,16 @@ func take_action(enemy: KinematicBody, delta: float) -> bool:
 			enemy.translation.y += crouch_distance
 			crouch_timer = 0.0
 			crouched = false
+			enemy.reset_damage()
 			return true
-		if crouch_timer < 5.0 or enemy._shoot_timer < enemy._shoot_interval:
+		if crouch_timer < 5.0:
 			return false
 		crouch_timer = 0.0
 		enemy.translation.y += crouch_distance
 		crouched = false
-		if enemy.world_state["can_see_player"]:
-			enemy.shoot_around_player(delta)
-			enemy.go_to_next_action()
-			return true
-			
+		enemy.reset_damage()
+	
+	enemy.check_vision()
 	enemy.cover_timer += delta
 	enemy.aim_at_player(delta)
 	if enemy.world_state["can_see_player"]:

@@ -73,7 +73,7 @@ func rate_of_danger_increase(enemy) -> float:
 	else:
 		rate = 30
 	
-	rate = rate * enemy.DAMAGE_MULTIPLIER
+	rate = rate * enemy.current_damage_mult
 	
 	var speed_factor: float = 1
 	if player_speed < 4:
