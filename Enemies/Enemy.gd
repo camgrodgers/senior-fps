@@ -265,6 +265,7 @@ func get_path_distance(path_array: Array) -> float:
 
 func clear_node_data() -> void:
 	path.clear()
+	world_state["in_cover"] = false
 	if currentNode != null:
 		currentNode.occupied = false
 		currentNode.occupied_by = null
@@ -283,6 +284,7 @@ func take_damage(damage: float) -> void:
 	if HP > 0:
 		$CSGCombiner/CSGCylinder.visible = false
 		$CSGCombiner/CSGCylinder2.visible = true
+		replan_actions()
 		return
 	var corpse_scn: Resource = preload("res://Enemies/DeadEnemy.tscn")
 	var corpse = corpse_scn.instance()
