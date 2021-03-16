@@ -29,6 +29,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://Enemies/Enemy.gd"
 }, {
+"base": "SnapToTerrain",
+"class": "EnemySpawn",
+"language": "GDScript",
+"path": "res://LevelObjects/EnemySpawn.gd"
+}, {
 "base": "HitScanWeapon",
 "class": "Glock18",
 "language": "GDScript",
@@ -69,6 +74,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://LevelObjects/SnapToTerrain.gd"
 }, {
+"base": "Area",
+"class": "SpawnTrigger",
+"language": "GDScript",
+"path": "res://LevelObjects/SpawnTrigger.gd"
+}, {
 "base": "ImmediateGeometry",
 "class": "Tracer",
 "language": "GDScript",
@@ -79,6 +89,7 @@ _global_script_class_icons={
 "AmmoDrop": "",
 "AnimatedCrosshair": "",
 "Enemy": "",
+"EnemySpawn": "",
 "Glock18": "",
 "HitScanWeapon": "",
 "Level": "",
@@ -87,6 +98,7 @@ _global_script_class_icons={
 "Player": "",
 "SNIPER": "",
 "SnapToTerrain": "",
+"SpawnTrigger": "",
 "Tracer": ""
 }
 

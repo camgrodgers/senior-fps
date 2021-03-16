@@ -3,9 +3,6 @@ extends Level
 func _ready():
 	add_instances()
 	update_cover()
-	signals.connect("temporary_object_spawned",
-			self,
-			"_on_temporary_object_spawned")
 
 func _process(delta):
 	if enemies.get_child_count() == 0:
@@ -27,7 +24,6 @@ func _process(delta):
 	update_cover()
 	
 func spawn_enemies():
-	var i: int = 0
 	var spawns: Array = $EnemySpawns.get_children()
 	spawns.shuffle()
 	for spawn in spawns:
@@ -40,8 +36,6 @@ func spawn_enemies():
 		enemy_instance.translation = get_closest_point(Vector3(spawn.translation.x, 0, spawn.translation.z))
 		enemy_instance.patrolNodes = $PatrolRoutes.get_child(0).get_children()
 		enemy_instance.coverNodes = coverNodes
-		i += 1
-#		if i == round(max_enemies_counter): return
 		
 
 func add_instances():

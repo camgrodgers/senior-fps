@@ -2,10 +2,12 @@
 
 [ext_resource path="res://LevelObjects/EnemySpawn.gd" type="Script" id=1]
 
-
 [sub_resource type="SpatialMaterial" id=1]
 albedo_color = Color( 1, 0.0156863, 0.0156863, 1 )
 
-[node name="EnemySpawn" type="CSGBox"]
-material = SubResource( 1 )
+[node name="EnemySpawn" type="Spatial"]
 script = ExtResource( 1 )
+
+[node name="EnemySpawn" type="CSGBox" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.0116, 0 )
+material = SubResource( 1 )
