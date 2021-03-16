@@ -3,6 +3,7 @@ extends Level
 func _ready():
 	add_instances()
 	update_cover()
+	signals.connect("restart_level", self, "_on_restart_level")
 
 func _process(delta):
 	if enemies.get_child_count() == 0:
@@ -11,8 +12,11 @@ func _process(delta):
 	# NOTE: it might make sense to replace this bool flag with a signal
 	if not(player.is_dead and Input.is_action_pressed("jump")):
 		return
-#	max_enemies_counter = 0
 	
+	signals.emit_signal("restart_level")
+
+
+func _on_restart_level():
 	remove_child(enemies)
 	enemies.queue_free()
 	get_tree().call_group("temporary_level_objects", "queue_free")
@@ -22,7 +26,8 @@ func _process(delta):
 	
 	add_instances()
 	update_cover()
-	
+
+
 func spawn_enemies():
 	var spawns: Array = $EnemySpawns.get_children()
 	spawns.shuffle()
