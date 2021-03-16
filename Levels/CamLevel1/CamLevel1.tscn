@@ -76,7 +76,7 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -8.16173, 1.22, 6.68746 )
 loop = true
 
 [node name="PatrolNode" parent="PatrolRoutes/PatrolRoute2" instance=ExtResource( 8 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -23.7487, 1.61048, -54.3528 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -23.728, 1.61062, -54.285 )
 
 [node name="PatrolNode2" parent="PatrolRoutes/PatrolRoute2" instance=ExtResource( 8 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 22.7508, 1.22, 16.3319 )
