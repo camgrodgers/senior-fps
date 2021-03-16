@@ -8,7 +8,6 @@ var ENEMY_SPEED: int = 6
 var nav: Navigation = null
 var player = null
 export var patrolNodes: Array = []
-export var coverNodes: Array = []
 var path: Array = []
 
 export var patrolNodeIndex = 1
@@ -76,6 +75,7 @@ func move_along_path(delta: float, lookat: bool = false) -> void:
 
 # Find the nearest node to take cover at
 func get_shortest_node():
+	var coverNodes = get_tree().get_nodes_in_group("navnodes_not_seen_by_player")
 	var shortestNodePathDistance = INF
 	var shortestNodePathIndex = null
 	var currentNodePathIndex = 0
@@ -99,8 +99,12 @@ func prep_node(node):
 		clear_node_data()
 	update_path(node.translation)
 	currentNode = node
-	currentNode.occupied = true
-	currentNode.occupied_by = self
+	currentNode.mark_occupied(self)
+
+func clear_node_data() -> void:
+	path.clear()
+	if currentNode != null:
+		currentNode.mark_not_occupied()
 
 # Check if player is visible inside the enemy's vision cone
 func check_vision() -> bool:
@@ -241,11 +245,6 @@ func get_path_distance(path_array: Array) -> float:
 		total_distance += path_array[i].distance_to(path_array[i + 1])
 	return total_distance
 
-func clear_node_data() -> void:
-	path.clear()
-	if currentNode != null:
-		currentNode.occupied = false
-		currentNode.occupied_by = null
 
 # Respond to player attacks
 var HP: float = 2.0

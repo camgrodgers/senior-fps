@@ -40,7 +40,6 @@ func spawn_enemies():
 		enemy_instance.player = player
 		enemy_instance.translation = get_closest_point(Vector3(spawn.translation.x, 0, spawn.translation.z))
 		enemy_instance.patrolNodes = $PatrolRoutes.get_child(0).get_children()
-		enemy_instance.coverNodes = coverNodes
 		
 
 func add_instances():
@@ -60,11 +59,6 @@ func add_instances():
 		enemy_instance.player = player
 		enemy_instance.translation = get_closest_point(Vector3(patrol_route.get_child(0).translation.x, 0, patrol_route.get_child(0).translation.z))
 		enemy_instance.patrolNodes = patrol_route.get_children()
-		enemy_instance.coverNodes = coverNodes
-		
-	for node in $NavNodes.get_children():
-		node.NODE_TYPE = 'nav'
-		node.occupied = false
 	
 	update_cover()
 
