@@ -42,8 +42,9 @@ func take_action(enemy: KinematicBody, delta: float) -> bool:
 	enemy.aim_at_player(delta)
 	if enemy.cover_timer > 1.5:
 		enemy.cover_timer = 0
-		enemy.world_state["in_cover"] = false
-		enemy.clear_node_data()
+		if enemy.translation.distance_to(enemy.currentNode.translation) > 1:
+			enemy.world_state["in_cover"] = false
+			enemy.clear_node_data()
 		enemy.go_to_next_action()
 		return true
 	return false
