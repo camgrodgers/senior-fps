@@ -109,6 +109,7 @@ func prep_node(node):
 
 func clear_node_data() -> void:
 	path.clear()
+	world_state["in_cover"] = false
 	if currentNode != null:
 		currentNode.mark_not_occupied()
 

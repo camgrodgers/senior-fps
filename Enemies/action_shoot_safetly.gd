@@ -23,7 +23,7 @@ var peek_timer = 0.0
 func move_to(enemy: Enemy, delta: float) -> bool:
 	
 	safety_cover_timer += delta
-	if not (enemy.currentNode in enemy.coverNodes):
+	if enemy.currentNode.visible_to_player:
 		enemy.clear_node_data()
 		enemy.replan_actions()
 		safety_cover_timer = 0
@@ -31,7 +31,7 @@ func move_to(enemy: Enemy, delta: float) -> bool:
 		return true
 	
 	enemy.check_vision()
-	if enemy.world_state["can_see_player"] == true && not path_updated && enemy.currentNode in enemy.coverNodes:
+	if enemy.world_state["can_see_player"] == true && not path_updated && not enemy.currentNode.visible_to_player:
 		enemy.translation.y -= crouch_distance
 		crouched = true
 		enemy.set_damage(0.0)
@@ -65,7 +65,7 @@ func take_action(enemy: KinematicBody, delta: float) -> bool:
 			return true
 	if crouched:
 		crouch_timer += delta
-		if not (enemy.currentNode in enemy.coverNodes):
+		if enemy.currentNode.visible_to_player:
 			enemy.shoot_around_player(delta)
 			enemy.go_to_next_action()
 			enemy.translation.y += crouch_distance
