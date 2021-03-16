@@ -64,6 +64,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://Equippables/SNIPER.gd"
 }, {
+"base": "Spatial",
+"class": "SnapToTerrain",
+"language": "GDScript",
+"path": "res://LevelObjects/SnapToTerrain.gd"
+}, {
 "base": "ImmediateGeometry",
 "class": "Tracer",
 "language": "GDScript",
@@ -81,6 +86,7 @@ _global_script_class_icons={
 "PatrolNode": "",
 "Player": "",
 "SNIPER": "",
+"SnapToTerrain": "",
 "Tracer": ""
 }
 
