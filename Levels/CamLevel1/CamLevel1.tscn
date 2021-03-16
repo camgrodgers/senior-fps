@@ -32,34 +32,34 @@ script = ExtResource( 5 )
 [node name="EnemySpawns" type="Spatial" parent="."]
 
 [node name="EnemySpawn" parent="EnemySpawns" instance=ExtResource( 3 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -145.953, 2.24117, 56.8549 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -145.953, 0, 56.8549 )
 
 [node name="EnemySpawn2" parent="EnemySpawns" instance=ExtResource( 3 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -88.11, 2.24117, 116.772 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -88.11, 0, 116.772 )
 
 [node name="EnemySpawn3" parent="EnemySpawns" instance=ExtResource( 3 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 4.55752, 2.24117, 162.816 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 4.55752, 0, 162.816 )
 
 [node name="EnemySpawn4" parent="EnemySpawns" instance=ExtResource( 3 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 102.692, 2.24117, 106.481 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 102.692, 0, 106.481 )
 
 [node name="EnemySpawn5" parent="EnemySpawns" instance=ExtResource( 3 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 183.26, 2.24117, -8.21243 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 183.26, 0, -8.21243 )
 
 [node name="EnemySpawn6" parent="EnemySpawns" instance=ExtResource( 3 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 133.718, 2.24117, -149.666 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 133.718, 0, -149.666 )
 
 [node name="EnemySpawn7" parent="EnemySpawns" instance=ExtResource( 3 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -62.2984, 2.24117, -207.438 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -62.2984, 0, -207.438 )
 
 [node name="EnemySpawn8" parent="EnemySpawns" instance=ExtResource( 3 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -151.645, 2.24117, -135.526 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -151.645, 0, -135.526 )
 
 [node name="EnemySpawn9" parent="EnemySpawns" instance=ExtResource( 3 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -147.243, 2.24117, -25.43 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -147.243, 0, -25.43 )
 
 [node name="EnemySpawn10" parent="EnemySpawns" instance=ExtResource( 3 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -147.243, 2.24117, 14.0879 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -147.243, -1.49012e-08, 14.0879 )
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = ExtResource( 1 )
@@ -132,34 +132,34 @@ loop = true
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -61.9411, 11.02, 27.6919 )
 
 [node name="PatrolNode2" parent="PatrolRoutes/PatrolRoute1" instance=ExtResource( 8 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -8.16173, 1.21, 6.68746 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -8.16173, 1.22, 6.68746 )
 
 [node name="PatrolRoute2" parent="PatrolRoutes" instance=ExtResource( 7 )]
 loop = true
 
 [node name="PatrolNode" parent="PatrolRoutes/PatrolRoute2" instance=ExtResource( 8 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -24.2788, 1.597, -56.0921 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -23.9796, 1.60897, -55.1104 )
 
 [node name="PatrolNode2" parent="PatrolRoutes/PatrolRoute2" instance=ExtResource( 8 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 22.7508, 1.21, 16.3319 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 22.7508, 1.22, 16.3319 )
 
 [node name="PatrolRoute3" parent="PatrolRoutes" instance=ExtResource( 7 )]
 loop = true
 
 [node name="PatrolNode" parent="PatrolRoutes/PatrolRoute3" instance=ExtResource( 8 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -33.8853, 1.21, 38.492 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -33.8853, 1.22, 38.492 )
 
 [node name="PatrolNode2" parent="PatrolRoutes/PatrolRoute3" instance=ExtResource( 8 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 15.527, 1.21, 25.7214 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 15.527, 1.22, 25.7214 )
 
 [node name="PatrolRoute4" parent="PatrolRoutes" instance=ExtResource( 7 )]
 loop = true
 
 [node name="PatrolNode" parent="PatrolRoutes/PatrolRoute4" instance=ExtResource( 8 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 13.5686, 1.21, -21.694 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 13.5686, 1.22, -21.694 )
 
 [node name="PatrolNode2" parent="PatrolRoutes/PatrolRoute4" instance=ExtResource( 8 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -63.9556, 1.21, 40.9143 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -63.9556, 1.22, 40.9143 )
 
 [node name="PlayerSpawn" parent="." instance=ExtResource( 9 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 134.179, 2.19285, -10.9436 )

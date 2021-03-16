@@ -29,4 +29,4 @@ func reposition(delta: float) -> void:
 	if ray.empty(): return
 	
 	var snap_point: Vector3 = ray.position
-	translation = snap_point
+	global_transform.origin = snap_point
