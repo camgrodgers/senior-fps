@@ -14,8 +14,7 @@ var path_updated = false
 
 
 func move_to(enemy: KinematicBody, delta: float) -> bool:
-	
-	if enemy.coverNodes.empty():
+	if get_tree().get_nodes_in_group("navnodes_not_seen_by_player").empty():
 		enemy.ready_for_action()
 		path_updated = false
 		return true

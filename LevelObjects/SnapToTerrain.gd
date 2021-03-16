@@ -7,11 +7,12 @@ export(bool) var snap = true
 
 func _process(delta) -> void:
 	if Engine.editor_hint:
-		reposition(delta)
+		if snap:
+			reposition()
 
 # Tool code
 var last_translation: Vector3 = self.translation
-func reposition(delta: float) -> void:
+func reposition() -> void:
 	if translation == last_translation:
 		return
 	last_translation = translation

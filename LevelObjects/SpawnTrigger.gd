@@ -6,7 +6,13 @@ onready var enemy_scn: Resource = preload("res://Enemies/Enemy.tscn")
 
 export(bool) var deactivate_when_triggered = true
 
+var triggered: bool = false
+
+func _ready():
+	signals.connect("restart_level", self, "_on_restart_level")
+
 func _on_SpawnTrigger_body_entered(body):
+	if triggered: return
 	if not body is Player: return
 	
 	var enemies: Array = []
@@ -18,4 +24,7 @@ func _on_SpawnTrigger_body_entered(body):
 			s.enemy_type)
 
 	if deactivate_when_triggered:
-		self.queue_free()
+		triggered = true
+
+func _on_restart_level():
+	triggered = false
