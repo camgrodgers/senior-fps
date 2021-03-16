@@ -4,11 +4,15 @@ class_name Player
 onready var PlayerStats: Node = $PlayerStats
 
 var is_dead: bool = false
+<<<<<<< Updated upstream
 var debug: bool = false
 var devmode: bool = false
 var slowMo: bool = false
 
 var playerAltLevel = 1
+=======
+var slowMo: bool = false
+>>>>>>> Stashed changes
 
 onready var ray = $CameraHolder/Camera/RayCast
 onready	var weapon_holder = $CameraHolder/Camera/WeaponHolder
@@ -45,7 +49,11 @@ func _physics_process(delta) -> void:
 		Engine.time_scale = 1
 		slowMo = false
 		
+<<<<<<< Updated upstream
 	if PlayerStats.danger_level >= 100 && !debug:
+=======
+	if PlayerStats.danger_level >= 100 && !settings.invincibility:
+>>>>>>> Stashed changes
 		is_dead = true
 		$HUD.player_dead_message()
 		$Danger_Player.stop()
