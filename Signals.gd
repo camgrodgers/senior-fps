@@ -11,3 +11,4 @@ signal camera_zoom(amount)
 signal camera_unzoom()
 
 signal temporary_object_spawned(object)
+signal enemy_spawn_triggered(location, enemy_type)

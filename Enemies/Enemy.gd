@@ -129,7 +129,7 @@ func cast_to_player_hitboxes() -> bool:
 			$Gun.global_transform.origin,
 			h.global_transform.origin,
 			[self], # exclude
-			0b0011, # collides with 0...0, player, world
+			0b1011, # collides with 0...hiding, 0, player, world
 			true, # collide with bodies  
 			true) # collide with areas
 		if body_ray.empty():
