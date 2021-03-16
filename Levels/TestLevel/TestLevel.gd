@@ -3,6 +3,9 @@ extends Level
 func _ready():
 	add_instances()
 	update_cover()
+	signals.connect("temporary_object_spawned",
+			self,
+			"_on_temporary_object_spawned")
 
 func _process(delta):
 	if enemies.get_child_count() == 0:
@@ -51,7 +54,7 @@ func add_instances():
 	self.add_child(enemies)
 	
 	for patrol_route in $PatrolRoutes.get_children():
-		var enemy_instance: Enemy = enemy_scn.instance()
+		var enemy_instance = enemy_scn.instance()
 		enemies.add_child(enemy_instance)
 		
 		enemy_instance.nav = self

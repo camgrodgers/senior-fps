@@ -1,6 +1,8 @@
 extends KinematicBody
 class_name Enemy
 
+onready var signals: Signals = get_node("/root/Signals")
+
 var ENEMY_SPEED: int = 6
 var ENEMY_RANGE: float = 60.0
 
@@ -166,7 +168,7 @@ func shoot_around_player(delta):
 
 	if not world_state["can_see_player"]: return
 	var tracer: Tracer = Tracer.new()
-	get_tree().get_nodes_in_group("level")[0].add_child(tracer)
+	signals.emit_signal("temporary_object_spawned", tracer)
 	var from = $Gun.global_transform.origin
 	var to_vec = from.direction_to(player.global_transform.origin) * (player_distance * 2)
 	rng.randomize()
@@ -285,9 +287,9 @@ func take_damage(damage: float) -> void:
 	var weapon_drop = weapon_drop_scn.instance()
 	weapon_drop.transform = self.transform
 	weapon_drop.translation.y += 2
-	# TODO: replace this with something that lets the level manage corpses
-	get_parent().get_parent().add_child(corpse)
-	get_parent().get_parent().add_child(weapon_drop)
+	
+	signals.emit_signal("temporary_object_spawned", corpse)
+	signals.emit_signal("temporary_object_spawned", weapon_drop)
 	clear_node_data()
 	self.queue_free()
 

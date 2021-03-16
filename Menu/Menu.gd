@@ -1,9 +1,7 @@
 extends Control
 class_name Menu
 
-signal level_selected(filename)
-signal restart_level()
-signal quit()
+onready var signals = get_node("/root/Signals")
 
 onready var main = get_parent()
 onready var resume = $MarginContainer/HBoxContainer/Buttons/Resume
@@ -11,10 +9,12 @@ onready var restart = $MarginContainer/HBoxContainer/Buttons/Restart
 onready var level_select_menu = $MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/LevelSelectMenu
 onready var settings_menu = $MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/SettingsMenu
 
+func _ready():
+	signals.connect("level_selected", self, "_on_level_selected")
+
 func _process(delta):
 	resume.visible = main.in_game
 	restart.visible = main.in_game
-	
 	
 	if not main.in_game: return
 
@@ -27,12 +27,8 @@ func _process(delta):
 			Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 			self.visible = false
 
-
-
-func _on_LevelSelectMenu_level_selected(filename):
-	emit_signal("level_selected", filename)
+func _on_level_selected(filename):
 	_resume()
-
 
 func _on_LevelSelect_pressed():
 	level_select_menu.visible = not level_select_menu.visible
@@ -55,11 +51,11 @@ func _resume():
 	get_tree().paused = false
 
 func _on_Restart_pressed():
-	emit_signal("restart_level")
+	signals.emit_signal("restart_level")
 	_resume()
 
 
 func _on_Quit_pressed():
-	emit_signal("quit")
+	signals.emit_signal("quit")
 
 

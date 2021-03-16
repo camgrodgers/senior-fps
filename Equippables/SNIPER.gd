@@ -1,16 +1,15 @@
 extends HitScanWeapon
-class_name AK47
-
+class_name SNIPER
 
 func _ready():
-	ammo_loaded = 20
-	AMMO_PER_MAG = 20
+	ammo_loaded = 7
+	AMMO_PER_MAG = 7
 	ammo_backup = 100
 	$AnimationPlayer.play_backwards("Raise")
 	
 
 func _physics_process(delta):
-	chambering = clamp(chambering - delta, 0, 0.15)
+	chambering = clamp(chambering - delta, 0, 0.07)
 	_is_active = false
 	
 	if $AnimationPlayer.is_playing():
@@ -25,10 +24,12 @@ func _physics_process(delta):
 		signals.emit_signal("expose_ammo_count", ammo_loaded, ammo_backup, AMMO_PER_MAG)
 		if not raised:
 			$AnimationPlayer.play("Raise")
+			signals.emit_signal("camera_zoom",40)
 	else:
 		if raised:
 			$AnimationPlayer.play_backwards("Raise")
 			signals.emit_signal("hide_ammo_count")
+			signals.emit_signal("camera_unzoom")
 		
 	if _primary_pressed:
 		if not _secondary_pressed:
@@ -40,9 +41,9 @@ func _physics_process(delta):
 		$AnimationPlayer.play("Fire")
 		_spend_round()
 		signals.emit_signal("expose_ammo_count", ammo_loaded, ammo_backup, AMMO_PER_MAG)
-		chambering = 0.15
-		_fire_ray(1, 1)
-		signals.emit_signal("recoil", 4)
+		chambering = 0.07
+		_fire_ray(2, 2)
+		signals.emit_signal("recoil", 9)
 
 func unequip():
 	self.queue_free()

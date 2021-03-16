@@ -2,9 +2,14 @@ extends Node
 
 var current_level = null
 var in_game: bool = false
+onready var signals = get_node("/root/Signals")
 
 func _ready():
 	_load_screensaver()
+	signals.connect("level_selected", self, "_on_level_selected")
+	signals.connect("restart_level", self, "_on_restart_level")
+	signals.connect("quit", self, "_on_quit")
+	
 
 func _load_screensaver():
 	_load_level("res://Levels/JacobLevel2/JacobLevel2.tscn")
@@ -18,17 +23,17 @@ func _load_level(filename: String):
 	current_level = current_level_scn.instance()
 	$Level.add_child(current_level)
 
-func _on_Menu_level_selected(filename: String) -> void:
+func _on_level_selected(filename: String) -> void:
 	_load_level(filename)
 	$Menu.visible = false
 	in_game = true
 
 
-func _on_Menu_restart_level():
+func _on_restart_level():
 	pass
 
 
-func _on_Menu_quit():
+func _on_quit():
 	if in_game:
 		in_game = false
 		_load_screensaver()
