@@ -65,6 +65,11 @@ _global_script_classes=[ {
 "path": "res://Menu/Menu.gd"
 }, {
 "base": "CSGSphere",
+"class": "NavNode",
+"language": "GDScript",
+"path": "res://LevelObjects/NavNode.gd"
+}, {
+"base": "CSGSphere",
 "class": "PatrolNode",
 "language": "GDScript",
 "path": "res://LevelObjects/PatrolNode.gd"
@@ -106,6 +111,7 @@ _global_script_class_icons={
 "HitScanWeapon": "",
 "Level": "",
 "Menu": "",
+"NavNode": "",
 "PatrolNode": "",
 "Player": "",
 "SNIPER": "",
