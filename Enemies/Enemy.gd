@@ -5,6 +5,7 @@ onready var signals: Signals = get_node("/root/Signals")
 
 var ENEMY_SPEED: int = 6
 var ENEMY_RANGE: float = 60.0
+var MAX_HP: float = 2.0
 
 var nav: Navigation = null
 var player = null
@@ -27,6 +28,7 @@ var world_state: Dictionary = {
 	"has_target" : false,
 	"patrolling" : true,
 	"in_range" : false,
+	"in_danger" : false,
 }
 
 var action_plan: Array
@@ -268,7 +270,7 @@ func clear_node_data() -> void:
 		currentNode.occupied_by = null
 
 # Respond to player attacks
-var HP: float = 2.0
+var HP: float = MAX_HP
 
 
 func take_damage(damage: float) -> void:
@@ -276,6 +278,8 @@ func take_damage(damage: float) -> void:
 
 	alert_comrades()
 	HP -= damage
+	world_state["in_danger"] = HP / MAX_HP <= 0.5
+	
 	if HP > 0:
 		$CSGCombiner/CSGCylinder.visible = false
 		$CSGCombiner/CSGCylinder2.visible = true

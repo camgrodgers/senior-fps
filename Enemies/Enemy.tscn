@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=2]
+[gd_scene load_steps=19 format=2]
 
 [ext_resource path="res://Enemies/Enemy.gd" type="Script" id=1]
 [ext_resource path="res://Enemies/Enemy_audio_player.gd" type="Script" id=2]
@@ -10,6 +10,9 @@
 [ext_resource path="res://Enemies/goal_kill_player.gd" type="Script" id=8]
 [ext_resource path="res://Enemies/goal_patrol.gd" type="Script" id=9]
 [ext_resource path="res://Enemies/action_get_in_range.gd" type="Script" id=10]
+[ext_resource path="res://Enemies/action_shoot_safetly.gd" type="Script" id=11]
+[ext_resource path="res://Enemies/action_move_out_of_cover.gd" type="Script" id=12]
+[ext_resource path="res://Enemies/goal_stay_safe.gd" type="Script" id=13]
 
 [sub_resource type="CapsuleShape" id=1]
 radius = 0.5
@@ -123,6 +126,12 @@ script = ExtResource( 10 )
 [node name="action_patrolling" type="Node" parent="GOAP_Planner/Actions"]
 script = ExtResource( 6 )
 
+[node name="action_move_out_of_cover" type="Node" parent="GOAP_Planner/Actions"]
+script = ExtResource( 12 )
+
+[node name="action_shoot_safetly" type="Node" parent="GOAP_Planner/Actions"]
+script = ExtResource( 11 )
+
 [node name="Goals" type="Node" parent="GOAP_Planner"]
 
 [node name="goal_kill_player" type="Node" parent="GOAP_Planner/Goals"]
@@ -130,6 +139,9 @@ script = ExtResource( 8 )
 
 [node name="goal_patrol" type="Node" parent="GOAP_Planner/Goals"]
 script = ExtResource( 9 )
+
+[node name="goal_stay_safe" type="Node" parent="GOAP_Planner/Goals"]
+script = ExtResource( 13 )
 
 [node name="ReplanTimer" type="Timer" parent="."]
 wait_time = 1.5
