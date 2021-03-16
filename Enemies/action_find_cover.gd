@@ -23,8 +23,8 @@ func move_to(enemy: KinematicBody, delta: float) -> bool:
 		enemy.prep_node(enemy.get_shortest_node())
 		path_updated = true
 	enemy.move_along_path(delta)
+	enemy.aim_at_player(delta)
 	if enemy.check_vision():
-		enemy.aim_at_player(delta)
 		enemy.shoot_around_player(delta)
 	
 	if enemy.path.empty():

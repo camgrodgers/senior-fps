@@ -5,7 +5,9 @@ onready var signals: Signals = get_node("/root/Signals")
 
 onready var player_scn: Resource = preload("res://Player/Player.tscn")
 onready var enemy_scn: Resource = preload("res://Enemies/Enemy.tscn")
+onready var enemy_shotgun_scn: Resource = preload("res://Enemies/Enemy_Shotgun.tscn")
 
+var rng = RandomNumberGenerator.new()
 var coverNodes: Array = []
 var enemies: Spatial = null
 var player: Player = null
@@ -58,7 +60,13 @@ func update_cover() -> void:
 			n.visible_to_player = false
 
 func spawn_enemy(spawn_pos: Vector3, enemy_type: String) -> void:
-	var enemy_instance: KinematicBody = enemy_scn.instance()
+	rng.randomize()
+	var random_number = rng.randf_range(0.0, 1.0)
+	var enemy_instance: KinematicBody = null
+	if random_number > 0.8:
+		enemy_instance = enemy_shotgun_scn.instance()
+	else:
+		enemy_instance = enemy_scn.instance()
 	enemies.add_child(enemy_instance)
 	
 	enemy_instance.nav = self

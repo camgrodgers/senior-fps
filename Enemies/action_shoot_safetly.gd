@@ -4,6 +4,7 @@ var preconditions = {
 	"has_target" : true,
 	"in_cover": true,
 	"in_range": true,
+	"in_danger": true
 }
 
 var effects = {
@@ -62,6 +63,7 @@ func take_action(enemy: KinematicBody, delta: float) -> bool:
 			crouched = false
 			return true
 	if crouched:
+		enemy._shoot_timer += delta
 		crouch_timer += delta
 		if not (enemy.currentNode in enemy.coverNodes):
 			enemy.shoot_around_player(delta)
@@ -70,17 +72,21 @@ func take_action(enemy: KinematicBody, delta: float) -> bool:
 			crouch_timer = 0.0
 			crouched = false
 			return true
-		if crouch_timer < 5.0:
+		if crouch_timer < 5.0 or enemy._shoot_timer < enemy._shoot_interval:
 			return false
 		crouch_timer = 0.0
 		enemy.translation.y += crouch_distance
 		crouched = false
-	if enemy.world_state["can_see_player"]:
-		enemy.shoot_around_player(delta)
-	
+		if enemy.world_state["can_see_player"]:
+			enemy.shoot_around_player(delta)
+			enemy.go_to_next_action()
+			return true
+			
 	enemy.cover_timer += delta
 	enemy.aim_at_player(delta)
-	if enemy.cover_timer > 1.0:
+	if enemy.world_state["can_see_player"]:
+		enemy.shoot_around_player(delta)
+	if enemy.cover_timer > 1.5:
 		enemy.cover_timer = 0
 		if enemy.translation.distance_to(enemy.currentNode.translation) > 1:
 			enemy.world_state["in_cover"] = false

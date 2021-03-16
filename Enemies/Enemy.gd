@@ -6,6 +6,7 @@ onready var signals: Signals = get_node("/root/Signals")
 var ENEMY_SPEED: int = 6
 var ENEMY_RANGE: float = 60.0
 var MAX_HP: float = 2.0
+var DAMAGE_MULTIPLIER: float = 1.0
 
 var nav: Navigation = null
 var player = null
@@ -271,19 +272,19 @@ func clear_node_data() -> void:
 		currentNode.occupied_by = null
 
 # Respond to player attacks
-var HP: float = MAX_HP
+var HP: float = 0.0
 
 
 func take_damage(damage: float) -> void:
 	world_state["has_target"] = true
 
 	alert_comrades()
-	HP -= damage
-	world_state["in_danger"] = HP / MAX_HP <= 0.5
+	$CSGCombiner.get_node("CSGCylinder" + str(int(HP))).visible = false
+	HP += damage
+	world_state["in_danger"] = HP / MAX_HP >= 0.5
 	
-	if HP > 0:
-		$CSGCombiner/CSGCylinder.visible = false
-		$CSGCombiner/CSGCylinder2.visible = true
+	if HP < MAX_HP:
+		$CSGCombiner.get_node("CSGCylinder" + str(int(HP))).visible = true
 		replan_actions()
 		return
 	var corpse_scn: Resource = preload("res://Enemies/DeadEnemy.tscn")

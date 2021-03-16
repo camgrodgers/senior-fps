@@ -27,7 +27,13 @@ func spawn_enemies():
 	var spawns: Array = $EnemySpawns.get_children()
 	spawns.shuffle()
 	for spawn in spawns:
-		var enemy_instance: KinematicBody = enemy_scn.instance()
+		rng.randomize()
+		var random_number = rng.randf_range(0.0, 1.0)
+		var enemy_instance: KinematicBody = null
+		if random_number > 0.8:
+			enemy_instance = enemy_shotgun_scn.instance()
+		else:
+			enemy_instance = enemy_scn.instance()
 		enemies.add_child(enemy_instance)
 		
 		enemy_instance.nav = self
@@ -48,7 +54,13 @@ func add_instances():
 	self.add_child(enemies)
 	
 	for patrol_route in $PatrolRoutes.get_children():
-		var enemy_instance = enemy_scn.instance()
+		rng.randomize()
+		var random_number = rng.randf_range(0.0, 1.0)
+		var enemy_instance: KinematicBody = null
+		if random_number > 0.8:
+			enemy_instance = enemy_shotgun_scn.instance()
+		else:
+			enemy_instance = enemy_scn.instance()
 		enemies.add_child(enemy_instance)
 		
 		enemy_instance.nav = self

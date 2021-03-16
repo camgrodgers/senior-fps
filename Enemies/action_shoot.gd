@@ -50,6 +50,7 @@ func take_action(enemy: KinematicBody, delta: float) -> bool:
 			return true
 	
 	if crouched:
+		enemy._shoot_timer += delta
 		crouch_timer += delta
 		if not (enemy.currentNode in enemy.coverNodes):
 			enemy.shoot_around_player(delta)
@@ -58,7 +59,7 @@ func take_action(enemy: KinematicBody, delta: float) -> bool:
 			crouch_timer = 0.0
 			crouched = false
 			return true
-		if crouch_timer < 3.0:
+		if crouch_timer < 3.0 or enemy._shoot_timer < enemy._shoot_interval:
 			return false
 		crouch_timer = 0.0
 		enemy.translation.y += crouch_distance
