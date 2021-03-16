@@ -42,7 +42,8 @@ func reposition(delta: float) -> void:
 		
 		if nav == null:
 			# NOTE/TODO: This is ugly and bad? How should this be fixed?
-			var maybe_nav = get_parent().get_parent().get_parent()
+			var maybe_nav = get_tree().get_nodes_in_group("navigation")
+			maybe_nav = maybe_nav[0]
 			if maybe_nav is Navigation:
 				nav = maybe_nav
 			else:

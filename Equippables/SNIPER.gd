@@ -56,7 +56,7 @@ func inflict_melee_damage():
 	var bodies: Array = $Model/Area.get_overlapping_bodies()
 	for body in bodies:
 		if body.has_method("take_damage"):
-			body.take_damage()
+			body.take_damage(1)
 		if body is RigidBody:
 			var force = global_transform.origin.direction_to(body.translation) / 2
 			body.apply_central_impulse(force)
