@@ -273,19 +273,19 @@ func get_path_distance(path_array: Array) -> float:
 
 
 # Respond to player attacks
-var HP: float = 0.0
+var damage_taken: float = 0.0
 
 
 func take_damage(damage: float) -> void:
 	world_state["has_target"] = true
 
 	alert_comrades()
-	$CSGCombiner.get_node("CSGCylinder" + str(int(HP))).visible = false
-	HP += damage
-	world_state["in_danger"] = HP / MAX_HP >= 0.5
+	$CSGCombiner.get_node("CSGCylinder" + str(int(damage_taken))).visible = false
+	damage_taken += damage
+	world_state["in_danger"] = damage_taken / MAX_HP >= 0.5
 	
-	if HP < MAX_HP:
-		$CSGCombiner.get_node("CSGCylinder" + str(int(HP))).visible = true
+	if damage_taken < MAX_HP:
+		$CSGCombiner.get_node("CSGCylinder" + str(int(damage_taken))).visible = true
 		replan_actions()
 		return
 	var corpse_scn: Resource = preload("res://Enemies/DeadEnemy.tscn")

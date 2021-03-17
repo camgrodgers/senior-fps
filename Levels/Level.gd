@@ -53,13 +53,8 @@ func update_cover() -> void:
 			n.mark_not_visible()
 
 func spawn_enemy(spawn_pos: Vector3, enemy_type: String) -> void:
-	rng.randomize()
-	var random_number = rng.randf_range(0.0, 1.0)
-	var enemy_instance: KinematicBody = null
-	if random_number > 0.8:
-		enemy_instance = enemy_shotgun_scn.instance()
-	else:
-		enemy_instance = enemy_scn.instance()
+	
+	var enemy_instance = enemy_scn.instance()
 	enemies.add_child(enemy_instance)
 	
 	enemy_instance.nav = self
