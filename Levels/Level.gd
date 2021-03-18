@@ -36,7 +36,7 @@ func update_cover() -> void:
 			h.global_transform.origin,
 			n.global_transform.origin,
 			[], # exclude
-			0b100001, # collides with 0...0,navnodes, 0, 0, 0, 0, world
+			0b00001, # collides with 0...0, 0, 0, 0, world
 			true, # collide with bodies  
 			false) # collide with areas
 		if body_ray.empty():
