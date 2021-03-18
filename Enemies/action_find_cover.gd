@@ -2,6 +2,7 @@ extends Node
 
 var preconditions = {
 	"in_cover": false,
+	"in_range": true,
 }
 
 var effects = {
@@ -21,12 +22,9 @@ func move_to(enemy: KinematicBody, delta: float) -> bool:
 		enemy.prep_node(enemy.get_shortest_node())
 		path_updated = true
 	enemy.move_along_path(delta)
-	enemy.check_vision()
 	enemy.aim_at_player(delta)
-	enemy.shoot_around_player(delta)
-	if enemy.world_state["can_see_player"] == true:
-		if not enemy.get_node("Enemy_audio_player").playing():
-			enemy.get_node("Enemy_audio_player").play_sound(enemy.get_node("Enemy_audio_player").enemy_shot)
+	if enemy.check_vision():
+		enemy.shoot_around_player(delta)
 	
 	if enemy.path.empty():
 		enemy.ready_for_action()

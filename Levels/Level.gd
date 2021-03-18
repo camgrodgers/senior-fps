@@ -5,6 +5,10 @@ onready var signals: Signals = get_node("/root/Signals")
 
 onready var player_scn: Resource = preload("res://Player/Player.tscn")
 onready var enemy_scn: Resource = preload("res://Enemies/Enemy.tscn")
+onready var enemy_shotgun_scn: Resource = preload("res://Enemies/Enemy_Shotgun.tscn")
+
+
+var rng = RandomNumberGenerator.new()
 
 var enemies: Spatial = null
 var player: Player = null
@@ -32,7 +36,7 @@ func update_cover() -> void:
 			h.global_transform.origin,
 			n.global_transform.origin,
 			[], # exclude
-			0b100001, # collides with 0...0,navnodes, 0, 0, 0, 0, world
+			0b00001, # collides with 0...0, 0, 0, 0, world
 			true, # collide with bodies  
 			false) # collide with areas
 		if body_ray.empty():
@@ -49,7 +53,8 @@ func update_cover() -> void:
 			n.mark_not_visible()
 
 func spawn_enemy(spawn_pos: Vector3, enemy_type: String) -> void:
-	var enemy_instance: KinematicBody = enemy_scn.instance()
+	
+	var enemy_instance = enemy_scn.instance()
 	enemies.add_child(enemy_instance)
 	
 	enemy_instance.nav = self

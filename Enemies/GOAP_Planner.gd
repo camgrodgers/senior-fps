@@ -51,7 +51,7 @@ func get_goal_node(current_state: Dictionary) -> Node:
 			if not compare_states(current_state, goal.desired_state):
 				priority_goal = goal
 				continue
-		elif not compare_states(current_state, priority_goal.desired_state) and priority_goal.priority > goal.priority:
+		elif not compare_states(current_state, goal.desired_state) and priority_goal.priority > goal.priority:
 			priority_goal = goal
 	return priority_goal
 	
@@ -65,7 +65,7 @@ func check_current_goal(current_state: Dictionary) -> bool:
 			if not compare_states(current_state, goal.desired_state):
 				priority_goal = goal
 				continue
-		elif not compare_states(current_state, priority_goal.desired_state) and priority_goal.priority > goal.priority:
+		elif not compare_states(current_state, goal.desired_state) and priority_goal.priority > goal.priority:
 			priority_goal = goal
 	if current_goal == priority_goal:
 		return true
