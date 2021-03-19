@@ -13,8 +13,8 @@ var held_weapon: HitScanWeapon = null
 
 #Grenade 
 var grenade_count = 3;
-#var grenade_counter = 0;
 var grenade_scene = preload("res://Equippables/Grenade.tscn")
+var grenade1_scene = preload("res://Equippables/Grenade1.tscn")
 
 func _ready() -> void:
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
@@ -210,12 +210,22 @@ func _process_item_use(_delta: float) -> void:
 		if items_in_slots[2] != null: _switch_to_weapon(items_in_slots[2])
 	if Input.is_action_pressed("slot3"):
 		#if items_in_slots[3] != null: _switch_to_weapon(items_in_slots[3])
+		#if grenade_count > 0:
+			#grenade_count -= 1
+		#var grenade_clone = grenade_scene.instance()
+		#get_tree().root.add_child(grenade_clone)
+		#grenade_clone.global_transform = $CameraHolder/Camera/ItemHolder.global_transform
+		#renade_clone.apply_impulse(Vector3(0,0,0),grenade_clone.global_transform.basis.z * 70)
 		if grenade_count > 0:
 			grenade_count -= 1
-		var grenade_clone = grenade_scene.instance()
-		get_tree().root.add_child(grenade_clone)
-		grenade_clone.global_transform = $CameraHolder/Camera/ItemHolder.global_transform
-		grenade_clone.apply_impulse(Vector3(0,0,0),grenade_clone.global_transform.basis.z * 70)
+			var throwing = false
+			var grenade = grenade1_scene.instance()
+			weapon_holder.add_child(grenade)
+		#yield(get_tree().create_timer(1.76),"timeout")
+			grenade.global_transform = $CameraHolder/Camera/ItemHolder.global_transform
+			grenade.apply_impulse(Vector3(0,0,0),grenade.global_transform.basis.z * 20)
+			grenade.throw()
+			yield(get_tree().create_timer(3.25 - 1.76),"timeout")
 		
 		
 	if Input.is_action_pressed("slot4"):
