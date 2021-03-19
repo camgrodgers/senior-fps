@@ -11,6 +11,10 @@ onready	var weapon_holder = $CameraHolder/Camera/WeaponHolder
 onready var item_holder = $CameraHolder/Camera/ItemHolder
 var held_weapon: HitScanWeapon = null
 
+#Grenade 
+var grenade_count = 3;
+#var grenade_counter = 0;
+var grenade_scene = preload("res://Equippables/Grenade.tscn")
 
 func _ready() -> void:
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
@@ -205,7 +209,15 @@ func _process_item_use(_delta: float) -> void:
 	if Input.is_action_pressed("slot2"):
 		if items_in_slots[2] != null: _switch_to_weapon(items_in_slots[2])
 	if Input.is_action_pressed("slot3"):
-		if items_in_slots[3] != null: _switch_to_weapon(items_in_slots[3])
+		#if items_in_slots[3] != null: _switch_to_weapon(items_in_slots[3])
+		if grenade_count > 0:
+			grenade_count -= 1
+		var grenade_clone = grenade_scene.instance()
+		get_tree().root.add_child(grenade_clone)
+		grenade_clone.global_transform = $CameraHolder/Camera/ItemHolder.global_transform
+		grenade_clone.apply_impulse(Vector3(0,0,0),grenade_clone.global_transform.basis.z * 70)
+		
+		
 	if Input.is_action_pressed("slot4"):
 		if items_in_slots[4] != null: _switch_to_weapon(items_in_slots[4])
 	
