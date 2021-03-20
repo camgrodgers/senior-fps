@@ -1,7 +1,8 @@
 extends Enemy
 
 var enemy_owner = null
-
+var explosion_started = false
+var countdown_started = false
 func _init():
 	MAX_HP = 3.0
 	ENEMY_RANGE = 2.5
@@ -10,10 +11,15 @@ func _init():
 	world_state["has_target"] = true
 	world_state["patrolling"] = false
 func _ready():
-	$Enemy_audio_player.movement = preload("res://Sounds/Shotgun_shot.wav")
-	$Enemy_audio_player.enemy_shot = preload("res://Sounds/Shotgun_shot.wav")
+	$Enemy_audio_player.movement = preload("res://Sounds/Drone_movement.wav")
+	$Enemy_audio_player.enemy_shot = preload("res://Sounds/Explosion.wav")
+	$Enemy_audio_player.destruction_alert = preload("res://Sounds/beeps.wav")
+	replan_actions()
 	
 
+func _process(delta):
+	if not $Enemy_audio_player.playing():
+		$Enemy_audio_player.play_sound($Enemy_audio_player.movement)
 func take_damage(damage: float) -> void:
 
 	$CSGCombiner.get_node("CSGBox" + str(int(damage_taken))).visible = false
@@ -30,6 +36,12 @@ func take_damage(damage: float) -> void:
 	clear_node_data()
 	self.queue_free()
 
-func shoot_around_player(delta):
-	if not $Enemy_audio_player.playing():
+func explode():
+	if not explosion_started:
 		$Enemy_audio_player.play_sound($Enemy_audio_player.enemy_shot)
+		explosion_started = true
+
+func beep():
+	if not countdown_started:
+		$Enemy_audio_player.play_sound($Enemy_audio_player.destruction_alert)
+		countdown_started = true
