@@ -4,6 +4,7 @@ extends Node
 var inverse_x: bool = false
 var inverse_y: bool = false
 var mouse_sensitivity: float = 15
+var fov: float = 90
 
 # Temporary settings
 var invincibility: bool = false
@@ -23,6 +24,7 @@ func save_settings_to_file() -> void:
 	config.set_value("camera", "inverse_x", inverse_x)
 	config.set_value("camera", "inverse_y", inverse_y)
 	config.set_value("camera", "mouse_sensitivity", mouse_sensitivity)
+	config.set_value("camera", "fov", mouse_sensitivity)
 	config.save("user://FPS_settings.cfg")
 
 func set_inverse_x(val: bool) -> void:
@@ -38,4 +40,9 @@ func set_inverse_y(val: bool) -> void:
 func set_mouse_sensitivity(val: float) -> void:
 	if val == mouse_sensitivity: return
 	mouse_sensitivity = val
+	save_settings_to_file()
+
+func set_fov(val: float) -> void:
+	if val == fov: return
+	fov = val
 	save_settings_to_file()

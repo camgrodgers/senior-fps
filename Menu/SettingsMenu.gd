@@ -12,5 +12,7 @@ func _process(delta):
 	settings.set_inverse_y($InvertMouseY.pressed)
 	settings.set_mouse_sensitivity($MouseSlider/HSlider.value)
 	$MouseSlider/ValueLabel.text = "%d" % settings.mouse_sensitivity
+	settings.set_fov($FOVSlider/HSlider.value)
+	$FOVSlider/ValueLabel.text = "%d" % settings.fov
 	settings.invincibility = $Invincibility.pressed
 	settings.flying = $Flying.pressed
