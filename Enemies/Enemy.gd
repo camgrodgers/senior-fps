@@ -219,6 +219,7 @@ func go_to_next_action():
 		state = IDLE
 
 func _process(delta):
+	_danger_update(delta)
 	
 	if player != null and player.is_dead:
 		return
@@ -318,25 +319,28 @@ func reset_damage():
 	current_damage_mult = DAMAGE_MULTIPLIER
 
 # Danger calculation
-var danger_decrease_acceleration: float = 6
+var danger_decrease_acceleration: float = 3
 var danger_decrease_velocity: float = 0
 
-func danger_update(delta: float) -> void:
+func _danger_update(delta: float) -> void:
 	var rate = rate_of_danger_increase()
 	var player_position = player.translation
 	
 	player_danger = clamp(player_danger + (rate * delta), 0, 100)
 	if ((not world_state["can_see_player"])
 			and last_player_position.distance_to(player_position) < 6):
-		player_danger -= 3 * delta
+		player_danger -= danger_decrease_acceleration * delta
 		danger_decrease_velocity = 0
 	elif not world_state["can_see_player"]:
 		player_danger -= (danger_decrease_velocity) * delta
 	else:
 		danger_decrease_velocity = 0
 	
-	danger_decrease_velocity += (danger_decrease_acceleration * delta)
+	danger_decrease_velocity = (0 if player_danger == 0
+		else danger_decrease_velocity + (danger_decrease_acceleration * delta))
 
+# TODO: This should be turned into an abstract method when the default enemy is
+#		changed into an AK47 enemy or something
 func rate_of_danger_increase() -> float:
 	var player_speed: float = player.vel.length()
 	
