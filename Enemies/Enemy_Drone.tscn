@@ -1,0 +1,146 @@
+[gd_scene load_steps=19 format=2]
+
+[ext_resource path="res://Enemies/Enemy_Drone.gd" type="Script" id=1]
+[ext_resource path="res://Enemies/Enemy_audio_player.gd" type="Script" id=2]
+[ext_resource path="res://Enemies/GOAP_Planner.gd" type="Script" id=3]
+[ext_resource path="res://Enemies/action_self_destruct.gd" type="Script" id=4]
+[ext_resource path="res://Enemies/PriorityQueue.gd" type="Script" id=7]
+[ext_resource path="res://Enemies/goal_kill_player.gd" type="Script" id=8]
+[ext_resource path="res://Enemies/action_get_in_range.gd" type="Script" id=10]
+
+[sub_resource type="BoxShape" id=1]
+extents = Vector3( 1, 0.878, 1 )
+
+[sub_resource type="SpatialMaterial" id=2]
+albedo_color = Color( 1, 0.635294, 0.0117647, 1 )
+
+[sub_resource type="SpatialMaterial" id=3]
+albedo_color = Color( 1, 0.360784, 0.360784, 1 )
+
+[sub_resource type="SpatialMaterial" id=4]
+albedo_color = Color( 1, 0.0156863, 0.0156863, 1 )
+
+[sub_resource type="SpatialMaterial" id=5]
+albedo_color = Color( 0.141176, 0.141176, 0.141176, 1 )
+
+[sub_resource type="SpatialMaterial" id=6]
+albedo_color = Color( 0.141176, 0.141176, 0.141176, 1 )
+
+[sub_resource type="SpatialMaterial" id=7]
+albedo_color = Color( 0.141176, 0.141176, 0.141176, 1 )
+
+[sub_resource type="SpatialMaterial" id=8]
+albedo_color = Color( 0.141176, 0.141176, 0.141176, 1 )
+
+[sub_resource type="SpatialMaterial" id=9]
+albedo_color = Color( 1, 0, 0, 1 )
+
+[sub_resource type="BoxShape" id=10]
+extents = Vector3( 10, 10, 10 )
+
+[sub_resource type="ConvexPolygonShape" id=11]
+points = PoolVector3Array( 0, 0, 0, -100, 50, -100, 100, 50, -100, -100, -50, -100, 100, -50, -100 )
+
+[node name="Drone" type="KinematicBody" groups=[
+"enemies",
+]]
+collision_layer = 4
+collision_mask = 5
+script = ExtResource( 1 )
+
+[node name="Hitbox" type="CollisionShape" parent="."]
+transform = Transform( 0.696, 0, 0, 0, -4.67712e-08, -0.413, 0, 1.07, -1.80528e-08, 0, 0.190601, 0.00109588 )
+shape = SubResource( 1 )
+
+[node name="CSGCombiner" type="CSGCombiner" parent="."]
+
+[node name="CSGBox0" type="CSGBox" parent="CSGCombiner"]
+transform = Transform( 0.622, 0, 0, 0, 0.377, 0, 0, 0, 0.914, 0, 0.39, 0 )
+material = SubResource( 2 )
+
+[node name="CSGBox1" type="CSGBox" parent="CSGCombiner"]
+transform = Transform( 0.622, 0, 0, 0, 0.377, 0, 0, 0, 0.914, 0, 0.39, 0 )
+visible = false
+material = SubResource( 3 )
+
+[node name="CSGBox2" type="CSGBox" parent="CSGCombiner"]
+transform = Transform( 0.622, 0, 0, 0, 0.377, 0, 0, 0, 0.914, 0, 0.39, 0 )
+visible = false
+material = SubResource( 4 )
+
+[node name="CSGCylinder" type="CSGCylinder" parent="CSGCombiner"]
+transform = Transform( -4.07302e-08, -0.25, 0, 0.25, -4.07302e-08, 0, 0, 0, 0.25, -0.59237, 0.0564083, 0.585903 )
+material = SubResource( 5 )
+
+[node name="CSGCylinder2" type="CSGCylinder" parent="CSGCombiner"]
+transform = Transform( -4.07302e-08, -0.25, 0, 0.25, -4.07302e-08, 0, 0, 0, 0.25, -0.599866, 0.0564083, -0.627246 )
+material = SubResource( 6 )
+
+[node name="CSGCylinder3" type="CSGCylinder" parent="CSGCombiner"]
+transform = Transform( -4.07302e-08, -0.25, 0, 0.25, -4.07302e-08, 0, 0, 0, 0.25, 0.617224, 0.0564083, 0.585903 )
+material = SubResource( 7 )
+
+[node name="CSGCylinder4" type="CSGCylinder" parent="CSGCombiner"]
+transform = Transform( -4.07302e-08, -0.25, 0, 0.25, -4.07302e-08, 0, 0, 0, 0.25, 0.617224, 0.0564083, -0.530768 )
+material = SubResource( 8 )
+
+[node name="Gun" type="CSGCylinder" parent="."]
+transform = Transform( 2.65431e-14, 1.62921e-07, 1, 1, -1.62921e-07, 0, 1.62921e-07, 1, -1.62921e-07, -0.0133731, 0.558645, 0.005476 )
+visible = false
+radius = 0.0676291
+height = 0.774024
+
+[node name="GunVisual" type="CSGCylinder" parent="."]
+transform = Transform( 2.6543e-14, 1.62921e-07, 1, 1, -1.62921e-07, 1.50772e-19, 1.62921e-07, 1, -1.62921e-07, -7.85291e-05, 0.413467, -0.886678 )
+radius = 0.0676291
+height = 0.774024
+material = SubResource( 9 )
+
+[node name="VisionCone" type="Area" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.91972, 0 )
+collision_layer = 0
+collision_mask = 2
+
+[node name="NearVisionCube" type="CollisionShape" parent="VisionCone"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -12.0019 )
+shape = SubResource( 10 )
+
+[node name="VisionPyramid" type="CollisionShape" parent="VisionCone"]
+transform = Transform( 0.75, 0, 0, 0, 0.75, 0, 0, 0, 0.55, 0, 0, 0 )
+shape = SubResource( 11 )
+
+[node name="Enemy_audio_player" type="Spatial" parent="."]
+script = ExtResource( 2 )
+
+[node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="Enemy_audio_player"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0258027, 0 )
+unit_db = 30.0
+
+[node name="GOAP_Planner" type="Node" parent="."]
+script = ExtResource( 3 )
+
+[node name="PriorityQueue" type="Node" parent="GOAP_Planner"]
+script = ExtResource( 7 )
+
+[node name="Actions" type="Node" parent="GOAP_Planner"]
+
+[node name="action_get_in_range" type="Node" parent="GOAP_Planner/Actions"]
+script = ExtResource( 10 )
+
+[node name="action_self_destruct" type="Node" parent="GOAP_Planner/Actions"]
+script = ExtResource( 4 )
+
+[node name="Goals" type="Node" parent="GOAP_Planner"]
+
+[node name="goal_kill_player" type="Node" parent="GOAP_Planner/Goals"]
+script = ExtResource( 8 )
+
+[node name="ReplanTimer" type="Timer" parent="."]
+wait_time = 1.5
+one_shot = true
+
+[node name="ImmediateGeometry" type="ImmediateGeometry" parent="."]
+
+[node name="PatrolTimer" type="Timer" parent="."]
+wait_time = 4.0
+one_shot = true

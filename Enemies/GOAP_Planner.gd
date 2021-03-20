@@ -110,7 +110,7 @@ func plan_actions(current_state: Dictionary):
 				else:
 					if newCost < visited[successor.hash()].given_cost:
 						visited[successor.hash()].given_cost = newCost
-						visited[successor.hash()].final_cost = visited[successor].heuristic_cost + newCost
+						visited[successor.hash()].final_cost = visited[successor.hash()].heuristic_cost + newCost
 						visited[successor.hash()].parent = current_node
 						visited[successor.hash()].action = action
 						##will resort queue if present in queue, insert if not

@@ -3,6 +3,7 @@ extends Spatial
 
 export var enemy_shot = preload("res://Sounds/Rifle_shot.wav")
 export var gun_cock = preload("res://Sounds/Gun_cock.wav")
+var movement = null
 var audio_node = null
 
 # Called when the node enters the scene tree for the first time.
