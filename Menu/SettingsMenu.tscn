@@ -54,14 +54,75 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Invincibility" type="CheckBox" parent="."]
+[node name="FOVSlider" type="HBoxContainer" parent="."]
 margin_top = 94.0
 margin_right = 618.0
-margin_bottom = 118.0
+margin_bottom = 110.0
+
+[node name="Label" type="Label" parent="FOVSlider"]
+margin_top = 1.0
+margin_right = 81.0
+margin_bottom = 15.0
+text = "Field of View"
+
+[node name="HSlider" type="HSlider" parent="FOVSlider"]
+margin_left = 85.0
+margin_right = 614.0
+margin_bottom = 16.0
+size_flags_horizontal = 3
+min_value = 75.0
+max_value = 90.0
+value = 90.0
+rounded = true
+tick_count = 15
+
+[node name="ValueLabel" type="Label" parent="FOVSlider"]
+margin_left = 618.0
+margin_top = 1.0
+margin_right = 618.0
+margin_bottom = 15.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="MasterVolumeSlider" type="HBoxContainer" parent="."]
+margin_top = 120.0
+margin_right = 618.0
+margin_bottom = 136.0
+
+[node name="Label" type="Label" parent="MasterVolumeSlider"]
+margin_top = 1.0
+margin_right = 97.0
+margin_bottom = 15.0
+text = "Master Volume"
+
+[node name="HSlider" type="HSlider" parent="MasterVolumeSlider"]
+margin_left = 101.0
+margin_right = 614.0
+margin_bottom = 16.0
+size_flags_horizontal = 3
+max_value = 100.0
+value = 100.0
+rounded = true
+tick_count = 100
+
+[node name="ValueLabel" type="Label" parent="MasterVolumeSlider"]
+margin_left = 618.0
+margin_top = 1.0
+margin_right = 618.0
+margin_bottom = 15.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Invincibility" type="CheckBox" parent="."]
+margin_top = 146.0
+margin_right = 618.0
+margin_bottom = 170.0
 text = "Invincibility"
 
 [node name="Flying" type="CheckBox" parent="."]
-margin_top = 128.0
+margin_top = 180.0
 margin_right = 618.0
-margin_bottom = 152.0
+margin_bottom = 204.0
 text = "Flying"
