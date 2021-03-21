@@ -66,6 +66,8 @@ func _physics_process(delta) -> void:
 	_aim_shake(delta)
 	_crosshair_update(delta)
 	_process_recoil(delta)
+	if not _zoomed:
+		$CameraHolder/Camera.fov = settings.fov
 	
 	if Input.is_action_just_pressed("debug"):
 		settings.invincibility = !settings.invincibility
@@ -317,7 +319,7 @@ func _on_zoom_camera(amount: int) -> void:
 	_zoomed = true
 
 func _on_unzoom_camera() -> void:
-	$CameraHolder/Camera.fov = 90
+	$CameraHolder/Camera.fov = settings.fov
 	_zoomed = false
 	
 func _on_weapon_recoil(force: float) -> void:
