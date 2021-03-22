@@ -13,7 +13,7 @@ var held_weapon: HitScanWeapon = null
 
 #Grenade 
 var grenade_count = 3;
-var grenade_scene = preload("res://Equippables/Grenade.tscn")
+#var grenade_scene = preload("res://Equippables/Grenade.tscn")
 var grenade1_scene = preload("res://Equippables/Grenade1.tscn")
 
 func _ready() -> void:
