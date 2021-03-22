@@ -11,6 +11,8 @@ var slowMoUsed: bool = false
 
 var slowMoTimeLeft = 50
 
+var fallHeight = 4
+
 onready var ray = $CameraHolder/Camera/RayCast
 onready	var weapon_holder = $CameraHolder/Camera/WeaponHolder
 onready var item_holder = $CameraHolder/Camera/ItemHolder
@@ -48,6 +50,7 @@ func _process(delta) -> void:
 func _physics_process(delta) -> void:
 	if Input.is_action_just_pressed("flymode"):
 		settings.flying = !settings.flying
+<<<<<<< Updated upstream
 		
 	if(((100 - PlayerStats.danger_level) < 40) && slowMoTimeLeft > 0):
 		settings.invincibility = true
@@ -59,6 +62,9 @@ func _physics_process(delta) -> void:
 		Engine.time_scale = 1
 		slowMo = false
 		
+=======
+
+>>>>>>> Stashed changes
 	if PlayerStats.danger_level >= 100 && !settings.invincibility:
 		is_dead = true
 		$HUD.player_dead_message()
@@ -194,6 +200,20 @@ func _process_movement(delta: float) -> void:
 	hvel = hvel.linear_interpolate(target, accel * delta)
 	vel.x = hvel.x
 	vel.z = hvel.z
+	
+	if(vel.y < 0):
+		fallHeight -= 0.1
+		print(fallHeight)
+	elif (vel.y == 0 && fallHeight <= 0):
+		is_dead = true
+		$HUD.player_dead_message()
+		$Danger_Player.stop()
+		set_process(false)
+		set_physics_process(false)
+#		set_process_input(false)
+		return
+	else:
+		fallHeight = 4
 	
 	if vel.abs().length() < 0.01:
 		return
