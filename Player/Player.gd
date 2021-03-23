@@ -94,6 +94,8 @@ const MAX_SLOPE_ANGLE: int = 40
 
 var is_crouching: bool = false
 var stamina: float = 100.0
+var xVal = 0
+var fallDie = false
 
 func _fly(delta: float) -> void:
 	var aiming: Basis = $CameraHolder.transform.basis
@@ -189,11 +191,17 @@ func _process_movement(delta: float) -> void:
 	vel.z = hvel.z
 	
 	if(vel.y < 0):
-		fallHeight -= 0.1
-	elif (vel.y == 0 && fallHeight <= 0):
+		xVal = xVal
+	elif(vel.y > 0):
+		xVal = xVal
+	elif(vel.y == 0):
+		xVal = translation.y
+	
+	if((xVal - translation.y) > 5):
+		fallDie = true
+	print("xVal: ", xVal, " yPos: ", translation.y)
+	if(is_on_floor() && fallDie):
 		die()
-	else:
-		fallHeight = 4
 	
 	if vel.abs().length() < 0.01:
 		return
