@@ -1,24 +1,41 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://textures/cc0/Bricks039_1K-JPG/Bricks039_1K_Color.jpg" type="Texture" id=1]
+[ext_resource path="res://textures/cc0/Bricks039_1K-JPG/Bricks039_1K_AmbientOcclusion.jpg" type="Texture" id=2]
+[ext_resource path="res://textures/cc0/Bricks039_1K-JPG/Bricks039_1K_Roughness.jpg" type="Texture" id=3]
+[ext_resource path="res://textures/cc0/Bricks039_1K-JPG/Bricks039_1K_Normal.jpg" type="Texture" id=4]
 
-[sub_resource type="SpatialMaterial" id=6]
+[sub_resource type="SpatialMaterial" id=1]
 flags_world_triplanar = true
 albedo_texture = ExtResource( 1 )
+roughness_texture = ExtResource( 3 )
+normal_enabled = true
+normal_scale = 3.0
+normal_texture = ExtResource( 4 )
+ao_enabled = true
+ao_light_affect = 0.0
+ao_texture = ExtResource( 2 )
+ao_on_uv2 = false
+ao_texture_channel = 0
 uv1_scale = Vector3( 0.2, 0.3, 0.3 )
 uv1_triplanar = true
 
 [node name="SmallBuilding02" type="Spatial"]
 
-[node name="SpotLight" type="SpotLight" parent="."]
-transform = Transform( 1, 0, 0, 0, 0.0135781, 0.999908, 0, -0.999908, 0.0135781, 223.759, 4.06117, 26.2667 )
-
 [node name="SpotLight2" type="SpotLight" parent="."]
-transform = Transform( 1, 0, 0, 0, 0.0135781, 0.999908, 0, -0.999908, 0.0135781, 223.759, 4.06117, 21.4686 )
+transform = Transform( 1, 0, 0, 0, 0.0135781, 0.999908, 0, -0.999908, 0.0135781, 0, 4.05702, -4.7981 )
+shadow_enabled = true
+spot_range = 7.17518
+spot_angle = 55.2228
+
+[node name="SpotLight" type="SpotLight" parent="."]
+transform = Transform( 1, 0, 0, 0, 0.0135781, 0.999908, 0, -0.999908, 0.0135781, 0, 4.05702, 0 )
+shadow_enabled = true
+spot_range = 7.51696
+spot_angle = 53.1856
 
 [node name="Walls" type="CSGCombiner" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 223.759, 0.00415206, 26.2667 )
-material_override = SubResource( 6 )
+material_override = SubResource( 1 )
 use_collision = true
 
 [node name="Outer" type="CSGBox" parent="Walls"]

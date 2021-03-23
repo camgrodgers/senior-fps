@@ -1,0 +1,18 @@
+[remap]
+
+importer="hterrain_packed_texture_importer"
+type="StreamTexture"
+path.s3tc="res://.import/CanyonInfiltration_slot1_albedo_bump.packed_tex-c4074a15300d8821e6fcc7e5da09bb69.s3tc.stex"
+path.etc2="res://.import/CanyonInfiltration_slot1_albedo_bump.packed_tex-c4074a15300d8821e6fcc7e5da09bb69.etc2.stex"
+
+[deps]
+
+source_file="res://Levels/CanyonInfiltration/CanyonInfiltration_slot1_albedo_bump.packed_tex"
+dest_files=[ "res://.import/CanyonInfiltration_slot1_albedo_bump.packed_tex-c4074a15300d8821e6fcc7e5da09bb69.s3tc.stex", "res://.import/CanyonInfiltration_slot1_albedo_bump.packed_tex-c4074a15300d8821e6fcc7e5da09bb69.etc2.stex" ]
+
+[params]
+
+compress/mode=2
+flags/repeat=1
+flags/filter=true
+flags/mipmaps=true

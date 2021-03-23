@@ -320,7 +320,7 @@ func reset_damage():
 	current_damage_mult = DAMAGE_MULTIPLIER
 
 # Danger calculation
-var danger_decrease_acceleration: float = 3
+var danger_decrease_acceleration: float = 10
 var danger_decrease_velocity: float = 0
 
 func _danger_update(delta: float) -> void:
@@ -330,7 +330,7 @@ func _danger_update(delta: float) -> void:
 	player_danger = clamp(player_danger + (rate * delta), 0, 100)
 	if ((not world_state["can_see_player"])
 			and last_player_position.distance_to(player_position) < 6):
-		player_danger -= danger_decrease_acceleration * delta
+		player_danger -= 4 * delta
 		danger_decrease_velocity = 0
 	elif not world_state["can_see_player"]:
 		player_danger -= (danger_decrease_velocity) * delta
