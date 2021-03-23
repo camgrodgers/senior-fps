@@ -4,7 +4,7 @@
 [ext_resource path="res://Equippables/AmmoDrop.gd" type="Script" id=2]
 
 [sub_resource type="BoxShape" id=1]
-extents = Vector3( 0.155997, 0.23314, 0.818164 )
+extents = Vector3( 0.273022, 0.294005, 0.818164 )
 
 [sub_resource type="CapsuleShape" id=2]
 radius = 0.374035

@@ -79,5 +79,6 @@ func reposition() -> void:
 		
 	var snap_point: Vector3 = nav.get_closest_point(global_transform.origin)
 	snap_point.y += 1
-	global_transform.origin = snap_point
+#	print(snap_point)
+	global_transform.origin.y = snap_point.y
 

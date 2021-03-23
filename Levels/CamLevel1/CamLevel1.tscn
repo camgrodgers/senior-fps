@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=2]
+[gd_scene load_steps=17 format=2]
 
 [ext_resource path="res://default_env.tres" type="Environment" id=1]
 [ext_resource path="res://LevelObjects/PlayerSpawn.gd" type="Script" id=2]
@@ -11,6 +11,8 @@
 [ext_resource path="res://LevelObjects/PlayerSpawn.tscn" type="PackedScene" id=9]
 [ext_resource path="res://Levels/CamLevel1/Building1.tscn" type="PackedScene" id=10]
 [ext_resource path="res://LevelObjects/Crate.tscn" type="PackedScene" id=11]
+[ext_resource path="res://Equippables/AK47ItemDrop.tscn" type="PackedScene" id=12]
+[ext_resource path="res://Equippables/SNIPERItemDrop.tscn" type="PackedScene" id=13]
 
 [sub_resource type="SpatialMaterial" id=1]
 albedo_color = Color( 0.937255, 0.964706, 0.0431373, 1 )
@@ -35,33 +37,53 @@ script = ExtResource( 5 )
 
 [node name="EnemySpawn" parent="EnemySpawns" instance=ExtResource( 3 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -145.953, 0, 56.8549 )
+snap = true
+enemy_type = ""
 
 [node name="EnemySpawn2" parent="EnemySpawns" instance=ExtResource( 3 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -88.11, 0, 116.772 )
+snap = true
+enemy_type = ""
 
 [node name="EnemySpawn3" parent="EnemySpawns" instance=ExtResource( 3 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 4.55752, 0, 162.816 )
+snap = true
+enemy_type = ""
 
 [node name="EnemySpawn4" parent="EnemySpawns" instance=ExtResource( 3 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 102.692, 0, 106.481 )
+snap = true
+enemy_type = ""
 
 [node name="EnemySpawn5" parent="EnemySpawns" instance=ExtResource( 3 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 183.26, 0, -8.21243 )
+snap = true
+enemy_type = ""
 
 [node name="EnemySpawn6" parent="EnemySpawns" instance=ExtResource( 3 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 133.718, 0, -149.666 )
+snap = true
+enemy_type = ""
 
 [node name="EnemySpawn7" parent="EnemySpawns" instance=ExtResource( 3 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -62.2984, 0, -207.438 )
+snap = true
+enemy_type = ""
 
 [node name="EnemySpawn8" parent="EnemySpawns" instance=ExtResource( 3 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -151.645, 0, -135.526 )
+snap = true
+enemy_type = ""
 
 [node name="EnemySpawn9" parent="EnemySpawns" instance=ExtResource( 3 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -147.243, 0, -25.43 )
+snap = true
+enemy_type = ""
 
 [node name="EnemySpawn10" parent="EnemySpawns" instance=ExtResource( 3 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -147.243, -1.49012e-08, 14.0879 )
+snap = true
+enemy_type = ""
 
 [node name="PatrolRoutes" type="Spatial" parent="."]
 
@@ -70,219 +92,272 @@ loop = true
 
 [node name="PatrolNode" parent="PatrolRoutes/PatrolRoute1" instance=ExtResource( 8 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -61.9411, 11.02, 27.6919 )
+time_in_seconds = 1.0
 
 [node name="PatrolNode2" parent="PatrolRoutes/PatrolRoute1" instance=ExtResource( 8 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -8.16173, 1.22, 6.68746 )
+time_in_seconds = 1.0
 
 [node name="PatrolRoute2" parent="PatrolRoutes" instance=ExtResource( 7 )]
 loop = true
 
 [node name="PatrolNode" parent="PatrolRoutes/PatrolRoute2" instance=ExtResource( 8 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -23.5302, 1.61192, -53.6359 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -23.524, 1.61196, -53.6157 )
+time_in_seconds = 1.0
 
 [node name="PatrolNode2" parent="PatrolRoutes/PatrolRoute2" instance=ExtResource( 8 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 22.7508, 1.22, 16.3319 )
+time_in_seconds = 1.0
 
 [node name="PatrolRoute3" parent="PatrolRoutes" instance=ExtResource( 7 )]
 loop = true
 
 [node name="PatrolNode" parent="PatrolRoutes/PatrolRoute3" instance=ExtResource( 8 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -33.8853, 1.22, 38.492 )
+time_in_seconds = 1.0
 
 [node name="PatrolNode2" parent="PatrolRoutes/PatrolRoute3" instance=ExtResource( 8 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 15.527, 1.22, 25.7214 )
+time_in_seconds = 1.0
 
 [node name="PatrolRoute4" parent="PatrolRoutes" instance=ExtResource( 7 )]
 loop = true
 
 [node name="PatrolNode" parent="PatrolRoutes/PatrolRoute4" instance=ExtResource( 8 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 13.5686, 1.22, -21.694 )
+time_in_seconds = 1.0
 
 [node name="PatrolNode2" parent="PatrolRoutes/PatrolRoute4" instance=ExtResource( 8 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -63.9556, 1.22, 40.9143 )
+time_in_seconds = 1.0
 
 [node name="NavNodes" type="Spatial" parent="."]
 
 [node name="NavNode2" parent="NavNodes" instance=ExtResource( 6 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -12.6615, 1.22, -0.512495 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -12.6615, 1.22, -0.512483 )
 material = SubResource( 1 )
+snap_to_navmesh = true
 
 [node name="NavNode4" parent="NavNodes" instance=ExtResource( 6 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -10.5633, 1.22, -2.12384 )
 material = SubResource( 1 )
+snap_to_navmesh = true
 
 [node name="NavNode27" parent="NavNodes" instance=ExtResource( 6 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -34.6786, 1.22, -15.973 )
 material = SubResource( 1 )
+snap_to_navmesh = true
 
 [node name="NavNode28" parent="NavNodes" instance=ExtResource( 6 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -48.0346, 1.42, -0.976458 )
 material = SubResource( 1 )
+snap_to_navmesh = true
 
 [node name="NavNode47" parent="NavNodes" instance=ExtResource( 6 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -65.4326, 1.42, 11.7252 )
 material = SubResource( 1 )
+snap_to_navmesh = true
 
 [node name="NavNode5" parent="NavNodes" instance=ExtResource( 6 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -8.34926, 1.22, 13.41 )
 material = SubResource( 1 )
+snap_to_navmesh = true
 
 [node name="NavNode6" parent="NavNodes" instance=ExtResource( 6 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -5.9299, 1.22, 15.0573 )
 material = SubResource( 1 )
+snap_to_navmesh = true
 
 [node name="NavNode7" parent="NavNodes" instance=ExtResource( 6 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -7.94823, 1.22, 17.4574 )
 material = SubResource( 1 )
+snap_to_navmesh = true
 
 [node name="NavNode8" parent="NavNodes" instance=ExtResource( 6 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -10.0821, 1.22, 15.3874 )
 material = SubResource( 1 )
+snap_to_navmesh = true
 
 [node name="NavNode9" parent="NavNodes" instance=ExtResource( 6 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 11.8879, 1.22, 12.1371 )
 material = SubResource( 1 )
+snap_to_navmesh = true
 
 [node name="NavNode10" parent="NavNodes" instance=ExtResource( 6 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 14.5143, 1.22, 11.6521 )
 material = SubResource( 1 )
+snap_to_navmesh = true
 
 [node name="NavNode11" parent="NavNodes" instance=ExtResource( 6 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 7.19298, 1.22, 21.3649 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 7.19297, 1.22, 21.3649 )
 material = SubResource( 1 )
+snap_to_navmesh = true
 
 [node name="NavNode12" parent="NavNodes" instance=ExtResource( 6 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 8.68128, 1.42, 26.2349 )
 material = SubResource( 1 )
+snap_to_navmesh = true
 
 [node name="NavNode13" parent="NavNodes" instance=ExtResource( 6 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 9.94779, 1.22, 31.6011 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 9.94729, 1.22, 31.6013 )
 material = SubResource( 1 )
+snap_to_navmesh = true
 
 [node name="NavNode14" parent="NavNodes" instance=ExtResource( 6 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -19.2475, 1.42, 33.3277 )
 material = SubResource( 1 )
+snap_to_navmesh = true
 
 [node name="NavNode23" parent="NavNodes" instance=ExtResource( 6 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -19.4355, 1.22, 38.3289 )
 material = SubResource( 1 )
+snap_to_navmesh = true
 
 [node name="NavNode24" parent="NavNodes" instance=ExtResource( 6 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 8.70805, 1.22, 2.5322 )
 material = SubResource( 1 )
+snap_to_navmesh = true
 
 [node name="NavNode43" parent="NavNodes" instance=ExtResource( 6 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 11.8004, 1.22, 9.36204 )
 material = SubResource( 1 )
+snap_to_navmesh = true
 
 [node name="NavNode44" parent="NavNodes" instance=ExtResource( 6 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 14.6006, 1.22, 9.28307 )
 material = SubResource( 1 )
+snap_to_navmesh = true
 
 [node name="NavNode45" parent="NavNodes" instance=ExtResource( 6 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -19.8954, 1.22, 27.3995 )
 material = SubResource( 1 )
+snap_to_navmesh = true
 
 [node name="NavNode42" parent="NavNodes" instance=ExtResource( 6 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 8.56475, 1.22, 2.55258 )
 radius = 0.001
 material = SubResource( 1 )
+snap_to_navmesh = true
 
 [node name="NavNode25" parent="NavNodes" instance=ExtResource( 6 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 15.8085, 1.22, -0.969147 )
 material = SubResource( 1 )
+snap_to_navmesh = true
 
 [node name="NavNode26" parent="NavNodes" instance=ExtResource( 6 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.879988, 6.82, -17.9111 )
 material = SubResource( 1 )
+snap_to_navmesh = true
 
 [node name="NavNode15" parent="NavNodes" instance=ExtResource( 6 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -53.7209, 1.22, 22.9142 )
 material = SubResource( 1 )
+snap_to_navmesh = true
 
 [node name="NavNode21" parent="NavNodes" instance=ExtResource( 6 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -63.3631, 1.22, 33.8769 )
 material = SubResource( 1 )
+snap_to_navmesh = true
 
 [node name="NavNode31" parent="NavNodes" instance=ExtResource( 6 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -59.7482, 1.22, 34.9466 )
 material = SubResource( 1 )
+snap_to_navmesh = true
 
 [node name="NavNode32" parent="NavNodes" instance=ExtResource( 6 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -68.4258, 1.22, 31.4937 )
 material = SubResource( 1 )
+snap_to_navmesh = true
 
 [node name="NavNode33" parent="NavNodes" instance=ExtResource( 6 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -56.6905, 1.22, 22.7088 )
 material = SubResource( 1 )
+snap_to_navmesh = true
 
 [node name="NavNode34" parent="NavNodes" instance=ExtResource( 6 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -67.7547, 11.22, 21.2425 )
 material = SubResource( 1 )
+snap_to_navmesh = true
 
 [node name="NavNode35" parent="NavNodes" instance=ExtResource( 6 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -66.1192, 1.22, 2.11841 )
 material = SubResource( 1 )
+snap_to_navmesh = true
 
 [node name="NavNode36" parent="NavNodes" instance=ExtResource( 6 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -70.5714, 1.22, 11.9676 )
 material = SubResource( 1 )
+snap_to_navmesh = true
 
 [node name="NavNode37" parent="NavNodes" instance=ExtResource( 6 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -68.2197, 1.22, 15.5501 )
 material = SubResource( 1 )
+snap_to_navmesh = true
 
 [node name="NavNode38" parent="NavNodes" instance=ExtResource( 6 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -54.2887, 1.22, -21.4205 )
 material = SubResource( 1 )
+snap_to_navmesh = true
 
 [node name="NavNode39" parent="NavNodes" instance=ExtResource( 6 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -48.5793, 1.22, -23.5122 )
 material = SubResource( 1 )
+snap_to_navmesh = true
 
 [node name="NavNode40" parent="NavNodes" instance=ExtResource( 6 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -17.2914, 1.22, -35.9239 )
 material = SubResource( 1 )
+snap_to_navmesh = true
 
 [node name="NavNode41" parent="NavNodes" instance=ExtResource( 6 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -8.96165, 1.22, -41.4249 )
 material = SubResource( 1 )
+snap_to_navmesh = true
 
 [node name="NavNode22" parent="NavNodes" instance=ExtResource( 6 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -72.0645, 1.22, 29.3481 )
 material = SubResource( 1 )
+snap_to_navmesh = true
 
 [node name="NavNode16" parent="NavNodes" instance=ExtResource( 6 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -39.9767, 1.42, -6.12512 )
 material = SubResource( 1 )
+snap_to_navmesh = true
 
 [node name="NavNode17" parent="NavNodes" instance=ExtResource( 6 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -44.6153, 1.42, 4.69134 )
 material = SubResource( 1 )
+snap_to_navmesh = true
 
 [node name="NavNode18" parent="NavNodes" instance=ExtResource( 6 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -44.3324, 11.02, 3.47866 )
 material = SubResource( 1 )
+snap_to_navmesh = true
 
 [node name="NavNode19" parent="NavNodes" instance=ExtResource( 6 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -52.2342, 11.02, -0.983252 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -52.2341, 11.02, -0.983223 )
 material = SubResource( 1 )
+snap_to_navmesh = true
 
 [node name="NavNode46" parent="NavNodes" instance=ExtResource( 6 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -50.8661, 11.02, 16.911 )
 material = SubResource( 1 )
+snap_to_navmesh = true
 
 [node name="NavNode20" parent="NavNodes" instance=ExtResource( 6 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -62.0442, 11.02, 31.3819 )
 material = SubResource( 1 )
+snap_to_navmesh = true
 
 [node name="NavNode30" parent="NavNodes" instance=ExtResource( 6 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -62.6182, 11.02, 24.1654 )
 material = SubResource( 1 )
+snap_to_navmesh = true
 
 [node name="NavNode29" parent="NavNodes" instance=ExtResource( 6 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -69.5161, 11.02, 27.7864 )
 material = SubResource( 1 )
+snap_to_navmesh = true
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = ExtResource( 1 )
@@ -300,6 +375,7 @@ navmesh = SubResource( 2 )
 
 [node name="Crate" parent="NavigationMeshInstance" instance=ExtResource( 11 )]
 transform = Transform( 0.931456, 0, -0.363853, 0, 1, 0, 0.363853, 0, 0.931456, -34.3909, 0, -8.73736 )
+snap = true
 
 [node name="CSGCombiner" type="CSGCombiner" parent="NavigationMeshInstance"]
 use_collision = true
@@ -316,12 +392,15 @@ material = SubResource( 3 )
 
 [node name="Barrier" parent="NavigationMeshInstance/CSGCombiner/Walls" instance=ExtResource( 4 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 13.2149, 0, 10.8155 )
+snap = true
 
 [node name="Barrier2" parent="NavigationMeshInstance/CSGCombiner/Walls" instance=ExtResource( 4 )]
 transform = Transform( 0.765899, 0, 0.642961, 0, 1, 0, -0.642961, 0, 0.765899, -12.0074, 0, -1.77836 )
+snap = true
 
 [node name="Barrier3" parent="NavigationMeshInstance/CSGCombiner/Walls" instance=ExtResource( 4 )]
 transform = Transform( 0.767165, 0, -0.64145, 0, 1, 0, 0.64145, 0, 0.767165, -8.01125, 0, 15.2439 )
+snap = true
 
 [node name="Building1" parent="NavigationMeshInstance/CSGCombiner" instance=ExtResource( 10 )]
 transform = Transform( 0.899237, 0, -0.437461, 0, 1, 0, 0.437461, 0, 0.899237, -51.0746, 9.76187, 0 )
@@ -349,3 +428,9 @@ depth = 48.7225
 transform = Transform( 1, 0, 0, 0, 0.93245, -0.361299, 0, 0.361299, 0.93245, 0, 1.7448, 31.5207 )
 width = 4.57343
 depth = 16.3376
+
+[node name="SNIPER18ItemDrop" parent="." instance=ExtResource( 13 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 130.244, 4.57235, -4.61447 )
+
+[node name="AK47ItemDrop" parent="." instance=ExtResource( 12 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 127.752, 4.30216, -3.34641 )

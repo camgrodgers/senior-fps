@@ -1,0 +1,9 @@
+{
+	"contains_albedo": false,
+	"resolution": 512,
+	"src": {
+		"a": "res://textures/cc0/PavingStones068_1K-JPG/PavingStones068_1K_Roughness.jpg",
+		"normalmap_flip_y": true,
+		"rgb": "res://textures/cc0/PavingStones068_1K-JPG/PavingStones068_1K_Normal.jpg"
+	}
+}

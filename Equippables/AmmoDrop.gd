@@ -14,6 +14,7 @@ func _ready():
 		impulse_vec.x = rng.randf_range(-5, 5)
 		impulse_vec.z = rng.randf_range(-5, 5)
 		self.apply_central_impulse(impulse_vec)
+		self.apply_torque_impulse(impulse_vec.normalized())
 
 func _on_Area_body_entered(body):
 	if body is Player:

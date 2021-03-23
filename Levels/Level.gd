@@ -10,13 +10,14 @@ onready var enemy_shotgun_scn: Resource = preload("res://Enemies/Enemy_Shotgun.t
 
 var rng = RandomNumberGenerator.new()
 
-var enemies: Spatial = null
+var enemies: Spatial = Spatial.new()
 var player: Player = null
 var temporary_nodes: Spatial = Spatial.new()
 
 func _init():
 	self.add_to_group("level")
 	add_child(temporary_nodes)
+	add_child(enemies)
 
 func _ready():
 	signals.connect("enemy_spawn_triggered",
@@ -25,10 +26,85 @@ func _ready():
 	signals.connect("temporary_object_spawned",
 			self,
 			"_on_temporary_object_spawned")
+	signals.connect("restart_level", self, "_on_restart_level")
+	
+	_spawn_player()
+	_spawn_items()
+	_update_cover()
+
+func _process(delta):
+	_update_cover()
+	_custom_level_process(delta)
+	# NOTE: it might make sense to replace this bool flag with a signal
+	if not(player.is_dead and Input.is_action_pressed("jump")):
+		return
+	
+	signals.emit_signal("restart_level")
+
+# Overrideable method
+func _custom_level_process(delta) -> void:
+	pass
+
+# Overrideable method
+func _custom_level_restart() -> void:
+	pass
+
+func _on_restart_level():
+	_teardown_level()
+	_spawn_player()
+	_spawn_items()
+	_custom_level_restart()
+	_update_cover()
+
+func _teardown_level():
+	get_tree().call_group("enemies", "queue_free")
+	get_tree().call_group("temporary_level_objects", "queue_free")
+	player.queue_free()
+
+func _spawn_items():
+	pass
+
+func _spawn_player():
+	player = player_scn.instance()
+	self.add_child(player)
+	player.translation = $PlayerSpawn.translation
+	player.get_node("CameraHolder").rotation.y = $PlayerSpawn.rotation.y
+
+func _spawn_enemy(spawn_pos: Vector3,
+					enemy_type: String,
+					patrol_route,
+					has_target: bool) -> void:
+	var enemy_instance
+	if enemy_type == "prototype":
+		enemy_instance = enemy_scn.instance()
+	elif enemy_type == "shotgun":
+		enemy_instance = enemy_shotgun_scn.instance()
+	else:
+		enemy_instance = enemy_scn.instance()
+	enemies.add_child(enemy_instance)
+	
+	enemy_instance.nav = self
+	enemy_instance.world_state["has_target"] = has_target
+	enemy_instance.replan_actions() # TODO: shouldn't this be at the end?
+	enemy_instance.player = player
+	enemy_instance.translation = get_closest_point(spawn_pos)
+	#TODO: fix how enemies acquire patrol routes
+	enemy_instance.patrolNodes = (patrol_route if patrol_route != null
+		else $PatrolRoutes.get_child(0).get_children())
+
+func _on_temporary_object_spawned(obj):
+	temporary_nodes.add_child(obj)
+
+func _on_enemy_spawn_triggered(location: Vector3,
+								enemy_type: String,
+								patrol_route,
+								has_target: bool) -> void:
+	_spawn_enemy(location, enemy_type, patrol_route, has_target)
+
 
 # TODO: This could possibly be improved by moving it into the player and
 # 		having a front vision, flanking, and rear area that detect nodes
-func update_cover() -> void:
+func _update_cover() -> void:
 	var space_state = get_world().direct_space_state
 	var h = player.hitboxes()[0]
 	for n in get_tree().get_nodes_in_group("navnodes"):
@@ -52,20 +128,4 @@ func update_cover() -> void:
 		else:
 			n.mark_not_visible()
 
-func spawn_enemy(spawn_pos: Vector3, enemy_type: String) -> void:
-	
-	var enemy_instance = enemy_scn.instance()
-	enemies.add_child(enemy_instance)
-	
-	enemy_instance.nav = self
-	enemy_instance.replan_actions()
-	enemy_instance.player = player
-	enemy_instance.translation = get_closest_point(spawn_pos)
-	enemy_instance.patrolNodes = $PatrolRoutes.get_child(0).get_children()
-
-func _on_temporary_object_spawned(obj):
-	temporary_nodes.add_child(obj)
-
-func _on_enemy_spawn_triggered(location: Vector3, enemy_type: String) -> void:
-	spawn_enemy(location, enemy_type)
 

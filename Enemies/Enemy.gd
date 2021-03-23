@@ -293,6 +293,7 @@ func take_damage(damage: float) -> void:
 	corpse.transform = self.transform
 	var weapon_drop_scn: Resource = preload("res://Equippables/AK47ItemDrop.tscn")
 	var weapon_drop = weapon_drop_scn.instance()
+	weapon_drop.random_impulse = true
 	weapon_drop.transform = self.transform
 	weapon_drop.translation.y += 2
 	
