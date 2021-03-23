@@ -6,10 +6,6 @@ onready var settings: Settings = get_node("/root/Settings")
 onready var signals = get_node("/root/Signals")
 
 var is_dead: bool = false
-var slowMo: bool = false
-var slowMoUsed: bool = false
-
-var slowMoTimeLeft = 50
 
 var fallHeight = 4
 
@@ -50,21 +46,8 @@ func _process(delta) -> void:
 func _physics_process(delta) -> void:
 	if Input.is_action_just_pressed("flymode"):
 		settings.flying = !settings.flying
-<<<<<<< Updated upstream
-		
-	if(((100 - PlayerStats.danger_level) < 40) && slowMoTimeLeft > 0):
-		settings.invincibility = true
-		slowMoTimeLeft -= 0.2
-		Engine.time_scale = 0.2
-		slowMo = true
-	else:
-		settings.invincibility = false
-		Engine.time_scale = 1
-		slowMo = false
-		
-=======
 
->>>>>>> Stashed changes
+
 	if PlayerStats.danger_level >= 100 && !settings.invincibility:
 		is_dead = true
 		$HUD.player_dead_message()
