@@ -21,7 +21,7 @@ func move_to(enemy: KinematicBody, delta: float) -> bool:
 	enemy.beep()
 	if self_destruct_timer > 2.0:
 		enemy.ready_for_action()
-		enemy.set_damage(25.0)
+		enemy.set_damage(1.0)
 		return true
 	return false
 

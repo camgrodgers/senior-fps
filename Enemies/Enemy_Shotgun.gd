@@ -2,7 +2,7 @@ extends Enemy
 
 func _init():
 	MAX_HP = 3.0
-	ENEMY_RANGE = 30.0
+	ENEMY_RANGE = 25.0
 	_shoot_interval = 4.0
 	DAMAGE_MULTIPLIER = 1.5
 	
@@ -19,9 +19,9 @@ func rate_of_danger_increase() -> float:
 	if player_distance > 80:
 		rate = 0
 	elif player_distance > 50:
-		rate = 2
+		rate = 0
 	elif player_distance > 30:
-		rate = 10
+		rate = 6
 	elif player_distance > 20:
 		rate = 15
 	elif player_distance > 10:
