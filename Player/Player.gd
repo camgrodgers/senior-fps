@@ -31,6 +31,15 @@ func _ready() -> void:
 	
 	$Sound_Player.play_sound($Sound_Player.gun_cock)
 
+func die() -> void:
+	is_dead = true
+	$HUD.player_dead_message()
+	$Danger_Player.stop()
+	set_process(false)
+	set_physics_process(false)
+#	set_process_input(false)
+	return
+
 func _process(delta) -> void:
 	$Danger_Player.volume_db = -50 + PlayerStats.danger_level / 2
 	if not $Danger_Player.playing:
@@ -49,14 +58,9 @@ func _physics_process(delta) -> void:
 
 
 	if PlayerStats.danger_level >= 100 && !settings.invincibility:
-		is_dead = true
-		$HUD.player_dead_message()
-		$Danger_Player.stop()
 		$Sound_Player.play_sound($Sound_Player.game_over_shot)
-		set_process(false)
-		set_physics_process(false)
-#		set_process_input(false)
-		return
+		die()
+		
 	
 	# Movement
 	if(settings.flying):
@@ -186,15 +190,8 @@ func _process_movement(delta: float) -> void:
 	
 	if(vel.y < 0):
 		fallHeight -= 0.1
-		print(fallHeight)
 	elif (vel.y == 0 && fallHeight <= 0):
-		is_dead = true
-		$HUD.player_dead_message()
-		$Danger_Player.stop()
-		set_process(false)
-		set_physics_process(false)
-#		set_process_input(false)
-		return
+		die()
 	else:
 		fallHeight = 4
 	
