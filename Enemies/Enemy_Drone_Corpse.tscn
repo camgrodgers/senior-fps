@@ -1,0 +1,62 @@
+[gd_scene load_steps=9 format=2]
+
+[ext_resource path="res://Enemies/Enemy_Drone_Corpse.gd" type="Script" id=1]
+
+[sub_resource type="BoxShape" id=1]
+
+[sub_resource type="SpatialMaterial" id=2]
+albedo_color = Color( 0.141176, 0.141176, 0.141176, 1 )
+
+[sub_resource type="SpatialMaterial" id=3]
+albedo_color = Color( 0.141176, 0.141176, 0.141176, 1 )
+
+[sub_resource type="SpatialMaterial" id=4]
+albedo_color = Color( 0.141176, 0.141176, 0.141176, 1 )
+
+[sub_resource type="SpatialMaterial" id=5]
+albedo_color = Color( 0.141176, 0.141176, 0.141176, 1 )
+
+[sub_resource type="SpatialMaterial" id=6]
+albedo_color = Color( 0.211765, 0.0745098, 0, 1 )
+
+[sub_resource type="SpatialMaterial" id=7]
+albedo_color = Color( 1, 0, 0, 1 )
+
+[node name="Enemy" type="KinematicBody"]
+collision_layer = 4
+collision_mask = 5
+script = ExtResource( 1 )
+
+[node name="Hitbox" type="CollisionShape" parent="."]
+transform = Transform( 0.696, 0, 0, 0, -4.67712e-08, -0.413, 0, 1.07, -1.80528e-08, 0, 0.414, -0.089 )
+shape = SubResource( 1 )
+
+[node name="CSGCombiner" type="CSGCombiner" parent="."]
+
+[node name="CSGCylinder" type="CSGCylinder" parent="CSGCombiner"]
+transform = Transform( 0.25, 0, 0, 0, 0.25, 0, 0, 0, 0.25, -0.928201, 0.191779, 0.585903 )
+material = SubResource( 2 )
+
+[node name="CSGCylinder2" type="CSGCylinder" parent="CSGCombiner"]
+transform = Transform( -4.07302e-08, -0.25, 0, 0.25, -4.07302e-08, 0, 0, 0, 0.25, -0.599866, 0.279807, -0.627246 )
+material = SubResource( 3 )
+
+[node name="CSGCylinder3" type="CSGCylinder" parent="CSGCombiner"]
+transform = Transform( -0.0647048, -0.241481, 0, 0.241481, -0.0647048, 0, 0, 0, 0.25, 0.829677, 0.279807, 0.395551 )
+material = SubResource( 4 )
+
+[node name="CSGCylinder4" type="CSGCylinder" parent="CSGCombiner"]
+transform = Transform( 0.25, 0, 0, 0, 0.25, 0, 0, 0, 0.25, 0.870133, 0.138457, -0.530768 )
+material = SubResource( 5 )
+
+[node name="CSGCylinder5" type="CSGCylinder" parent="CSGCombiner"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0113937, 0.395926, -0.050413 )
+radius = 0.75
+height = 0.7
+material = SubResource( 6 )
+
+[node name="GunVisual" type="CSGCylinder" parent="."]
+transform = Transform( 2.6543e-14, 1.62921e-07, 1, 1, -1.62921e-07, 1.50772e-19, 1.62921e-07, 1, -1.62921e-07, -7.85291e-05, 0.636866, -0.886678 )
+radius = 0.0676291
+height = 0.774024
+material = SubResource( 7 )

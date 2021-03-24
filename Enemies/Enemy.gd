@@ -30,6 +30,8 @@ var world_state: Dictionary = {
 	"patrolling" : true,
 	"in_range" : false,
 	"in_danger" : false,
+	"drone_ready" : true,
+	"crouched" : false,
 }
 
 var action_plan: Array
@@ -317,6 +319,12 @@ func set_damage(d_mult: float):
 	current_damage_mult = d_mult
 func reset_damage():
 	current_damage_mult = DAMAGE_MULTIPLIER
+
+	
+func drone_in_use() -> void:
+	world_state["drone_ready"] = false
+func drone_ready() -> void:
+	world_state["drone_ready"] = true
 
 # Danger calculation
 var danger_decrease_acceleration: float = 3
