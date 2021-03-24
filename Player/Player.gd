@@ -12,9 +12,9 @@ onready var item_holder = $CameraHolder/Camera/ItemHolder
 var held_weapon: HitScanWeapon = null
 
 #Grenade 
-var grenade_count = 3;
+#var grenade_count = 3;
 #var grenade_scene = preload("res://Equippables/Grenade.tscn")
-var grenade1_scene = preload("res://Equippables/Grenade1.tscn")
+var GrenadeInstance = preload("res://Equippables/Grenade1.tscn")
 
 func _ready() -> void:
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
@@ -27,6 +27,7 @@ func _ready() -> void:
 		weapon.connect("camera_unzoom",self,"_on_unzoom_camera")
 		weapon.connect("expose_ammo_count", $HUD, "_on_expose_ammo_count")
 		weapon.connect("hide_ammo_count", $HUD, "_on_hide_ammo_count")
+		weapon.connect("throwGrenade",self,"_on_fire_grenade")
 		weapon.set_ray(ray)
 		_unequip_weapon(weapon)
 	_equip_weapon(weapon_holder.get_node("Glock18"))
@@ -216,15 +217,21 @@ func _process_item_use(_delta: float) -> void:
 		#get_tree().root.add_child(grenade_clone)
 		#grenade_clone.global_transform = $CameraHolder/Camera/ItemHolder.global_transform
 		#renade_clone.apply_impulse(Vector3(0,0,0),grenade_clone.global_transform.basis.z * 70)
-		if grenade_count > 0:
-			grenade_count -= 1
-			var throwing = false
-			var grenade = grenade1_scene.instance()
-			weapon_holder.add_child(grenade)
-		#yield(get_tree().create_timer(1.76),"timeout")
-			grenade.global_transform = $CameraHolder/Camera/ItemHolder.global_transform
-			grenade.apply_impulse(Vector3(0,0,0),grenade.global_transform.basis.z * 20)
-			grenade.throw()
+		#if grenade_count > 0:
+			#grenade_count -= 1
+		var throwing = true
+		
+		if throwing == true:
+			throwing = false
+			var GrenadeHeld = GrenadeInstance.instance()
+			weapon_holder.add_child(GrenadeHeld)
+		
+			get_tree().root.add_child(GrenadeHeld)
+			yield(get_tree().create_timer(1.76),"timeout")
+			GrenadeHeld.global_transform = $CameraHolder/Camera/WeaponHolder.global_transform
+			GrenadeHeld.set_as_toplevel(true)
+			GrenadeHeld.apply_impulse(Vector3(0,0,0),-GrenadeHeld.global_transform.basis.z * 30)
+		#GrenadeHeld.throw()
 			yield(get_tree().create_timer(3.25 - 1.76),"timeout")
 		
 		
@@ -311,7 +318,19 @@ func _switch_to_weapon(weapon: HitScanWeapon) -> void:
 	_unequip_weapon(held_weapon)
 	_equip_weapon(weapon)
 
-
+func _on_fire_grenade() -> void:
+	#grenade_count -= 1
+	var throwing = false
+	var GrenadeHeld = GrenadeInstance.instance()
+	weapon_holder.add_child(GrenadeHeld)
+	yield(get_tree().create_timer(1.76),"timeout")
+	GrenadeHeld.global_transform = $CameraHolder/Camera/ItemHolder.global_transform
+	#GrenadeHeld.set_as_toplevel(true)
+	#GrenadeHeld.apply_impulse(Vector3(0,0,0),GrenadeHeld.global_transform.basis.z * 20)
+	#GrenadeHeld.explosion()
+	GrenadeHeld.throw()
+	yield(get_tree().create_timer(3.25 - 1.76),"timeout")
+	
 # Camera motion
 var aim_x: float = 0.00
 var aim_y: float = 0.00
