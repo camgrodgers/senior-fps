@@ -5,7 +5,7 @@ var explosion_started = false
 var countdown_started = false
 func _init():
 	MAX_HP = 3.0
-	ENEMY_RANGE = 2.5
+	ENEMY_RANGE = 3.0
 	DAMAGE_MULTIPLIER = 0.0
 	current_damage_mult = DAMAGE_MULTIPLIER
 	world_state["has_target"] = true
@@ -22,11 +22,11 @@ func _process(delta):
 		$Enemy_audio_player.play_sound($Enemy_audio_player.movement)
 func take_damage(damage: float) -> void:
 
-	$CSGCombiner.get_node("CSGBox" + str(int(damage_taken))).visible = false
+	$CSGCombiner.get_node("CSGCylinder" + str(int(damage_taken))).visible = false
 	damage_taken += damage
 	
 	if damage_taken < MAX_HP:
-		$CSGCombiner.get_node("CSGBox" + str(int(damage_taken))).visible = true
+		$CSGCombiner.get_node("CSGCylinder" + str(int(damage_taken))).visible = true
 		return
 	var corpse_scn: Resource = preload("res://Enemies/Enemy_Drone_Corpse.tscn")
 	var corpse = corpse_scn.instance()
@@ -38,6 +38,7 @@ func take_damage(damage: float) -> void:
 
 func explode():
 	if not explosion_started:
+		$CSGCombiner/CSGSphere.visible = true
 		$Enemy_audio_player.play_sound($Enemy_audio_player.enemy_shot)
 		explosion_started = true
 
@@ -61,7 +62,7 @@ func rate_of_danger_increase() -> float:
 	elif player_distance > 5:
 		rate = 20
 	else:
-		rate = 40
+		rate = 45
 	
 	rate = rate * current_damage_mult
 	

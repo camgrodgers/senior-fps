@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=2]
+[gd_scene load_steps=20 format=2]
 
 [ext_resource path="res://Enemies/Enemy_Drone.gd" type="Script" id=1]
 [ext_resource path="res://Enemies/Enemy_audio_player.gd" type="Script" id=2]
@@ -12,33 +12,41 @@
 extents = Vector3( 1, 0.878, 1 )
 
 [sub_resource type="SpatialMaterial" id=2]
-albedo_color = Color( 1, 0.635294, 0.0117647, 1 )
+albedo_color = Color( 0.141176, 0.141176, 0.141176, 1 )
 
 [sub_resource type="SpatialMaterial" id=3]
-albedo_color = Color( 1, 0.360784, 0.360784, 1 )
+albedo_color = Color( 0.141176, 0.141176, 0.141176, 1 )
 
 [sub_resource type="SpatialMaterial" id=4]
-albedo_color = Color( 1, 0.0156863, 0.0156863, 1 )
+albedo_color = Color( 0.141176, 0.141176, 0.141176, 1 )
 
 [sub_resource type="SpatialMaterial" id=5]
 albedo_color = Color( 0.141176, 0.141176, 0.141176, 1 )
 
 [sub_resource type="SpatialMaterial" id=6]
-albedo_color = Color( 0.141176, 0.141176, 0.141176, 1 )
+flags_transparent = true
+albedo_color = Color( 1, 0.164706, 0, 0.486275 )
 
 [sub_resource type="SpatialMaterial" id=7]
-albedo_color = Color( 0.141176, 0.141176, 0.141176, 1 )
+albedo_color = Color( 1, 0.945098, 0.117647, 1 )
+metallic = 0.82
+metallic_specular = 0.67
 
 [sub_resource type="SpatialMaterial" id=8]
-albedo_color = Color( 0.141176, 0.141176, 0.141176, 1 )
+albedo_color = Color( 1, 0.415686, 0.415686, 1 )
+metallic = 0.64
 
 [sub_resource type="SpatialMaterial" id=9]
 albedo_color = Color( 1, 0, 0, 1 )
+metallic = 0.65
 
-[sub_resource type="BoxShape" id=10]
+[sub_resource type="SpatialMaterial" id=10]
+albedo_color = Color( 1, 0, 0, 1 )
+
+[sub_resource type="BoxShape" id=11]
 extents = Vector3( 10, 10, 10 )
 
-[sub_resource type="ConvexPolygonShape" id=11]
+[sub_resource type="ConvexPolygonShape" id=12]
 points = PoolVector3Array( 0, 0, 0, -100, 50, -100, 100, 50, -100, -100, -50, -100, 100, -50, -100 )
 
 [node name="Drone" type="KinematicBody" groups=[
@@ -54,35 +62,47 @@ shape = SubResource( 1 )
 
 [node name="CSGCombiner" type="CSGCombiner" parent="."]
 
-[node name="CSGBox0" type="CSGBox" parent="CSGCombiner"]
-transform = Transform( 0.622, 0, 0, 0, 0.377, 0, 0, 0, 0.914, 0, 0.39, 0 )
+[node name="Wheel1" type="CSGCylinder" parent="CSGCombiner"]
+transform = Transform( -4.07302e-08, -0.25, 0, 0.25, -4.07302e-08, 0, 0, 0, 0.25, -0.59237, 0.0564083, 0.585903 )
 material = SubResource( 2 )
 
-[node name="CSGBox1" type="CSGBox" parent="CSGCombiner"]
-transform = Transform( 0.622, 0, 0, 0, 0.377, 0, 0, 0, 0.914, 0, 0.39, 0 )
-visible = false
+[node name="Wheel2" type="CSGCylinder" parent="CSGCombiner"]
+transform = Transform( -4.07302e-08, -0.25, 0, 0.25, -4.07302e-08, 0, 0, 0, 0.25, -0.599866, 0.0564083, -0.548786 )
 material = SubResource( 3 )
 
-[node name="CSGBox2" type="CSGBox" parent="CSGCombiner"]
-transform = Transform( 0.622, 0, 0, 0, 0.377, 0, 0, 0, 0.914, 0, 0.39, 0 )
-visible = false
+[node name="Wheel3" type="CSGCylinder" parent="CSGCombiner"]
+transform = Transform( -4.07302e-08, -0.25, 0, 0.25, -4.07302e-08, 0, 0, 0, 0.25, 0.617224, 0.0564083, 0.585903 )
 material = SubResource( 4 )
 
-[node name="CSGCylinder" type="CSGCylinder" parent="CSGCombiner"]
-transform = Transform( -4.07302e-08, -0.25, 0, 0.25, -4.07302e-08, 0, 0, 0, 0.25, -0.59237, 0.0564083, 0.585903 )
+[node name="Wheel4" type="CSGCylinder" parent="CSGCombiner"]
+transform = Transform( -4.07302e-08, -0.25, 0, 0.25, -4.07302e-08, 0, 0, 0, 0.25, 0.617224, 0.0564083, -0.530768 )
 material = SubResource( 5 )
 
-[node name="CSGCylinder2" type="CSGCylinder" parent="CSGCombiner"]
-transform = Transform( -4.07302e-08, -0.25, 0, 0.25, -4.07302e-08, 0, 0, 0, 0.25, -0.599866, 0.0564083, -0.627246 )
+[node name="CSGSphere" type="CSGSphere" parent="CSGCombiner"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0478523, 0.248711, -0.026031 )
+visible = false
+radius = 5.0
 material = SubResource( 6 )
 
-[node name="CSGCylinder3" type="CSGCylinder" parent="CSGCombiner"]
-transform = Transform( -4.07302e-08, -0.25, 0, 0.25, -4.07302e-08, 0, 0, 0, 0.25, 0.617224, 0.0564083, 0.585903 )
+[node name="CSGCylinder0" type="CSGCylinder" parent="CSGCombiner"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.200787, 0 )
+radius = 0.75
+height = 0.6
 material = SubResource( 7 )
 
-[node name="CSGCylinder4" type="CSGCylinder" parent="CSGCombiner"]
-transform = Transform( -4.07302e-08, -0.25, 0, 0.25, -4.07302e-08, 0, 0, 0, 0.25, 0.617224, 0.0564083, -0.530768 )
+[node name="CSGCylinder1" type="CSGCylinder" parent="CSGCombiner"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.200787, 0 )
+visible = false
+radius = 0.75
+height = 0.6
 material = SubResource( 8 )
+
+[node name="CSGCylinder2" type="CSGCylinder" parent="CSGCombiner"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.200787, 0 )
+visible = false
+radius = 0.75
+height = 0.6
+material = SubResource( 9 )
 
 [node name="Gun" type="CSGCylinder" parent="."]
 transform = Transform( 2.65431e-14, 1.62921e-07, 1, 1, -1.62921e-07, 0, 1.62921e-07, 1, -1.62921e-07, -0.0133731, 0.558645, 0.005476 )
@@ -94,7 +114,7 @@ height = 0.774024
 transform = Transform( 2.6543e-14, 1.62921e-07, 1, 1, -1.62921e-07, 1.50772e-19, 1.62921e-07, 1, -1.62921e-07, -7.85291e-05, 0.413467, -0.886678 )
 radius = 0.0676291
 height = 0.774024
-material = SubResource( 9 )
+material = SubResource( 10 )
 
 [node name="VisionCone" type="Area" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.91972, 0 )
@@ -103,11 +123,11 @@ collision_mask = 2
 
 [node name="NearVisionCube" type="CollisionShape" parent="VisionCone"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -12.0019 )
-shape = SubResource( 10 )
+shape = SubResource( 11 )
 
 [node name="VisionPyramid" type="CollisionShape" parent="VisionCone"]
 transform = Transform( 0.75, 0, 0, 0, 0.75, 0, 0, 0, 0.55, 0, 0, 0 )
-shape = SubResource( 11 )
+shape = SubResource( 12 )
 
 [node name="Enemy_audio_player" type="Spatial" parent="."]
 script = ExtResource( 2 )

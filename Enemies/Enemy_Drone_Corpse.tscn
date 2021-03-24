@@ -5,7 +5,7 @@
 [sub_resource type="BoxShape" id=1]
 
 [sub_resource type="SpatialMaterial" id=2]
-albedo_color = Color( 0.490196, 0.184314, 0, 1 )
+albedo_color = Color( 0.141176, 0.141176, 0.141176, 1 )
 
 [sub_resource type="SpatialMaterial" id=3]
 albedo_color = Color( 0.141176, 0.141176, 0.141176, 1 )
@@ -17,7 +17,7 @@ albedo_color = Color( 0.141176, 0.141176, 0.141176, 1 )
 albedo_color = Color( 0.141176, 0.141176, 0.141176, 1 )
 
 [sub_resource type="SpatialMaterial" id=6]
-albedo_color = Color( 0.141176, 0.141176, 0.141176, 1 )
+albedo_color = Color( 0.211765, 0.0745098, 0, 1 )
 
 [sub_resource type="SpatialMaterial" id=7]
 albedo_color = Color( 1, 0, 0, 1 )
@@ -33,24 +33,26 @@ shape = SubResource( 1 )
 
 [node name="CSGCombiner" type="CSGCombiner" parent="."]
 
-[node name="CSGBox0" type="CSGBox" parent="CSGCombiner"]
-transform = Transform( 0.622, 0, 0, 0, 0.377, 0, 0, 0, 0.914, 0, 0.424388, 0 )
-material = SubResource( 2 )
-
 [node name="CSGCylinder" type="CSGCylinder" parent="CSGCombiner"]
 transform = Transform( 0.25, 0, 0, 0, 0.25, 0, 0, 0, 0.25, -0.928201, 0.191779, 0.585903 )
-material = SubResource( 3 )
+material = SubResource( 2 )
 
 [node name="CSGCylinder2" type="CSGCylinder" parent="CSGCombiner"]
 transform = Transform( -4.07302e-08, -0.25, 0, 0.25, -4.07302e-08, 0, 0, 0, 0.25, -0.599866, 0.279807, -0.627246 )
-material = SubResource( 4 )
+material = SubResource( 3 )
 
 [node name="CSGCylinder3" type="CSGCylinder" parent="CSGCombiner"]
-transform = Transform( -0.0647048, -0.241481, 0, 0.241481, -0.0647048, 0, 0, 0, 0.25, 0.829677, 0.279807, 0.585903 )
-material = SubResource( 5 )
+transform = Transform( -0.0647048, -0.241481, 0, 0.241481, -0.0647048, 0, 0, 0, 0.25, 0.829677, 0.279807, 0.395551 )
+material = SubResource( 4 )
 
 [node name="CSGCylinder4" type="CSGCylinder" parent="CSGCombiner"]
 transform = Transform( 0.25, 0, 0, 0, 0.25, 0, 0, 0, 0.25, 0.870133, 0.138457, -0.530768 )
+material = SubResource( 5 )
+
+[node name="CSGCylinder5" type="CSGCylinder" parent="CSGCombiner"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0113937, 0.395926, -0.050413 )
+radius = 0.75
+height = 0.7
 material = SubResource( 6 )
 
 [node name="GunVisual" type="CSGCylinder" parent="."]
