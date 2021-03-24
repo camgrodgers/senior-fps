@@ -29,6 +29,15 @@ func _ready() -> void:
 	
 	$Sound_Player.play_sound($Sound_Player.gun_cock)
 
+func die() -> void:
+	is_dead = true
+	$HUD.player_dead_message()
+	$Danger_Player.stop()
+	set_process(false)
+	set_physics_process(false)
+#	set_process_input(false)
+	return
+
 func _process(delta) -> void:
 	$Danger_Player.volume_db = -50 + PlayerStats.danger_level / 2
 	if not $Danger_Player.playing:
@@ -44,16 +53,12 @@ func _process(delta) -> void:
 func _physics_process(delta) -> void:
 	if Input.is_action_just_pressed("flymode"):
 		settings.flying = !settings.flying
-		
+
+
 	if PlayerStats.danger_level >= 100 && !settings.invincibility:
-		is_dead = true
-		$HUD.player_dead_message()
-		$Danger_Player.stop()
 		$Sound_Player.play_sound($Sound_Player.game_over_shot)
-		set_process(false)
-		set_physics_process(false)
-#		set_process_input(false)
-		return
+		die()
+		
 	
 	# Movement
 	if(settings.flying):
@@ -89,6 +94,8 @@ const MAX_SLOPE_ANGLE: int = 40
 
 var is_crouching: bool = false
 var stamina: float = 100.0
+var lastFloorYcoord = 0
+var fallDie = false
 
 func _fly(delta: float) -> void:
 	var aiming: Basis = $CameraHolder.transform.basis
@@ -182,6 +189,15 @@ func _process_movement(delta: float) -> void:
 	hvel = hvel.linear_interpolate(target, accel * delta)
 	vel.x = hvel.x
 	vel.z = hvel.z
+	
+	
+	if(is_on_floor()):
+		lastFloorYcoord = translation.y
+		if(fallDie):
+			die()
+	if((lastFloorYcoord - translation.y) > 12):
+		fallDie = true
+	
 	
 	if vel.abs().length() < 0.01:
 		return
