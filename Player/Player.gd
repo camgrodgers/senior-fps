@@ -7,8 +7,6 @@ onready var signals = get_node("/root/Signals")
 
 var is_dead: bool = false
 
-var fallHeight = 4
-
 onready var ray = $CameraHolder/Camera/RayCast
 onready	var weapon_holder = $CameraHolder/Camera/WeaponHolder
 onready var item_holder = $CameraHolder/Camera/ItemHolder
@@ -195,7 +193,7 @@ func _process_movement(delta: float) -> void:
 		lastFloorYcoord = translation.y
 		if(fallDie):
 			die()
-	if((lastFloorYcoord - translation.y) > 5):
+	if((lastFloorYcoord - translation.y) > 12):
 		fallDie = true
 	
 	
