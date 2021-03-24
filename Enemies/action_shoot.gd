@@ -14,7 +14,6 @@ var effects = {
 
 var cost = 2
 var path_updated = false
-var crouched = false
 var peek_timer = 0.0
 var crouch_timer = 0.0
 var crouch_distance = 1.0
@@ -24,7 +23,7 @@ func move_to(enemy: Enemy, delta: float) -> bool:
 	enemy.check_vision()
 	if enemy.world_state["can_see_player"] == true && not path_updated && not enemy.currentNode.visible_to_player:
 		enemy.translation.y -= crouch_distance
-		crouched = true
+		enemy.world_state["crouched"] = true
 		enemy.set_damage(0.0)
 		enemy.ready_for_action()
 		return true
@@ -48,27 +47,27 @@ func take_action(enemy: KinematicBody, delta: float) -> bool:
 	if not enemy.check_range():
 		enemy.replan_actions()
 		enemy.clear_node_data()
-		if crouched:
+		if enemy.world_state["crouched"]:
 			enemy.translation.y += crouch_distance
-			crouched = false
+			enemy.world_state["crouched"] = false
 			enemy.reset_damage()
 			return true
 	
-	if crouched:
+	if enemy.world_state["crouched"]:
 		crouch_timer += delta
 		if enemy.currentNode.visible_to_player:
 			enemy.shoot_around_player(delta)
 			enemy.go_to_next_action()
 			enemy.translation.y += crouch_distance
 			crouch_timer = 0.0
-			crouched = false
+			enemy.world_state["crouched"] = false
 			enemy.reset_damage()
 			return true
 		if crouch_timer < 3.0:
 			return false
 		crouch_timer = 0.0
 		enemy.translation.y += crouch_distance
-		crouched = false
+		enemy.world_state["crouched"] = false
 		enemy.reset_damage()
 	
 	enemy.check_vision()

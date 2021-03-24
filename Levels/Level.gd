@@ -5,6 +5,7 @@ onready var signals: Signals = get_node("/root/Signals")
 
 onready var player_scn: Resource = preload("res://Player/Player.tscn")
 onready var enemy_scn: Resource = preload("res://Enemies/Enemy.tscn")
+onready var drone: Resource = preload("res://Enemies/Enemy_Drone.tscn")
 onready var enemy_shotgun_scn: Resource = preload("res://Enemies/Enemy_Shotgun.tscn")
 
 
@@ -129,4 +130,12 @@ func _update_cover() -> void:
 		else:
 			n.mark_not_visible()
 
-
+func spawn_drone(spawn_pos: Vector3, owner: Node) -> void:
+	var enemy_drone = drone.instance()
+	enemies.add_child(enemy_drone)
+	
+	enemy_drone.nav = self
+	enemy_drone.replan_actions()
+	enemy_drone.player = player
+	enemy_drone.translation = get_closest_point(Vector3(spawn_pos.x + 1, spawn_pos.y + 0.5, spawn_pos.z + 1))
+	enemy_drone.enemy_owner = owner

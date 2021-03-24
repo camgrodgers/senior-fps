@@ -15,7 +15,7 @@ var last_player_position = null
 
 func move_to(enemy: KinematicBody, delta: float) -> bool:
 	
-	if not path_updated or last_player_position.distance_to(enemy.player.translation) > 10 or enemy.path.empty():
+	if not path_updated or last_player_position.distance_to(enemy.player.translation) > 5 or enemy.path.empty():
 		enemy.clear_node_data()
 		enemy.update_path(enemy.player.translation)
 		last_player_position = enemy.player.translation

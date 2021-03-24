@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=2]
+[gd_scene load_steps=21 format=2]
 
 [ext_resource path="res://Enemies/Enemy.gd" type="Script" id=1]
 [ext_resource path="res://Enemies/Enemy_audio_player.gd" type="Script" id=2]
@@ -13,6 +13,7 @@
 [ext_resource path="res://Enemies/action_shoot_safetly.gd" type="Script" id=11]
 [ext_resource path="res://Enemies/action_move_out_of_cover.gd" type="Script" id=12]
 [ext_resource path="res://Enemies/goal_stay_safe.gd" type="Script" id=13]
+[ext_resource path="res://Enemies/action_spawn_drone.gd" type="Script" id=14]
 
 [sub_resource type="CapsuleShape" id=1]
 radius = 0.5
@@ -40,7 +41,7 @@ collision_mask = 5
 script = ExtResource( 1 )
 
 [node name="Hitbox" type="CollisionShape" parent="."]
-transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 1.13586, 0 )
+transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1.246, 0, 1, -5.44644e-08, 0, 1.108, 0 )
 shape = SubResource( 1 )
 
 [node name="CSGCombiner" type="CSGCombiner" parent="."]
@@ -135,6 +136,9 @@ script = ExtResource( 12 )
 
 [node name="action_shoot_safetly" type="Node" parent="GOAP_Planner/Actions"]
 script = ExtResource( 11 )
+
+[node name="action_spawn_drone" type="Node" parent="GOAP_Planner/Actions"]
+script = ExtResource( 14 )
 
 [node name="Goals" type="Node" parent="GOAP_Planner"]
 

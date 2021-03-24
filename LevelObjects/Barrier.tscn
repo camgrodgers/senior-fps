@@ -13,7 +13,7 @@ script = ExtResource( 2 )
 collision_mask = 2147483649
 
 [node name="CollisionShape" type="CollisionShape" parent="Barrier"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.911227, 0 )
+transform = Transform( 1, 0, 0, 0, 0.892, 0, 0, 0, 1, 0, 0.802, 0 )
 shape = SubResource( 1 )
 
 [node name="Circle" parent="Barrier" instance=ExtResource( 1 )]
