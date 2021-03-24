@@ -11,6 +11,7 @@ var triggered: bool = false
 func _ready():
 	signals.connect("restart_level", self, "_on_restart_level")
 	connect("body_entered", self, "_on_SpawnTrigger_body_entered")
+#	connect("area_entered", self, "_on_SpawnTrigger_body_entered")
 
 func _on_SpawnTrigger_body_entered(body):
 	if triggered: return

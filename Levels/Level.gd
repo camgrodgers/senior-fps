@@ -62,7 +62,8 @@ func _teardown_level():
 	player.queue_free()
 
 func _spawn_items():
-	pass
+	for s in get_tree().get_nodes_in_group("item_spawns"):
+		s.spawn_item()
 
 func _spawn_player():
 	player = player_scn.instance()
