@@ -97,8 +97,6 @@ func _spawn_enemy(spawn_pos: Vector3,
 	enemy_instance.patrolNodes = (patrol_route if patrol_route != null
 		else $PatrolRoutes.get_child(0).get_children())
 
-func _on_temporary_object_spawned(obj):
-	temporary_nodes.add_child(obj)
 
 func _on_enemy_spawn_triggered(location: Vector3,
 								enemy_type: String,
@@ -147,6 +145,4 @@ func spawn_drone(spawn_pos: Vector3, owner: Node) -> void:
 func _on_temporary_object_spawned(obj):
 	temporary_nodes.add_child(obj)
 
-func _on_enemy_spawn_triggered(location: Vector3, enemy_type: String) -> void:
-	spawn_enemy(location, enemy_type)
 
