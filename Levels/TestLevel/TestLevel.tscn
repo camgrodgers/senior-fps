@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=2]
+[gd_scene load_steps=20 format=2]
 
 [ext_resource path="res://default_env.tres" type="Environment" id=1]
 [ext_resource path="res://Levels/TestLevel/TestLevel.gd" type="Script" id=2]
@@ -14,6 +14,7 @@
 [ext_resource path="res://LevelObjects/Bush.tscn" type="PackedScene" id=12]
 [ext_resource path="res://LevelObjects/Barrier.tscn" type="PackedScene" id=13]
 [ext_resource path="res://LevelObjects/SpawnTrigger.tscn" type="PackedScene" id=14]
+[ext_resource path="res://Equippables/SNIPERItemDrop.tscn" type="PackedScene" id=15]
 
 [sub_resource type="BoxShape" id=1]
 extents = Vector3( 4.41143, 1, 4.33185 )
@@ -187,7 +188,6 @@ shadow_enabled = true
 [node name="PatrolRoutes" type="Spatial" parent="."]
 
 [node name="PatrolRoute1" parent="PatrolRoutes" instance=ExtResource( 7 )]
-loop = true
 
 [node name="PatrolNode" parent="PatrolRoutes/PatrolRoute1" instance=ExtResource( 11 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 15.2859, 2.34, 1.54999 )
@@ -214,31 +214,34 @@ script = ExtResource( 6 )
 [node name="NavNodes" type="Spatial" parent="."]
 
 [node name="NavNode" parent="NavNodes" instance=ExtResource( 5 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -5.51188, 2, -18.3178 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -5.51188, 2.34, -18.3178 )
 material = SubResource( 4 )
 
 [node name="NavNode2" parent="NavNodes" instance=ExtResource( 5 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 3.75833, 2, -18.7304 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 3.75833, 2.34, -18.71 )
 material = SubResource( 4 )
 
 [node name="NavNode3" parent="NavNodes" instance=ExtResource( 5 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.550678, 2, -23.4981 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.550678, 2.34, -23.4981 )
 material = SubResource( 4 )
 
 [node name="NavNode4" parent="NavNodes" instance=ExtResource( 5 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -17.8867, 2, -22.9276 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -17.8867, 2.34, -22.9276 )
 material = SubResource( 4 )
 
 [node name="NavNode5" parent="NavNodes" instance=ExtResource( 5 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.527693, 2, -30.5972 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.527692, 2.34, -30.5972 )
 material = SubResource( 4 )
 
 [node name="NavNode6" parent="NavNodes" instance=ExtResource( 5 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -17.8867, 2, -28.6415 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -17.8867, 2.34, -28.6415 )
 material = SubResource( 4 )
 
 [node name="Button" parent="." instance=ExtResource( 10 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 51.6688, 3.1316, 6.59383 )
+
+[node name="SNIPER18ItemDrop" parent="." instance=ExtResource( 15 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 58.2278, 4.14692, 6.09816 )
 
 [node name="AK47ItemDrop" parent="." instance=ExtResource( 3 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 56.0444, 4.90458, 7.01629 )

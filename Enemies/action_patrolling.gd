@@ -14,7 +14,7 @@ var path_updated = false
 func move_to(enemy: KinematicBody, delta: float):
 	
 	if not path_updated:
-		enemy.update_path(enemy.patrolNodes[enemy.patrolNodeIndex].translation)
+		enemy.update_path(enemy.patrolNodes[enemy.patrolNodeIndex].global_transform.origin)
 		path_updated = true
 	enemy.move_along_path(delta, true)
 	enemy.check_vision()

@@ -105,7 +105,7 @@ func get_shortest_node():
 func prep_node(node):
 	if currentNode != node:
 		clear_node_data()
-	update_path(node.translation)
+	update_path(node.global_transform.origin)
 	currentNode = node
 	currentNode.mark_occupied(self)
 
@@ -296,6 +296,7 @@ func take_damage(damage: float) -> void:
 	corpse.transform = self.transform
 	var weapon_drop_scn: Resource = preload("res://Equippables/AK47ItemDrop.tscn")
 	var weapon_drop = weapon_drop_scn.instance()
+	weapon_drop.random_impulse = true
 	weapon_drop.transform = self.transform
 	weapon_drop.translation.y += 2
 	
@@ -327,7 +328,7 @@ func drone_ready() -> void:
 	world_state["drone_ready"] = true
 
 # Danger calculation
-var danger_decrease_acceleration: float = 3
+var danger_decrease_acceleration: float = 10
 var danger_decrease_velocity: float = 0
 
 func _danger_update(delta: float) -> void:
@@ -337,7 +338,7 @@ func _danger_update(delta: float) -> void:
 	player_danger = clamp(player_danger + (rate * delta), 0, 100)
 	if ((not world_state["can_see_player"])
 			and last_player_position.distance_to(player_position) < 6):
-		player_danger -= danger_decrease_acceleration * delta
+		player_danger -= 4 * delta
 		danger_decrease_velocity = 0
 	elif not world_state["can_see_player"]:
 		player_danger -= (danger_decrease_velocity) * delta

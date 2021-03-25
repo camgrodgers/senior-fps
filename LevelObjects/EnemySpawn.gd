@@ -2,7 +2,7 @@ tool
 extends SnapToTerrain
 class_name EnemySpawn
 
-export(String) var enemy_type = ""
+export(String, "prototype", "shotgun", "sniper", "rifle", "pistol") var enemy_type = ""
 
 func _ready():
 	if Engine.editor_hint:

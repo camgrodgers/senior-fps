@@ -282,6 +282,8 @@ func add_weapon_ammo(weapon_name: String,
 		weapon = $CameraHolder/Camera/WeaponHolder/AK47
 	elif weapon_name == "Glock18":
 		weapon = $CameraHolder/Camera/WeaponHolder/Glock18
+	elif weapon_name == "SNIPER":
+		weapon = $CameraHolder/Camera/WeaponHolder/SNIPER
 	else:
 		return
 	weapon.add_ammo(amount, enable_weapon)
@@ -369,7 +371,7 @@ func _input(event: InputEvent) -> void:
 	var inverse_x_factor: int = 1 if settings.inverse_x else -1
 	var inverse_y_factor: int = 1 if settings.inverse_y else -1
 	var turn_speed: float = (settings.mouse_sensitivity / 
-		(50 if not _zoomed else 100))
+		(50 if not _zoomed else 140))
 	
 	aim_x += event.relative.x * turn_speed * inverse_x_factor
 	aim_y += event.relative.y * turn_speed * inverse_y_factor
