@@ -3,6 +3,7 @@ extends Enemy
 var enemy_owner = null
 var explosion_started = false
 var countdown_started = false
+var powering_down = false
 func _init():
 	MAX_HP = 3.0
 	ENEMY_RANGE = 3.0
@@ -14,10 +15,14 @@ func _ready():
 	$Enemy_audio_player.movement = preload("res://Sounds/Drone_movement.wav")
 	$Enemy_audio_player.enemy_shot = preload("res://Sounds/Explosion.wav")
 	$Enemy_audio_player.destruction_alert = preload("res://Sounds/beeps.wav")
+	$Enemy_audio_player.power_down = preload("res://Sounds/Power_Down.wav")
 	replan_actions()
 	
 
 func _process(delta):
+	if(!enemy_owner.get_ref()):
+		power_down()
+		return
 	if not $Enemy_audio_player.playing():
 		$Enemy_audio_player.play_sound($Enemy_audio_player.movement)
 func take_damage(damage: float) -> void:
@@ -31,7 +36,6 @@ func take_damage(damage: float) -> void:
 	var corpse_scn: Resource = preload("res://Enemies/Enemy_Drone_Corpse.tscn")
 	var corpse = corpse_scn.instance()
 	corpse.transform = self.transform
-	enemy_owner.drone_dead = true
 	signals.emit_signal("temporary_object_spawned", corpse)
 	clear_node_data()
 	self.queue_free()
@@ -46,7 +50,22 @@ func beep():
 	if not countdown_started:
 		$Enemy_audio_player.play_sound($Enemy_audio_player.destruction_alert)
 		countdown_started = true
-		
+
+func power_down():
+	if not powering_down:
+		$Enemy_audio_player.play_sound($Enemy_audio_player.power_down)
+		powering_down = true
+		if action_plan[action_index] == $GOAP_Planner/Actions/action_get_in_range:
+			action_index += 1
+	if not $Enemy_audio_player.playing():
+		var corpse_scn: Resource = preload("res://Enemies/Enemy_Drone_Corpse.tscn")
+		var corpse = corpse_scn.instance()
+		corpse.transform = self.transform
+		signals.emit_signal("temporary_object_spawned", corpse)
+		clear_node_data()
+		self.queue_free()
+	return
+
 func rate_of_danger_increase() -> float:
 	var player_speed: float = player.vel.length()
 	

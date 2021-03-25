@@ -11,7 +11,7 @@ var effects = {
 }
 
 var cost = 1
-var drone_dead = false
+var drone = null
 
 func move_to(enemy: KinematicBody, delta: float) -> bool:
 	if not enemy.world_state["drone_ready"]:
@@ -24,7 +24,7 @@ func move_to(enemy: KinematicBody, delta: float) -> bool:
 	return true
 
 func take_action(enemy: KinematicBody, delta: float):
-	if not drone_dead:
+	if (drone.get_ref()):
 		return false
 	enemy.reset_damage()
 	enemy.go_to_next_action()
