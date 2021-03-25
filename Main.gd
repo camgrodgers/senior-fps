@@ -9,6 +9,7 @@ func _ready():
 	signals.connect("level_selected", self, "_on_level_selected")
 	signals.connect("restart_level", self, "_on_restart_level")
 	signals.connect("quit", self, "_on_quit")
+	signals.connect("level_completed", self, "_on_level_completed")
 	
 
 func _load_screensaver():
@@ -32,6 +33,8 @@ func _on_level_selected(filename: String) -> void:
 func _on_restart_level():
 	pass
 
+func _on_level_completed(end_level: bool) -> void:
+	signals.emit_signal("quit")
 
 func _on_quit():
 	if in_game:

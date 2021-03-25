@@ -54,6 +54,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://Equippables/HitScanWeapon.gd"
 }, {
+"base": "Spatial",
+"class": "ItemSpawn",
+"language": "GDScript",
+"path": "res://LevelObjects/ItemSpawn.gd"
+}, {
 "base": "Navigation",
 "class": "Level",
 "language": "GDScript",
@@ -73,6 +78,11 @@ _global_script_classes=[ {
 "class": "PatrolNode",
 "language": "GDScript",
 "path": "res://LevelObjects/PatrolNode.gd"
+}, {
+"base": "Spatial",
+"class": "PatrolRoute",
+"language": "GDScript",
+"path": "res://LevelObjects/PatrolRoute.gd"
 }, {
 "base": "KinematicBody",
 "class": "Player",
@@ -109,10 +119,12 @@ _global_script_class_icons={
 "HTerrainDataLoader": "",
 "HTerrainDataSaver": "",
 "HitScanWeapon": "",
+"ItemSpawn": "",
 "Level": "",
 "Menu": "",
 "NavNode": "",
 "PatrolNode": "",
+"PatrolRoute": "",
 "Player": "",
 "SNIPER": "",
 "SnapToTerrain": "",
@@ -124,7 +136,6 @@ _global_script_class_icons={
 
 config/name="Senior Fps"
 run/main_scene="res://Main.tscn"
-config/icon="res://icon.png"
 
 [autoload]
 

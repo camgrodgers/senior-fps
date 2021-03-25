@@ -16,7 +16,10 @@ func _process(delta):
 	resume.visible = main.in_game
 	restart.visible = main.in_game
 	
-	if not main.in_game: return
+	if not main.in_game:
+		Input.set_mouse_mode(Input.MOUSE_MODE_CONFINED)
+		self.visible = true
+		return
 
 	if Input.is_action_just_pressed("escape"):
 		get_tree().paused = not get_tree().paused

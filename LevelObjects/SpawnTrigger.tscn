@@ -3,5 +3,7 @@
 [ext_resource path="res://LevelObjects/SpawnTrigger.gd" type="Script" id=1]
 
 [node name="SpawnTrigger" type="Area"]
+monitorable = false
+collision_layer = 0
 script = ExtResource( 1 )
 [connection signal="body_entered" from="." to="." method="_on_SpawnTrigger_body_entered"]

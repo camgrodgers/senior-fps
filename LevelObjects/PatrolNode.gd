@@ -50,7 +50,7 @@ func reposition(delta: float) -> void:
 				print("PatrolNode not related to nav")
 				return
 		
-		var snap_point: Vector3 = nav.get_closest_point(translation)
+		var snap_point: Vector3 = nav.get_closest_point(global_transform.origin)
 		snap_point.y += 1
-		translation = snap_point
+		global_transform.origin.y = snap_point.y
 		emit_signal("moved")

@@ -4,15 +4,16 @@
 [ext_resource path="res://Equippables/AmmoDrop.gd" type="Script" id=2]
 
 [sub_resource type="BoxShape" id=1]
-extents = Vector3( 0.172718, 0.203415, 0.419653 )
+extents = Vector3( 0.3, 0.3, 0.42 )
 
 [sub_resource type="CapsuleShape" id=2]
-radius = 0.466049
+radius = 0.626775
 height = 0.367741
 
 [node name="Glock18ItemDrop" type="RigidBody" groups=[
 "temporary_level_objects",
 ]]
+continuous_cd = true
 script = ExtResource( 2 )
 weapon_name = "Glock18"
 ammo_amount = 20

@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=2]
+[gd_scene load_steps=20 format=2]
 
 [ext_resource path="res://Enemies/Enemy.gd" type="Script" id=1]
 [ext_resource path="res://Enemies/Enemy_audio_player.gd" type="Script" id=2]
@@ -11,7 +11,6 @@
 [ext_resource path="res://Enemies/goal_patrol.gd" type="Script" id=9]
 [ext_resource path="res://Enemies/action_get_in_range.gd" type="Script" id=10]
 [ext_resource path="res://Enemies/action_shoot_safetly.gd" type="Script" id=11]
-[ext_resource path="res://Enemies/action_move_out_of_cover.gd" type="Script" id=12]
 [ext_resource path="res://Enemies/goal_stay_safe.gd" type="Script" id=13]
 [ext_resource path="res://Enemies/action_spawn_drone.gd" type="Script" id=14]
 
@@ -132,7 +131,7 @@ script = ExtResource( 10 )
 script = ExtResource( 6 )
 
 [node name="action_move_out_of_cover" type="Node" parent="GOAP_Planner/Actions"]
-script = ExtResource( 12 )
+script = ExtResource( 14 )
 
 [node name="action_shoot_safetly" type="Node" parent="GOAP_Planner/Actions"]
 script = ExtResource( 11 )
@@ -154,5 +153,8 @@ script = ExtResource( 13 )
 [node name="ReplanTimer" type="Timer" parent="."]
 wait_time = 1.5
 one_shot = true
+
+[node name="action_spawn_drone" type="Node" parent="."]
+script = ExtResource( 14 )
 
 [node name="ImmediateGeometry" type="ImmediateGeometry" parent="."]
