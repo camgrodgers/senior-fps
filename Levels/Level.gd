@@ -72,7 +72,8 @@ func spawn_drone(spawn_pos: Vector3, owner: Node) -> void:
 	enemy_drone.replan_actions()
 	enemy_drone.player = player
 	enemy_drone.translation = get_closest_point(Vector3(spawn_pos.x + 1, spawn_pos.y + 0.5, spawn_pos.z + 1))
-	enemy_drone.enemy_owner = owner
+	enemy_drone.enemy_owner = weakref(owner)
+	owner.drone = weakref(enemy_drone)
 
 func _on_temporary_object_spawned(obj):
 	temporary_nodes.add_child(obj)

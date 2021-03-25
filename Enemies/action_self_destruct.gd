@@ -17,6 +17,8 @@ var exploded = false
 
 func move_to(enemy: KinematicBody, delta: float) -> bool:
 	
+	if enemy.powering_down:
+		return false
 	self_destruct_timer += delta
 	enemy.beep()
 	if self_destruct_timer > 2.0:
@@ -27,6 +29,8 @@ func move_to(enemy: KinematicBody, delta: float) -> bool:
 
 
 func take_action(enemy: KinematicBody, delta: float):
+	if enemy.powering_down:
+		return false
 	enemy.explode()
 	explosion_timer += delta
 	if explosion_timer > 0.5:
