@@ -3,6 +3,7 @@ extends Node
 signal level_selected(filename)
 signal restart_level()
 signal quit()
+signal level_completed(end_level)
 
 signal recoil(force)
 signal expose_ammo_count(loaded, backup, per_mag)

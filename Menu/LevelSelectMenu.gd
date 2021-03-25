@@ -12,3 +12,7 @@ func _on_CameronsLevel_pressed():
 
 func _on_TestLevel_pressed():
 	signals.emit_signal("level_selected", "res://Levels/TestLevel/TestLevel.tscn")
+
+
+func _on_CanyonInfiltration_pressed():
+	signals.emit_signal("level_selected", "res://Levels/CanyonInfiltration/CanyonInfiltration.tscn")

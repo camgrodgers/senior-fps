@@ -15,6 +15,8 @@ var enemies: Spatial = Spatial.new()
 var player: Player = null
 var temporary_nodes: Spatial = Spatial.new()
 
+var time_in_level: float = 0
+
 func _init():
 	self.add_to_group("level")
 	add_child(temporary_nodes)
@@ -34,6 +36,7 @@ func _ready():
 	_update_cover()
 
 func _process(delta):
+	time_in_level += delta
 	_update_cover()
 	_custom_level_process(delta)
 	# NOTE: it might make sense to replace this bool flag with a signal

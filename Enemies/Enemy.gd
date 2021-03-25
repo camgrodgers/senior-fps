@@ -105,7 +105,7 @@ func get_shortest_node():
 func prep_node(node):
 	if currentNode != node:
 		clear_node_data()
-	update_path(node.translation)
+	update_path(node.global_transform.origin)
 	currentNode = node
 	currentNode.mark_occupied(self)
 
