@@ -16,7 +16,7 @@ height = 2.20087
 continuous_cd = true
 script = ExtResource( 2 )
 weapon_name = "SNIPER"
-ammo_amount = 10
+ammo_amount = 7
 enable_weapon = true
 
 [node name="CollisionShape" type="CollisionShape" parent="."]

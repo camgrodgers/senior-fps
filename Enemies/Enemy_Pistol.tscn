@@ -1,6 +1,6 @@
-[gd_scene load_steps=21 format=2]
+[gd_scene load_steps=22 format=2]
 
-[ext_resource path="res://Enemies/Enemy.gd" type="Script" id=1]
+[ext_resource path="res://Enemies/Enemy_Pistol.gd" type="Script" id=1]
 [ext_resource path="res://Enemies/Enemy_audio_player.gd" type="Script" id=2]
 [ext_resource path="res://Enemies/GOAP_Planner.gd" type="Script" id=3]
 [ext_resource path="res://Enemies/action_shoot.gd" type="Script" id=4]
@@ -11,9 +11,10 @@
 [ext_resource path="res://Enemies/goal_patrol.gd" type="Script" id=9]
 [ext_resource path="res://Enemies/action_get_in_range.gd" type="Script" id=10]
 [ext_resource path="res://Enemies/action_shoot_safetly.gd" type="Script" id=11]
-[ext_resource path="res://Enemies/action_move_out_of_cover.gd" type="Script" id=12]
+[ext_resource path="res://Equippables/Glock18_model.tscn" type="PackedScene" id=12]
 [ext_resource path="res://Enemies/goal_stay_safe.gd" type="Script" id=13]
-[ext_resource path="res://Enemies/action_spawn_drone.gd" type="Script" id=14]
+[ext_resource path="res://Equippables/Glock18ItemDrop.tscn" type="PackedScene" id=14]
+[ext_resource path="res://Enemies/action_move_out_of_cover.gd" type="Script" id=15]
 
 [sub_resource type="CapsuleShape" id=1]
 radius = 0.5
@@ -39,6 +40,7 @@ points = PoolVector3Array( 0, 0, 0, -100, 50, -100, 100, 50, -100, -100, -50, -1
 collision_layer = 4
 collision_mask = 5
 script = ExtResource( 1 )
+weapon_drop_scn = ExtResource( 14 )
 
 [node name="Hitbox" type="CollisionShape" parent="."]
 transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1.246, 0, 1, -5.44644e-08, 0, 1.108, 0 )
@@ -47,45 +49,50 @@ shape = SubResource( 1 )
 [node name="CSGCombiner" type="CSGCombiner" parent="."]
 
 [node name="CSGSphere" type="CSGSphere" parent="CSGCombiner"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.09814, 0 )
-radius = 0.35
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.17391, 0 )
+radius = 0.256037
 material = SubResource( 2 )
 
 [node name="leg1" type="CSGCylinder" parent="CSGCombiner"]
-transform = Transform( -0.0744392, 0, 0.997226, 0, 1, 0, -0.997226, 0, -0.0744392, -0.200909, 0.236621, 0.0234945 )
+transform = Transform( -0.0744392, 0, 0.997226, 0.161241, 0.986842, 0.0120361, -0.984104, 0.16169, -0.0734597, -0.183349, 0.767418, -0.0699051 )
 radius = 0.0893239
-height = 1.03762
+height = 0.672377
+
+[node name="leg3" type="CSGCylinder" parent="CSGCombiner/leg1"]
+transform = Transform( 0.966079, 0.258235, -0.00253212, -0.258236, 0.96589, -0.0192763, -0.00253205, 0.0192763, 0.999811, -0.103084, -0.630906, -0.00769481 )
+radius = 0.0893239
+height = 0.672377
 
 [node name="leg2" type="CSGCylinder" parent="CSGCombiner"]
-transform = Transform( -0.0744392, 0, 0.997226, 0, 1, 0, -0.997226, 0, -0.0744392, 0.208868, 0.250823, 0.000800828 )
+transform = Transform( -0.0744392, 0, 0.997226, 0.161241, 0.986842, 0.0120361, -0.984104, 0.16169, -0.0734597, 0.183, 0.767, -0.07 )
 radius = 0.0893239
-height = 1.00889
+height = 0.672377
+
+[node name="leg3" type="CSGCylinder" parent="CSGCombiner/leg2"]
+transform = Transform( 0.966079, 0.258235, -0.00253212, -0.258236, 0.96589, -0.0192763, -0.00253205, 0.0192763, 0.999811, -0.103084, -0.630906, -0.00769481 )
+radius = 0.0893239
+height = 0.672377
 
 [node name="CSGCylinder0" type="CSGCylinder" parent="CSGCombiner"]
-transform = Transform( -0.0744392, 0, 0.997226, 0, 1, 0, -0.997226, 0, -0.0744392, 0, 1.20337, 0 )
-radius = 0.33581
-height = 1.1
+transform = Transform( -0.0744392, 0, 0.997226, 0, 1, 0, -0.997226, 0, -0.0744392, 0, 1.42604, 0 )
+radius = 0.298312
+height = 0.780637
 sides = 20
 material = SubResource( 3 )
 
 [node name="CSGCylinder1" type="CSGCylinder" parent="CSGCombiner"]
-transform = Transform( -0.0744392, 0, 0.997226, 0, 1, 0, -0.997226, 0, -0.0744392, 0, 1.20354, 0 )
+transform = Transform( -0.0744392, 0, 0.997226, 0, 1, 0, -0.997226, 0, -0.0744392, 0, 1.42845, 0 )
 visible = false
-radius = 0.33581
-height = 1.1
+radius = 0.298
+height = 0.781
 sides = 20
 material = SubResource( 4 )
 
-[node name="Gun" type="CSGCylinder" parent="."]
-transform = Transform( 2.65431e-14, 1.62921e-07, 1, 1, -1.62921e-07, 0, 1.62921e-07, 1, -1.62921e-07, -0.0133731, 1.68149, -0.562953 )
-visible = false
-radius = 0.0676291
-height = 0.774024
+[node name="Gun" type="Spatial" parent="."]
+transform = Transform( 2.65431e-14, 1.62921e-07, 1, 1, -1.62921e-07, 0, 1.62921e-07, 1, -1.62921e-07, -0.0133731, 1.7405, -0.54848 )
 
-[node name="GunVisual" type="CSGCylinder" parent="."]
-transform = Transform( 2.6543e-14, 1.62921e-07, 1, 1, -1.62921e-07, 1.50772e-19, 1.62921e-07, 1, -1.62921e-07, 0.250681, 1.65545, -0.562953 )
-radius = 0.0676291
-height = 0.774024
+[node name="Glock 18" parent="." instance=ExtResource( 12 )]
+transform = Transform( 0.199997, 0, 0.00103673, 0, 0.2, 0, -0.00103673, 0, 0.199997, 0.159665, 1.82961, -0.726327 )
 
 [node name="VisionCone" type="Area" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.91972, 0 )
@@ -132,13 +139,10 @@ script = ExtResource( 10 )
 script = ExtResource( 6 )
 
 [node name="action_move_out_of_cover" type="Node" parent="GOAP_Planner/Actions"]
-script = ExtResource( 12 )
+script = ExtResource( 15 )
 
 [node name="action_shoot_safetly" type="Node" parent="GOAP_Planner/Actions"]
 script = ExtResource( 11 )
-
-[node name="action_spawn_drone" type="Node" parent="GOAP_Planner/Actions"]
-script = ExtResource( 14 )
 
 [node name="Goals" type="Node" parent="GOAP_Planner"]
 

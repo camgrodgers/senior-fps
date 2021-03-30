@@ -277,7 +277,7 @@ func get_path_distance(path_array: Array) -> float:
 
 # Respond to player attacks
 var damage_taken: float = 0.0
-
+export var weapon_drop_scn: PackedScene = preload("res://Equippables/AK47ItemDrop.tscn")
 
 func take_damage(damage: float) -> void:
 	world_state["has_target"] = true
@@ -294,7 +294,6 @@ func take_damage(damage: float) -> void:
 	var corpse_scn: Resource = preload("res://Enemies/DeadEnemy.tscn")
 	var corpse = corpse_scn.instance()
 	corpse.transform = self.transform
-	var weapon_drop_scn: Resource = preload("res://Equippables/AK47ItemDrop.tscn")
 	var weapon_drop = weapon_drop_scn.instance()
 	weapon_drop.random_impulse = true
 	weapon_drop.transform = self.transform
@@ -348,39 +347,7 @@ func _danger_update(delta: float) -> void:
 	danger_decrease_velocity = (0 if player_danger == 0
 		else danger_decrease_velocity + (danger_decrease_acceleration * delta))
 
-# TODO: This should be turned into an abstract method when the default enemy is
-#		changed into an AK47 enemy or something
-func rate_of_danger_increase() -> float:
-	var player_speed: float = player.vel.length()
-	
-	if not world_state["can_see_player"]:
-		return 0.0
-	
-	var rate: float = 0
-	if player_distance > 150:
-		rate = 0
-	elif player_distance > 100:
-		rate = 2
-	elif player_distance > 50:
-		rate = 10
-	elif player_distance > 30:
-		rate = 15
-	elif player_distance > 10:
-		rate = 20
-	else:
-		rate = 30
-	
-	rate = rate * current_damage_mult
-	
-	var speed_factor: float = 1
-	if player_speed < 2:
-		speed_factor = 2
-	elif player_speed > 15:
-		speed_factor = 0.75
-		#TODO: add a timer or something for the speed factor so it doesn't immediately go up when 
-		#you change directions
-		pass
-	
-	rate *= speed_factor
-	return rate
+# Abstract method
+func rate_of_danger_increase():
+	pass
 

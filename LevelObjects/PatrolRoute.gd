@@ -3,7 +3,7 @@ extends Spatial
 class_name PatrolRoute
 
 export(bool) var loop: bool = true
-export(String, "prototype", "shotgun", "sniper", "rifle", "pistol") var enemy_type = ""
+export(String, "shotgun", "sniper", "rifle", "pistol") var enemy_type = "rifle"
 
 
 func _ready():
