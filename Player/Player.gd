@@ -286,7 +286,11 @@ func add_weapon_ammo(weapon_name: String,
 		weapon = $CameraHolder/Camera/WeaponHolder/SNIPER
 	else:
 		return
+	var just_enabled := false
+	if enable_weapon and not weapon.enabled:
+		just_enabled = true
 	weapon.add_ammo(amount, enable_weapon)
+	if just_enabled: _switch_to_weapon(weapon)
 
 func _equip_weapon(weapon: HitScanWeapon) -> void:
 	if not weapon.enabled:
