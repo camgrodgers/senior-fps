@@ -43,6 +43,7 @@ func _physics_process(delta):
 		
 		$AnimationPlayer.play("Fire")
 		emit_signal("grenade_throw")
+		ammo_loaded -=1
 		$Model/Grenade_3.visible = false
 		yield(get_tree().create_timer(1.76),"timeout")
 		emit_signal("expose_ammo_count", ammo_loaded, ammo_backup, AMMO_PER_MAG)
