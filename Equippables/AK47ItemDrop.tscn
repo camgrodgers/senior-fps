@@ -16,7 +16,7 @@ height = 1.17105
 continuous_cd = true
 script = ExtResource( 2 )
 weapon_name = "AK47"
-ammo_amount = 20
+ammo_amount = 15
 enable_weapon = true
 
 [node name="AK-47" parent="." instance=ExtResource( 1 )]

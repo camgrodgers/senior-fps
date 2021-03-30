@@ -12,7 +12,7 @@ export var raised: bool = false
 export var chambering: float = 0.0
 
 var ammo_loaded: int
-var ammo_backup: int
+export var ammo_backup: int = 100
 var AMMO_PER_MAG: int
 export var enabled: bool = false
 

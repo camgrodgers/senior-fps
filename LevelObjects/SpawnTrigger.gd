@@ -2,7 +2,6 @@ extends Area
 class_name SpawnTrigger
 
 onready var signals: Signals = get_node("/root/Signals")
-onready var enemy_scn: Resource = preload("res://Enemies/Enemy.tscn")
 
 export(bool) var deactivate_when_triggered = true
 

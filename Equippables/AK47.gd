@@ -5,7 +5,6 @@ class_name AK47
 func _ready():
 	ammo_loaded = 20
 	AMMO_PER_MAG = 20
-	ammo_backup = 100
 	$AnimationPlayer.play_backwards("Raise")
 	
 

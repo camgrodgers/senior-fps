@@ -22,7 +22,7 @@ func spawn_enemies():
 		if random_number > 0.8:
 			enemy_instance = enemy_shotgun_scn.instance()
 		else:
-			enemy_instance = enemy_scn.instance()
+			enemy_instance = enemy_rifle_scn.instance()
 		enemies.add_child(enemy_instance)
 		
 		enemy_instance.nav = self
@@ -40,7 +40,7 @@ func add_instances():
 		if random_number > 0.8:
 			enemy_instance = enemy_shotgun_scn.instance()
 		else:
-			enemy_instance = enemy_scn.instance()
+			enemy_instance = enemy_rifle_scn.instance()
 		enemies.add_child(enemy_instance)
 		
 		enemy_instance.nav = self

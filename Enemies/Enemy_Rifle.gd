@@ -1,13 +1,11 @@
 extends Enemy
 
 func _init():
-	MAX_HP = 3.0
-	ENEMY_RANGE = 15.0
-	_shoot_interval = 4.0
-	DAMAGE_MULTIPLIER = 1.5
+	ENEMY_RANGE = 40.0
+	_shoot_interval = 2.0
 	
 func _ready():
-	$Enemy_audio_player.enemy_shot = preload("res://Sounds/Shotgun_shot.wav")
+	pass
 
 func rate_of_danger_increase() -> float:
 	var player_speed: float = player.vel.length()
@@ -16,18 +14,18 @@ func rate_of_danger_increase() -> float:
 		return 0.0
 	
 	var rate: float = 0
-	if player_distance > 80:
+	if player_distance > 150:
 		rate = 0
+	elif player_distance > 100:
+		rate = 2
 	elif player_distance > 50:
-		rate = 0
+		rate = 10
 	elif player_distance > 30:
-		rate = 6
-	elif player_distance > 20:
 		rate = 15
 	elif player_distance > 10:
-		rate = 30
+		rate = 20
 	else:
-		rate = 40
+		rate = 30
 	
 	rate = rate * current_damage_mult
 	

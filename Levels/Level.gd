@@ -4,9 +4,10 @@ class_name Level
 onready var signals: Signals = get_node("/root/Signals")
 
 onready var player_scn: Resource = preload("res://Player/Player.tscn")
-onready var enemy_scn: Resource = preload("res://Enemies/Enemy.tscn")
+onready var enemy_rifle_scn: Resource = preload("res://Enemies/Enemy_Rifle.tscn")
 onready var drone: Resource = preload("res://Enemies/Enemy_Drone.tscn")
 onready var enemy_shotgun_scn: Resource = preload("res://Enemies/Enemy_Shotgun.tscn")
+onready var enemy_pistol_scn: Resource = preload("res://Enemies/Enemy_Pistol.tscn")
 
 
 var rng = RandomNumberGenerator.new()
@@ -78,14 +79,16 @@ func _spawn_player():
 func _spawn_enemy(spawn_pos: Vector3,
 					enemy_type: String,
 					patrol_route,
-					has_target: bool) -> void:
+					has_target: bool = false) -> void:
 	var enemy_instance
-	if enemy_type == "prototype":
-		enemy_instance = enemy_scn.instance()
+	if enemy_type == "rifle":
+		enemy_instance = enemy_rifle_scn.instance()
 	elif enemy_type == "shotgun":
 		enemy_instance = enemy_shotgun_scn.instance()
+	elif enemy_type == "pistol":
+		enemy_instance = enemy_pistol_scn.instance()
 	else:
-		enemy_instance = enemy_scn.instance()
+		enemy_instance = enemy_rifle_scn.instance()
 	enemies.add_child(enemy_instance)
 	
 	enemy_instance.nav = self
