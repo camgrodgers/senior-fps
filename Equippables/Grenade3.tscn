@@ -1,53 +1,84 @@
-[gd_scene load_steps=13 format=2]
+[gd_scene load_steps=8 format=2]
 
-[ext_resource path="res://Sounds/explosion-01.wav" type="AudioStream" id=1]
-[ext_resource path="res://Sounds/Test_gun_shot.wav" type="AudioStream" id=2]
-[ext_resource path="res://Equippables/explosion.png" type="Texture" id=3]
-[ext_resource path="res://Equippables/Grenade.obj" type="ArrayMesh" id=4]
-[ext_resource path="res://Equippables/Grenade3.gd" type="Script" id=5]
+[ext_resource path="res://Equippables/Grenade3.gd" type="Script" id=1]
+[ext_resource path="res://Equippables/Grenade.obj" type="ArrayMesh" id=3]
 
 [sub_resource type="Animation" id=1]
 resource_name = "Fire"
 length = 0.15
 step = 0.01
 tracks/0/type = "value"
-tracks/0/path = NodePath("OmniLight:visible")
+tracks/0/path = NodePath("Model:rotation_degrees")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray( 0, 0.03 ),
-"transitions": PoolRealArray( 1, 1 ),
-"update": 1,
-"values": [ true, false ]
+"times": PoolRealArray( 0, 0.08, 0.15 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Vector3( 0, 0, 0 ), Vector3( 4.149, 0, 0 ), Vector3( 0, 0, 0 ) ]
 }
-tracks/1/type = "method"
-tracks/1/path = NodePath("AudioStreamPlayer")
+tracks/1/type = "value"
+tracks/1/path = NodePath("Model:translation")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/imported = false
 tracks/1/enabled = true
 tracks/1/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
-"values": [ {
-"args": [ 0.0 ],
-"method": "play"
-} ]
+"times": PoolRealArray( 0, 0.08, 0.15 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Vector3( 0, 0, 0 ), Vector3( 0, 0.0684289, 0 ), Vector3( 0, 0, 0 ) ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("OmniLight:visible")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 0.03 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ true, false ]
 }
 
 [sub_resource type="Animation" id=2]
 resource_name = "Melee"
 length = 0.4
 step = 0.01
-tracks/0/type = "method"
-tracks/0/path = NodePath(".")
+tracks/0/type = "value"
+tracks/0/path = NodePath("Model:rotation_degrees")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
+"times": PoolRealArray( 0, 0.09, 0.14, 0.38 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector3( 0, 0, 0 ), Vector3( 21.4956, 77.9074, 46.3858 ), Vector3( 21.4956, 77.9074, 46.3858 ), Vector3( 0, 0, 0 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Model:translation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.09, 0.11, 0.14, 0.38 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector3( 0, 0, 0 ), Vector3( -0.103533, 0.266343, 0.246993 ), Vector3( -0.152175, 0.391476, 0.363034 ), Vector3( 0.210928, 0.516505, 0.139526 ), Vector3( 0, 0, 0 ) ]
+}
+tracks/2/type = "method"
+tracks/2/path = NodePath(".")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
 "times": PoolRealArray( 0.14 ),
 "transitions": PoolRealArray( 1 ),
 "values": [ {
@@ -113,51 +144,18 @@ tracks/0/keys = {
 "method": "_reload"
 } ]
 }
-tracks/1/type = "value"
-tracks/1/path = NodePath("Model/AK47/AK47magazine:translation")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/keys = {
-"times": PoolRealArray( 0, 0.9, 2 ),
-"transitions": PoolRealArray( 1, 1, 1 ),
-"update": 0,
-"values": [ Vector3( 0, 0, 0 ), Vector3( -5.28575, -3.37368, -1.69685e-07 ), Vector3( 0, 0, 0 ) ]
-}
-tracks/2/type = "value"
-tracks/2/path = NodePath("Model/AK47/AK47magazine:rotation_degrees")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/keys = {
-"times": PoolRealArray( 0, 0.9, 2 ),
-"transitions": PoolRealArray( 1, 1, 1 ),
-"update": 0,
-"values": [ Vector3( 0, -6.10666e-13, 4.44319e-21 ), Vector3( 1.70569e-06, -2.95696e-06, -52.664 ), Vector3( 0, -6.10666e-13, 4.44319e-21 ) ]
-}
 
-[sub_resource type="SphereShape" id=5]
+[sub_resource type="BoxShape" id=5]
+extents = Vector3( 0.293948, 0.191559, 0.146693 )
 
-[sub_resource type="SphereShape" id=6]
-radius = 1.02795
-
-[sub_resource type="SpriteFrames" id=7]
-animations = [ {
-"frames": [ ExtResource( 3 ) ],
-"loop": true,
-"name": "default",
-"speed": 5.0
-} ]
-
-[node name="Grenade" type="RigidBody"]
-transform = Transform( 0.576132, -0.27411, -0.770024, -0.424037, 0.705156, -0.568284, 0.698759, 0.653926, 0.29003, -0.140642, 0.302366, 0.219055 )
-script = ExtResource( 5 )
+[node name="Grenade3" type="Spatial"]
+transform = Transform( 0.576132, -0.424038, 0.698759, -0.27411, 0.705156, 0.653925, -0.770023, -0.568284, 0.29003, 0.0561764, -0.395012, 0 )
+script = ExtResource( 1 )
 
 [node name="OmniLight" type="OmniLight" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.25157 )
-omni_range = 3.50148
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0061743, -0.767362 )
+visible = false
+omni_range = 10.0
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 anims/Fire = SubResource( 1 )
@@ -165,35 +163,20 @@ anims/Melee = SubResource( 2 )
 anims/Raise = SubResource( 3 )
 anims/Reload = SubResource( 4 )
 
-[node name="CollisionShape" type="CollisionShape" parent="."]
-transform = Transform( 0.767941, 0.205202, 0.0964262, 0.205202, 0.744732, 0.0811632, 0.0964258, 0.0811633, 0.584688, 0, 0, 0 )
-shape = SubResource( 5 )
+[node name="Model" type="Spatial" parent="."]
 
-[node name="MeshInstance" type="MeshInstance" parent="."]
-transform = Transform( 0.04, 1.86265e-09, 2.79397e-09, -3.72529e-09, 0.04, -9.31323e-10, 0, 4.65661e-09, 0.04, 0, 0, 0 )
-mesh = ExtResource( 4 )
+[node name="Grenade_3" type="MeshInstance" parent="Model"]
+transform = Transform( 0.018, -6.70552e-10, 1.00583e-09, 6.70552e-10, 0.018, -6.70552e-10, -1.00583e-09, 6.70552e-10, 0.018, 0.00275302, 0.00338352, 0.00197423 )
+mesh = ExtResource( 3 )
 material/0 = null
 material/1 = null
 material/2 = null
 
-[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
-stream = ExtResource( 2 )
+[node name="Area" type="Area" parent="Model"]
+monitorable = false
+collision_layer = 0
+collision_mask = 4
 
-[node name="Area" type="Area" parent="."]
-
-[node name="CollisionShape" type="CollisionShape" parent="Area"]
-transform = Transform( 2.21181, 0, 1.78814e-07, -1.19209e-07, 2.21181, 1.19209e-07, -5.96046e-08, 8.9407e-08, 2.21181, 0, 0, 0 )
-shape = SubResource( 6 )
-
-[node name="AnimatedSprite3D" type="AnimatedSprite3D" parent="."]
-transform = Transform( 0.551306, 0.241036, 0.537563, 0.519653, 0.652628, -0.468767, -0.0906301, 0.202495, 0.76179, 0.0570385, -0.0948524, 0.0764414 )
-frames = SubResource( 7 )
-
-[node name="blast_sound" type="AudioStreamPlayer3D" parent="."]
-stream = ExtResource( 1 )
-
-[node name="Timer" type="Timer" parent="."]
-wait_time = 6.0
-one_shot = true
-autostart = true
-[connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]
+[node name="CollisionShape" type="CollisionShape" parent="Model/Area"]
+transform = Transform( 1, 2.98023e-08, 7.45058e-08, -4.17233e-07, 1, 0, 2.08616e-07, -6.25849e-07, 1, 0, 0, 0 )
+shape = SubResource( 5 )

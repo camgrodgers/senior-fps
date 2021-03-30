@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=2]
+[gd_scene load_steps=16 format=2]
 
 [ext_resource path="res://Player/Player.gd" type="Script" id=1]
 [ext_resource path="res://Player/HUD.tscn" type="PackedScene" id=2]
@@ -9,6 +9,7 @@
 [ext_resource path="res://Sounds/Footsteps.wav" type="AudioStream" id=7]
 [ext_resource path="res://Equippables/Glock18.tscn" type="PackedScene" id=8]
 [ext_resource path="res://Equippables/SNIPER.tscn" type="PackedScene" id=9]
+[ext_resource path="res://Equippables/Grenade3.tscn" type="PackedScene" id=10]
 
 [sub_resource type="CapsuleShape" id=1]
 radius = 0.5
@@ -100,6 +101,9 @@ enabled = true
 enabled = true
 
 [node name="SNIPER" parent="CameraHolder/Camera/WeaponHolder" instance=ExtResource( 9 )]
+enabled = true
+
+[node name="Grenade3" parent="CameraHolder/Camera/WeaponHolder" instance=ExtResource( 10 )]
 enabled = true
 
 [node name="ItemHolder" type="Spatial" parent="CameraHolder/Camera"]

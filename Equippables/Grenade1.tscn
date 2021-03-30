@@ -5,13 +5,13 @@
 [ext_resource path="res://Sounds/explosion-01.wav" type="AudioStream" id=3]
 [ext_resource path="res://Equippables/Grenade.obj" type="ArrayMesh" id=4]
 
-[sub_resource type="BoxShape" id=2]
+[sub_resource type="BoxShape" id=1]
 extents = Vector3( 0.31855, 0.260449, 0.270467 )
 
-[sub_resource type="SphereShape" id=3]
+[sub_resource type="SphereShape" id=2]
 radius = 1.84117
 
-[sub_resource type="SpriteFrames" id=4]
+[sub_resource type="SpriteFrames" id=3]
 animations = [ {
 "frames": [ ExtResource( 1 ) ],
 "loop": true,
@@ -31,12 +31,13 @@ material/1 = null
 material/2 = null
 
 [node name="CollisionShape" type="CollisionShape" parent="."]
-shape = SubResource( 2 )
+shape = SubResource( 1 )
 
 [node name="Area" type="Area" parent="."]
+transform = Transform( 1.27111, 0, 0, 0, 1.08889, 0, 0, 0, 1, 0, 0, 0 )
 
 [node name="CollisionShape" type="CollisionShape" parent="Area"]
-shape = SubResource( 3 )
+shape = SubResource( 2 )
 
 [node name="Timer" type="Timer" parent="."]
 wait_time = 6.0
@@ -44,8 +45,8 @@ one_shot = true
 autostart = true
 
 [node name="AnimatedSprite3D" type="AnimatedSprite3D" parent="."]
-transform = Transform( -0.673169, 0, -1.01646e-07, 0, 0.521023, 0, 2.41593e-07, 0, -1.6, 0, -0.0686505, 0 )
-frames = SubResource( 4 )
+transform = Transform( -1.76317, 0, -2.66232e-07, 0, 1.30398, 0, 3.75836e-07, 0, -2.48906, 0, 1.46269, 0 )
+frames = SubResource( 3 )
 
 [node name="blast_sound" type="AudioStreamPlayer3D" parent="."]
 stream = ExtResource( 3 )
