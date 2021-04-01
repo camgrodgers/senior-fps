@@ -336,7 +336,7 @@ func _danger_update(delta: float) -> void:
 	
 	player_danger = clamp(player_danger + (rate * delta), 0, 100)
 	if ((not world_state["can_see_player"])
-			and last_player_position.distance_to(player_position) < 6):
+			and last_player_position.distance_to(player_position) < 10):
 		player_danger -= 4 * delta
 		danger_decrease_velocity = 0
 	elif not world_state["can_see_player"]:

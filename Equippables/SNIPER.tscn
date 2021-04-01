@@ -188,9 +188,9 @@ tracks/2/keys = {
 extents = Vector3( 0.382221, 0.547751, 0.852763 )
 
 [node name="SNIPER" type="Spatial"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
 script = ExtResource( 1 )
 raised = true
+ammo_backup = 30
 
 [node name="OmniLight" type="OmniLight" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.25157 )

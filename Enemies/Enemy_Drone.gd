@@ -11,6 +11,7 @@ func _init():
 	current_damage_mult = DAMAGE_MULTIPLIER
 	world_state["has_target"] = true
 	world_state["patrolling"] = false
+
 func _ready():
 	$Enemy_audio_player.movement = preload("res://Sounds/Drone_movement.wav")
 	$Enemy_audio_player.enemy_shot = preload("res://Sounds/Explosion.wav")
