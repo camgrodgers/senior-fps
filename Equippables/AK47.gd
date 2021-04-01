@@ -41,7 +41,7 @@ func _physics_process(delta):
 		signals.emit_signal("expose_ammo_count", ammo_loaded, ammo_backup, AMMO_PER_MAG)
 		chambering = 0.15
 		_fire_ray(1, 1)
-		signals.emit_signal("recoil", 4)
+		signals.emit_signal("recoil", 5.1)
 
 func unequip():
 	self.queue_free()

@@ -1,8 +1,8 @@
-[gd_scene load_steps=20 format=2]
+[gd_scene load_steps=19 format=2]
 
 [ext_resource path="res://default_env.tres" type="Environment" id=1]
 [ext_resource path="res://Levels/TestLevel/TestLevel.gd" type="Script" id=2]
-[ext_resource path="res://Equippables/AK47ItemDrop.tscn" type="PackedScene" id=3]
+[ext_resource path="res://LevelObjects/ItemSpawn.tscn" type="PackedScene" id=3]
 [ext_resource path="res://Equippables/Ball.tscn" type="PackedScene" id=4]
 [ext_resource path="res://LevelObjects/NavNode.tscn" type="PackedScene" id=5]
 [ext_resource path="res://LevelObjects/PlayerSpawn.gd" type="Script" id=6]
@@ -14,7 +14,6 @@
 [ext_resource path="res://LevelObjects/Bush.tscn" type="PackedScene" id=12]
 [ext_resource path="res://LevelObjects/Barrier.tscn" type="PackedScene" id=13]
 [ext_resource path="res://LevelObjects/SpawnTrigger.tscn" type="PackedScene" id=14]
-[ext_resource path="res://Equippables/SNIPERItemDrop.tscn" type="PackedScene" id=15]
 
 [sub_resource type="BoxShape" id=1]
 extents = Vector3( 4.41143, 1, 4.33185 )
@@ -141,6 +140,11 @@ transform = Transform( 1, 0, 0, 0, 0.865702, -0.500559, 0, 0.500559, 0.865702, 3
 width = 4.91803
 depth = 14.8888
 
+[node name="CSGBox6" type="CSGBox" parent="NavigationMeshInstance/CSGCombiner/Walls"]
+transform = Transform( 1, 0, 0, 0, 0.865702, -0.500559, 0, 0.500559, 0.865702, 31.3635, 10.3648, -51.1584 )
+width = 4.91803
+depth = 41.7427
+
 [node name="CSGBox9" type="CSGBox" parent="NavigationMeshInstance/CSGCombiner/Walls"]
 transform = Transform( -0.00991845, 0.663483, 0.748125, 0.00202352, 0.748174, -0.663499, -0.999949, -0.00506704, -0.00876329, 38.7789, 1.79414, 19.4835 )
 width = 4.91803
@@ -158,13 +162,13 @@ height = 3.0
 depth = 3.0
 
 [node name="CSGBox3" type="CSGBox" parent="NavigationMeshInstance/CSGCombiner/Walls"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 27.3901, 4.02367, -4.53611 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 27.3901, 3.61861, -4.53611 )
 width = 3.0
 height = 3.0
 depth = 3.0
 
 [node name="CSGBox4" type="CSGBox" parent="NavigationMeshInstance/CSGCombiner/Walls"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 27.3901, 5.96688, -10.1266 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 27.3901, 5.96688, -8.92662 )
 width = 3.0
 height = 3.0
 depth = 3.0
@@ -208,7 +212,7 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -14.1082, 2.34, 15.3312 )
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.66133, 2.34, -37.7804 )
 
 [node name="PlayerSpawn" parent="." instance=ExtResource( 9 )]
-transform = Transform( -0.00420633, 0, -0.999991, 0, 1, 0, 0.999991, 0, -0.00420633, 54.6213, 2.49553, 15.4054 )
+transform = Transform( -0.00420633, 0, -0.999991, 0, 1, 0, 0.999991, 0, -0.00420633, 54.6213, 2.78815, 15.4054 )
 script = ExtResource( 6 )
 
 [node name="NavNodes" type="Spatial" parent="."]
@@ -240,8 +244,13 @@ material = SubResource( 4 )
 [node name="Button" parent="." instance=ExtResource( 10 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 51.6688, 3.1316, 6.59383 )
 
-[node name="SNIPER18ItemDrop" parent="." instance=ExtResource( 15 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 58.2278, 4.14692, 6.09816 )
+[node name="ItemSpawn" parent="." instance=ExtResource( 3 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 60.0488, 10.0158, 8.74096 )
 
-[node name="AK47ItemDrop" parent="." instance=ExtResource( 3 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 56.0444, 4.90458, 7.01629 )
+[node name="ItemSpawn2" parent="." instance=ExtResource( 3 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 63.0697, 9.36585, 7.73053 )
+item_type = "AK47"
+
+[node name="ItemSpawn3" parent="." instance=ExtResource( 3 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 65.7619, 9.36585, 7.73053 )
+item_type = "Sniper"

@@ -33,6 +33,10 @@ func die() -> void:
 	is_dead = true
 	$HUD.player_dead_message()
 	$Danger_Player.stop()
+#	if held_weapon != null:
+#		held_weapon.set_inputs(false,
+#				false,
+#				false)
 	set_process(false)
 	set_physics_process(false)
 #	set_process_input(false)
@@ -53,12 +57,10 @@ func _process(delta) -> void:
 func _physics_process(delta) -> void:
 	if Input.is_action_just_pressed("flymode"):
 		settings.flying = !settings.flying
-
-
+	
 	if PlayerStats.danger_level >= 100 && !settings.invincibility:
 		$Sound_Player.play_sound($Sound_Player.game_over_shot)
 		die()
-		
 	
 	# Movement
 	if(settings.flying):
@@ -77,30 +79,10 @@ func _physics_process(delta) -> void:
 	if Input.is_action_just_pressed("debug"):
 		settings.invincibility = !settings.invincibility
 
-# Movement
-const GRAVITY: float = -40.0
-
-var vel: Vector3 = Vector3()
-
-const WALK_SPEED: int = 10
-const AIR_CONTROL_SPEED: int = 5
-const JUMP_HEIGHT: int = 15
-const ACCEL: float = 4.5
-const DEACCEL: float = 16.0
-const MAX_SLOPE_ANGLE: int = 40
-
-#enum PlayerStance{CROUCHING, STANDING}
-#var stance: int = PlayerStance.STANDING
-
-var is_crouching: bool = false
-var stamina: float = 100.0
-var lastFloorYcoord = 0
-var fallDie = false
-
 func _fly(delta: float) -> void:
 	var aiming: Basis = $CameraHolder.transform.basis
 	var direction: Vector3 = Vector3()
-	var target_speed: float = WALK_SPEED
+	var target_speed: float = MAX_WALK_SPEED
 	
 	if Input.is_action_pressed("move_forward"):
 		direction -= aiming[2]
@@ -111,95 +93,99 @@ func _fly(delta: float) -> void:
 	if Input.is_action_pressed("move_left"):
 		direction -= aiming[0]
 	
-
 	direction = direction.normalized()
 	
 	if Input.is_action_pressed("sprint"):
-		target_speed *= 1.25
+		target_speed *= 1.5
 	
 	var target = direction * target_speed
+	vel = vel.linear_interpolate(target, 5 * delta)
 	
-	vel = vel.linear_interpolate(target, ACCEL * delta)
-
 	move_and_slide(vel)
-	
-	
-# NOTE: Much of movement code is boilerplate and based on tutorials
-#		such as this one: 
-#		https://docs.godotengine.org/en/3.2/tutorials/3d/fps_tutorial/part_one.html#making-the-fps-movement-logic
+
+# Movement
+const MAX_CROUCH_SPEED: float = 6.0
+const MAX_WALK_SPEED: float = 11.0
+const MAX_SPRINT_SPEED: float = 18.0
+const CROUCH_ACCEL: float = 50.0
+const WALK_ACCEL: float = 80.0
+const SPRINT_ACCEL := 130.0
+const AIR_ACCEL: float = 17.0
+const JUMP_SPEED := 13.0
+const FRICTION_RATE := 8.0
+const GRAVITY := 40.0
+const FALL_DEATH_HEIGHT := 15.0
+const MAX_SLOPE_ANGLE: int = 40
+
+var vel: Vector3 = Vector3()
+var _max_speed = 0
+var _is_crouching: bool = false
+var _last_floor_y_coord: float = translation.y
+
+# This was initially intended to work as Quake/HL style movement as 
+# described here:
+# https://steamcommunity.com/sharedfiles/filedetails/?id=184184420
+# However, this code uses vector addition instead of vector projection,
+# which I believe should prevent Quake/HL-style bunnyhopping.
 func _process_movement(delta: float) -> void:
 	var aiming: Basis = $CameraHolder.transform.basis
-	var direction: Vector3 = Vector3()
-	var target_speed: float = WALK_SPEED
+	var accel: Vector3 = Vector3()
+	var accel_magnitude := 0.0
+	var horizontal_vel := vel
+	horizontal_vel.y = 0
+	var curr_speed := horizontal_vel.length()
 	
 	if Input.is_action_pressed("move_forward"):
-		direction -= aiming.z
+		accel -= aiming.z
 	if Input.is_action_pressed("move_backward"):
-		direction += aiming.z
+		accel += aiming.z
 	if Input.is_action_pressed("move_right"):
-		direction += aiming.x
+		accel += aiming.x
 	if Input.is_action_pressed("move_left"):
-		direction -= aiming.x
+		accel -= aiming.x
+	accel.y = 0
+	accel = accel.normalized()
 	
-	direction.y = 0
-	direction = direction.normalized()
+	if Input.is_action_just_pressed("crouch"):
+		_toggle_crouch()
 	
-	var hvel: Vector3 = vel
-	hvel.y = 0
-	var target: Vector3 = direction
-	var accel: float = ACCEL if direction.dot(hvel) > 0 else DEACCEL
-
 	if is_on_floor():
-		if Input.is_action_just_pressed("jump"):
-			vel.y = JUMP_HEIGHT
-		else:
-			vel.y = 0
-		
-		if Input.is_action_just_pressed("crouch"):
-			if is_crouching:
-				$CameraHolder.translation.y += 0.7
-				$StandingCollisionShape.disabled = false
-				$CrouchingCollisionShape.disabled = true
-				$StandingHitboxes.monitorable = true
-				$CrouchingHitboxes.monitorable = false
-			else:
-				$CameraHolder.translation.y -= 0.7
-				$StandingCollisionShape.disabled = true
-				$CrouchingCollisionShape.disabled = false
-				$StandingHitboxes.monitorable = false
-				$CrouchingHitboxes.monitorable = true
-			is_crouching = !is_crouching
-		if is_crouching:
-			target_speed *= 0.5
-		if (Input.is_action_pressed("sprint")
-				and stamina > 0
-				and not is_crouching):
-			target_speed *= 1.75
-			accel *= 1.5
-			stamina -= 10 * delta
-		elif stamina < 100:
-			stamina = clamp(stamina + 20 * delta, 0, 100)
-		
-		target *= target_speed
-	else:
-		vel.y += delta * GRAVITY
-		target = hvel
-#		target *= AIR_CONTROL_SPEED
-	
-	hvel = hvel.linear_interpolate(target, accel * delta)
-	vel.x = hvel.x
-	vel.z = hvel.z
-	
-	
-	if(is_on_floor()):
-		lastFloorYcoord = translation.y
-		if(fallDie):
+		# Determine whether player will die from falling
+		if (_last_floor_y_coord - translation.y > FALL_DEATH_HEIGHT
+				and not settings.invincibility):
 			die()
-	if((lastFloorYcoord - translation.y) > 12):
-		fallDie = true
+		_last_floor_y_coord = translation.y
+		
+		vel.y = 0
+		if _is_crouching:
+			accel_magnitude = CROUCH_ACCEL
+			_max_speed = MAX_CROUCH_SPEED
+		elif Input.is_action_pressed("sprint"):
+			accel_magnitude = SPRINT_ACCEL
+			_max_speed = MAX_SPRINT_SPEED
+		else:
+			accel_magnitude = WALK_ACCEL
+			_max_speed = MAX_WALK_SPEED
+		
+		# Apply friction using classic friction formula
+		vel -= FRICTION_RATE * vel * delta
+		
+		if Input.is_action_just_pressed("jump"):
+			vel.y += JUMP_SPEED if not _is_crouching else JUMP_SPEED / 1.5
+	else:
+		accel_magnitude = AIR_ACCEL
+		vel.y -= GRAVITY * delta
 	
+	# If acceleration vector for next frame + current velocity has a magnitude
+	# greater than the max speed, acceleration magnitude will approach zero.
+	# This sets a hard limit on air speed, preventing extreme bunnyhopping.
+	var new_speed = ((accel * accel_magnitude * delta) + horizontal_vel).length()
+	if new_speed > curr_speed and new_speed > _max_speed:
+		accel_magnitude = _max_speed - curr_speed
 	
-	if vel.abs().length() < 0.01:
+	vel += accel * accel_magnitude * delta
+	
+	if vel.length() < 0.01:
 		return
 	
 	var snap = Vector3.DOWN if is_on_floor() and vel.y == 0 else Vector3.ZERO
@@ -209,22 +195,37 @@ func _process_movement(delta: float) -> void:
 		true, # stop on slope. this only partially works.
 		4, # max slides
 		deg2rad(MAX_SLOPE_ANGLE))
-	
+
+func _toggle_crouch():
+	if _is_crouching:
+		$CameraHolder.translation.y += 0.7
+		$StandingCollisionShape.disabled = false
+		$CrouchingCollisionShape.disabled = true
+		$StandingHitboxes.monitorable = true
+		$CrouchingHitboxes.monitorable = false
+	else:
+		$CameraHolder.translation.y -= 0.7
+		$StandingCollisionShape.disabled = true
+		$CrouchingCollisionShape.disabled = false
+		$StandingHitboxes.monitorable = false
+		$CrouchingHitboxes.monitorable = true
+	_is_crouching = !_is_crouching
 
 # Weapons/item use
 func _process_item_use(_delta: float) -> void:
 	# Using items/weapons
 	var items_in_slots = weapon_holder.get_children()
-	if Input.is_action_pressed("slot0"):
-		if items_in_slots[0] != null: _switch_to_weapon(items_in_slots[0])
-	if Input.is_action_pressed("slot1"):
-		if items_in_slots[1] != null: _switch_to_weapon(items_in_slots[1])
-	if Input.is_action_pressed("slot2"):
-		if items_in_slots[2] != null: _switch_to_weapon(items_in_slots[2])
-	if Input.is_action_pressed("slot3"):
-		if items_in_slots[3] != null: _switch_to_weapon(items_in_slots[3])
-	if Input.is_action_pressed("slot4"):
-		if items_in_slots[4] != null: _switch_to_weapon(items_in_slots[4])
+	if not (held_weapon == null or held_weapon.is_active()):
+		if Input.is_action_pressed("slot0"):
+			if items_in_slots[0] != null: _switch_to_weapon(items_in_slots[0])
+		if Input.is_action_pressed("slot1"):
+			if items_in_slots[1] != null: _switch_to_weapon(items_in_slots[1])
+		if Input.is_action_pressed("slot2"):
+			if items_in_slots[2] != null: _switch_to_weapon(items_in_slots[2])
+		if Input.is_action_pressed("slot3"):
+			if items_in_slots[3] != null: _switch_to_weapon(items_in_slots[3])
+		if Input.is_action_pressed("slot4"):
+			if items_in_slots[4] != null: _switch_to_weapon(items_in_slots[4])
 	
 	var held_item = (
 		item_holder.get_child(0) if item_holder.get_child_count() > 0
@@ -385,7 +386,7 @@ func _input(event: InputEvent) -> void:
 
 ## Enemy/hazard interactions ##
 func hitboxes() -> Array:
-	if is_crouching:
+	if _is_crouching:
 		return $CrouchingHitboxes.get_children()
 	else:
 		return $StandingHitboxes.get_children()
