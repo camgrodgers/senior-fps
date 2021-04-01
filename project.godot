@@ -29,11 +29,6 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://Enemies/Enemy.gd"
 }, {
-"base": "RigidBody",
-"class": "GRENADE",
-"language": "GDScript",
-"path": "res://Equippables/Grenade.gd"
-}, {
 "base": "HitScanWeapon",
 "class": "Glock18",
 "language": "GDScript",
@@ -84,7 +79,6 @@ _global_script_class_icons={
 "AmmoDrop": "",
 "AnimatedCrosshair": "",
 "Enemy": "",
-"GRENADE": "",
 "Glock18": "",
 "Grenade3": "",
 "HitScanWeapon": "",
