@@ -41,6 +41,8 @@ func _fire_ray(damage: float, force_multiply: float) -> void:
 		var force = (force_multiply *
 				global_transform.origin.direction_to(obj.translation) / 4)
 		obj.apply_central_impulse(force)
+	
+	get_tree().call_group("enemies", "alert_to_player")
 
 func _reload() -> void:
 	if ammo_backup == 0:
