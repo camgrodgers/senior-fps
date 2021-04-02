@@ -13,6 +13,8 @@ func _ready():
 	danger_meter.visible = false
 	signals.connect("expose_ammo_count", self, "_on_expose_ammo_count")
 	signals.connect("hide_ammo_count", self, "_on_hide_ammo_count")
+	signals.connect("popup_message", self, "_on_popup_message")
+	signals.connect("hide_popup_message", self, "_on_hide_popup_message")
 
 func player_dead_message():
 	$CenterContainer/DeadMessage.visible = true
@@ -79,3 +81,11 @@ func _on_expose_ammo_count(loaded: int, backup: int, per_mag: int) -> void:
 
 func _on_hide_ammo_count():
 	$AmmoPanel.visible = false
+
+
+func _on_popup_message(text):
+	$MessagePopup.visible = true
+	$MessagePopup/CenterContainer/Label.text = text
+
+func _on_hide_popup_message():
+	$MessagePopup.visible = false

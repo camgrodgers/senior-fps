@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=2]
+[gd_scene load_steps=20 format=2]
 
 [ext_resource path="res://default_env.tres" type="Environment" id=1]
 [ext_resource path="res://Levels/TestLevel/TestLevel.gd" type="Script" id=2]
@@ -14,6 +14,7 @@
 [ext_resource path="res://LevelObjects/Bush.tscn" type="PackedScene" id=12]
 [ext_resource path="res://LevelObjects/Barrier.tscn" type="PackedScene" id=13]
 [ext_resource path="res://LevelObjects/SpawnTrigger.tscn" type="PackedScene" id=14]
+[ext_resource path="res://LevelObjects/MessageNode.tscn" type="PackedScene" id=15]
 
 [sub_resource type="BoxShape" id=1]
 extents = Vector3( 4.41143, 1, 4.33185 )
@@ -39,6 +40,12 @@ script = ExtResource( 2 )
 
 [node name="Bush" parent="." instance=ExtResource( 12 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 19.4397, 1, 28.2134 )
+
+[node name="MessageNode" parent="." instance=ExtResource( 15 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 65.462, 1, 25.5261 )
+text = "Hello world! This is a message node that can display messages to the player!
+You need to manually account for line breaks in this version,
+if I have more time to study Godot GUI that might change!"
 
 [node name="Ball" parent="." instance=ExtResource( 4 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 31.4908, 9.83961, -24.757 )
@@ -245,12 +252,12 @@ material = SubResource( 4 )
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 51.6688, 3.1316, 6.59383 )
 
 [node name="ItemSpawn" parent="." instance=ExtResource( 3 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 60.0488, 10.0158, 8.74096 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 60.0488, 6.04516, 8.74096 )
 
 [node name="ItemSpawn2" parent="." instance=ExtResource( 3 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 63.0697, 9.36585, 7.73053 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 63.0697, 5.39521, 7.73053 )
 item_type = "AK47"
 
 [node name="ItemSpawn3" parent="." instance=ExtResource( 3 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 65.7619, 9.36585, 7.73053 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 65.7619, 5.39521, 7.73053 )
 item_type = "Sniper"

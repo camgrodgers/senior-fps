@@ -13,3 +13,8 @@ signal camera_unzoom()
 
 signal temporary_object_spawned(object)
 signal enemy_spawn_triggered(location, enemy_type, patrol_route, has_target)
+
+signal popup_message(text)
+signal hide_popup_message()
+
+#signal player_danger_update(red, orange, yellow)

@@ -101,7 +101,6 @@ margin_left = 101.0
 margin_right = 614.0
 margin_bottom = 16.0
 size_flags_horizontal = 3
-max_value = 100.0
 value = 100.0
 rounded = true
 tick_count = 100
