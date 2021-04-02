@@ -1,5 +1,7 @@
 extends Node
 
+onready var signals = get_node("/root/Signals")
+
 var danger_level: float = 0
 var danger_level_orange: float = 0
 var known_cover_position: bool = false
@@ -34,4 +36,5 @@ func danger_update(delta):
 	
 	danger_level = clamp(danger_level, 0, 100)
 	danger_level_orange = clamp(danger_level_orange, 0, 100)
+#	signals.emit_signal("player_danger_update", danger_level)
 
