@@ -43,9 +43,7 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 19.4397, 1, 28.2134 )
 
 [node name="MessageNode" parent="." instance=ExtResource( 15 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 65.462, 1, 25.5261 )
-text = "Hello world! This is a message node that can display messages to the player!
-You need to manually account for line breaks in this version,
-if I have more time to study Godot GUI that might change!"
+text = "Hello world! This is a message node that can display messages to the player! You don't need to manually account for line breaks, but space is limited in these boxes."
 
 [node name="Ball" parent="." instance=ExtResource( 4 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 31.4908, 9.83961, -24.757 )
