@@ -11,5 +11,6 @@ func number_levels():
 	for c in children:
 		if c is LevelSelectBox:
 			c.level_order_number = i
-			i += 1
+			c._update_text()
+			i = i + 1
 
