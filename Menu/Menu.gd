@@ -30,7 +30,7 @@ func _process(delta):
 			Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 			self.visible = false
 
-func _on_level_selected(filename):
+func _on_level_selected(level_name):
 	_resume()
 
 func _on_LevelSelect_pressed():

@@ -64,6 +64,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://Levels/Level.gd"
 }, {
+"base": "PanelContainer",
+"class": "LevelSelectBox",
+"language": "GDScript",
+"path": "res://Menu/LevelSelectBox.gd"
+}, {
 "base": "Control",
 "class": "Menu",
 "language": "GDScript",
@@ -121,6 +126,7 @@ _global_script_class_icons={
 "HitScanWeapon": "",
 "ItemSpawn": "",
 "Level": "",
+"LevelSelectBox": "",
 "Menu": "",
 "NavNode": "",
 "PatrolNode": "",
@@ -141,6 +147,7 @@ run/main_scene="res://Main.tscn"
 
 Settings="*res://Settings.gd"
 Signals="*res://Signals.gd"
+PlayerProgress="*res://PlayerProgress.gd"
 
 [display]
 

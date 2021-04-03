@@ -1,8 +1,10 @@
 extends Node
 
-signal level_selected(filename)
+signal level_selected(level_name)
 signal restart_level()
 signal quit()
+#signal completion_marker_reached()
+#signal level_completed(end_level, is_lowest_time_best)
 signal level_completed(end_level)
 
 signal recoil(force)

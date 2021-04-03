@@ -159,6 +159,7 @@ margin_right = 490.0
 margin_bottom = 45.0
 rect_min_size = Vector2( 490, 0 )
 text = "Hello world! This is a message node that can display messages to the player!"
+align = 1
 autowrap = true
 __meta__ = {
 "_edit_use_anchors_": false

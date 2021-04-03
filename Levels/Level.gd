@@ -17,6 +17,7 @@ var player: Player = null
 var temporary_nodes: Spatial = Spatial.new()
 
 var time_in_level: float = 0
+var lower_time_better: bool = true
 
 func _init():
 	self.add_to_group("level")
