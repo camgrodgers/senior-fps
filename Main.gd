@@ -3,6 +3,7 @@ extends Node
 var current_level = null
 var in_game: bool = false
 onready var signals = get_node("/root/Signals")
+onready var player_progress = get_node("/root/PlayerProgress")
 
 func _ready():
 	_load_screensaver()
@@ -24,17 +25,18 @@ func _load_level(filename: String):
 	current_level = current_level_scn.instance()
 	$Level.add_child(current_level)
 
-func _on_level_selected(filename: String) -> void:
-	_load_level(filename)
+func _on_level_selected(level_name: String) -> void:
+	var level_info = player_progress.levels[level_name]
+	_load_level(level_info["filename"])
 	$Menu.visible = false
 	in_game = true
-
 
 func _on_restart_level():
 	pass
 
 func _on_level_completed(end_level: bool) -> void:
-	signals.emit_signal("quit")
+	if end_level:
+		signals.emit_signal("quit")
 
 func _on_quit():
 	if in_game:

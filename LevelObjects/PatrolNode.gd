@@ -27,7 +27,7 @@ var last_translation: Vector3 = self.translation
 var reposition_timer: float = 10.0
 var repositioning: bool = false
 func reposition(delta: float) -> void:
-	var a = 4
+#	var a = 4
 	if translation != last_translation:
 		emit_signal("moved")
 		reposition_timer = 10.0

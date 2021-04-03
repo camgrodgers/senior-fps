@@ -12,7 +12,7 @@ var master_volume_pct: int = 100
 # Temporary settings
 var invincibility: bool = false
 var flying: bool = false
-
+var unlock_all_levels: bool = false
 
 
 func _ready():
