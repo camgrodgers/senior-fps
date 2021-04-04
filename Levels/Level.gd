@@ -76,6 +76,7 @@ func _spawn_player():
 	self.add_child(player)
 	player.translation = $PlayerSpawn.translation
 	player.get_node("CameraHolder").rotation.y = $PlayerSpawn.rotation.y
+	player.aim_x = rad2deg($PlayerSpawn.rotation.y)
 
 func _spawn_enemy(spawn_pos: Vector3,
 					enemy_type: String,

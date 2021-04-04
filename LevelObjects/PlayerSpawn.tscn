@@ -7,7 +7,7 @@ albedo_color = Color( 0.0313726, 0.109804, 0.952941, 1 )
 material = SubResource( 1 )
 
 [node name="CSGBox" type="CSGBox" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.37846, 0, -0.00227261 )
+transform = Transform( -1.62921e-07, 0, -1, 0, 1, 0, 1, 0, -1.62921e-07, 0, 0, -1.379 )
 width = 0.964819
 height = 0.5
 depth = 0.5
