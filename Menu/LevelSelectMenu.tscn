@@ -14,22 +14,27 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="CanyonInfiltration" parent="." instance=ExtResource( 2 )]
+[node name="Tutorial" parent="." instance=ExtResource( 2 )]
 margin_top = 0.0
 margin_bottom = 52.0
+level_name = "Tutorial"
+
+[node name="CanyonInfiltration" parent="." instance=ExtResource( 2 )]
+margin_top = 52.0
+margin_bottom = 104.0
 level_name = "Canyon Infiltration"
 
 [node name="CameronsLevel" parent="." instance=ExtResource( 2 )]
-margin_top = 52.0
-margin_bottom = 104.0
+margin_top = 104.0
+margin_bottom = 156.0
 level_name = "Siege"
 
 [node name="JacobsLevel" parent="." instance=ExtResource( 2 )]
-margin_top = 104.0
-margin_bottom = 156.0
+margin_top = 156.0
+margin_bottom = 208.0
 level_name = "Jacob's Level"
 
 [node name="TestLevel" parent="." instance=ExtResource( 2 )]
-margin_top = 156.0
-margin_bottom = 208.0
+margin_top = 208.0
+margin_bottom = 260.0
 level_name = "Test Level"

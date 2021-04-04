@@ -27,6 +27,12 @@ var levels = {
 		, "best_time": -1.0
 	}
 	,
+	"Tutorial": {
+		 "filename": "res://Levels/Tutorial/Tutorial.tscn"
+		, "completed": false
+		, "best_time": -1.0
+	}
+	,
 }
 var save_filename = "user://save.dat"
 var current_level_name = null
@@ -58,7 +64,9 @@ func _load_save_file():
 	var save := File.new()
 	if save.file_exists(save_filename):
 		if OK == save.open(save_filename, File.READ):
-			levels = save.get_var()
+			var new_progress = save.get_var()
+			for k in new_progress:
+				levels[k] = new_progress[k]
 		else:
 			return
 	else:
