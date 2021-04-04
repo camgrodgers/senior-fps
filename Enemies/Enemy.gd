@@ -84,13 +84,17 @@ func move_along_path(delta: float, lookat: bool = false) -> void:
 	move_and_slide(velocity, Vector3.UP)
 
 # Find the nearest node to take cover at
+# Will try to get nearest node that is at a distnace to player > MINIMUM_RANGE
+# Return absolute nearest node if none
 func get_shortest_node():
 	var coverNodes = get_tree().get_nodes_in_group("navnodes_not_seen_by_player")
 	var shortestNodePathDistance = INF
 	var shortestNodePathIndex = null
 	var currentNodePathIndex = 0
+	var minimumRangeNodePathIndex = null
+	var minimumRangeNodePathDistance = INF
 	for n in coverNodes:
-		if n.occupied == true || n.translation.distance_to(player.translation) < MINIMUM_RANGE:
+		if n.occupied == true:
 			currentNodePathIndex += 1
 			continue
 		var path_to_node = nav.get_simple_path(translation, n.translation, true)
@@ -98,11 +102,16 @@ func get_shortest_node():
 		if total_distance < shortestNodePathDistance:
 			shortestNodePathIndex = currentNodePathIndex
 			shortestNodePathDistance = total_distance
+		if total_distance < minimumRangeNodePathDistance && n.translation.distance_to(player.translation) > MINIMUM_RANGE:
+			minimumRangeNodePathIndex = currentNodePathIndex
+			minimumRangeNodePathDistance = total_distance
 		currentNodePathIndex += 1
 	if shortestNodePathIndex == null:
 		print("no free nodes")
 		return currentNode
-	return coverNodes[shortestNodePathIndex]
+	if minimumRangeNodePathIndex == null:
+		return coverNodes[shortestNodePathIndex]
+	return coverNodes[minimumRangeNodePathIndex]
 
 func prep_node(node):
 	if currentNode != node:

@@ -6,7 +6,6 @@ var preconditions = {
 	"has_target" : true,
 	"in_cover": true,
 	"in_range": true,
-	"under_minimum_range": false
 }
 
 var effects = {
@@ -34,12 +33,12 @@ func move_to(enemy: Enemy, delta: float) -> bool:
 	if not path_updated:
 		enemy.update_path(enemy.player.translation)
 		path_updated = true
+	
 	enemy.move_along_path(delta)
 	enemy.aim_at_player(delta)
-	if enemy.check_vision():
-		peek_timer += delta
+	peek_timer += delta
 	
-	if enemy.world_state["can_see_player"] == true and peek_timer > 0.5:
+	if peek_timer > 1.0:
 		enemy.ready_for_action()
 		path_updated = false
 		peek_timer = 0.0
@@ -50,6 +49,7 @@ func take_action(enemy: KinematicBody, delta: float) -> bool:
 	enemy.check_vision()
 	if not enemy.check_range():
 		enemy.replan_actions()
+		enemy.cover_timer = 0
 		enemy.clear_node_data()
 		enemy.unset_aim()
 		if enemy.world_state["crouched"]:
@@ -61,13 +61,14 @@ func take_action(enemy: KinematicBody, delta: float) -> bool:
 	
 	if enemy.world_state["crouched"]:
 		crouch_timer += delta
-		if enemy.currentNode.visible_to_player && enemy.translation.distance_to(enemy.target.translation) < enemy.MINIMUM_RANGE:
+		if enemy.currentNode.visible_to_player:
 			enemy.go_to_next_action()
 			enemy.translation.y += crouch_distance
 			crouch_timer = 0.0
 			enemy.world_state["crouched"] = false
 			enemy.check_vision()
 			enemy.reset_damage()
+			enemy.cover_timer = 0
 			return true
 		if crouch_timer < 5.0:
 			return false

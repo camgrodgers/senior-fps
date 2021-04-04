@@ -48,6 +48,7 @@ func take_action(enemy: KinematicBody, delta: float) -> bool:
 	enemy.check_vision()
 	if not enemy.check_range():
 		enemy.replan_actions()
+		enemy.cover_timer = 0
 		enemy.clear_node_data()
 		if enemy.world_state["crouched"]:
 			enemy.translation.y += crouch_distance
@@ -63,6 +64,7 @@ func take_action(enemy: KinematicBody, delta: float) -> bool:
 			enemy.go_to_next_action()
 			enemy.translation.y += crouch_distance
 			crouch_timer = 0.0
+			enemy.cover_timer = 0
 			enemy.world_state["crouched"] = false
 			enemy.check_vision()
 			enemy.reset_damage()

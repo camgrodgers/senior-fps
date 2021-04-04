@@ -1,7 +1,7 @@
 extends Enemy
 
 func _init():
-	ENEMY_RANGE = 125
+	ENEMY_RANGE = 185
 	_shoot_interval = 2.0
 	MINIMUM_RANGE = 50
 	WOUNDED_RANGE = 80
@@ -18,14 +18,16 @@ func rate_of_danger_increase() -> float:
 		return 0.0
 	
 	var rate: float = 0
-	if player_distance > 200:
+	if player_distance > 300:
 		rate = 5
-	elif player_distance > 150:
+	elif player_distance > 200:
 		rate = 10
+	elif player_distance > 150:
+		rate = 25
 	elif player_distance > 100:
+		rate = 20
+	elif player_distance > 25:
 		rate = 15
-	elif player_distance > 50:
-		rate = 5
 	elif player_distance > 10:
 		rate = 1
 	else:
@@ -54,3 +56,7 @@ func unset_aim():
 	if $Enemy_audio_player.playing():
 		$Enemy_audio_player.stop()
 
+func reset_damage():
+	current_damage_mult = 0
+	if $Enemy_audio_player.playing():
+		$Enemy_audio_player.stop()

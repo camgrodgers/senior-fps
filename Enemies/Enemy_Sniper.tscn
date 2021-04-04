@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=2]
+[gd_scene load_steps=19 format=2]
 
 [ext_resource path="res://Enemies/Enemy_Sniper.gd" type="Script" id=1]
 [ext_resource path="res://Enemies/Enemy_audio_player.gd" type="Script" id=2]
@@ -11,7 +11,6 @@
 [ext_resource path="res://Enemies/action_get_in_range.gd" type="Script" id=10]
 [ext_resource path="res://Enemies/action_sniper_shoot.gd" type="Script" id=11]
 [ext_resource path="res://Equippables/M107_model.tscn" type="PackedScene" id=12]
-[ext_resource path="res://Enemies/goal_stay_safe.gd" type="Script" id=13]
 [ext_resource path="res://Enemies/action_move_out_of_cover.gd" type="Script" id=15]
 
 [sub_resource type="CapsuleShape" id=1]
@@ -146,9 +145,6 @@ script = ExtResource( 8 )
 
 [node name="goal_patrol" type="Node" parent="GOAP_Planner/Goals"]
 script = ExtResource( 9 )
-
-[node name="goal_stay_safe" type="Node" parent="GOAP_Planner/Goals"]
-script = ExtResource( 13 )
 
 [node name="ReplanTimer" type="Timer" parent="."]
 wait_time = 1.5

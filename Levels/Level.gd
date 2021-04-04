@@ -8,6 +8,7 @@ onready var enemy_rifle_scn: Resource = preload("res://Enemies/Enemy_Rifle.tscn"
 onready var drone: Resource = preload("res://Enemies/Enemy_Drone.tscn")
 onready var enemy_shotgun_scn: Resource = preload("res://Enemies/Enemy_Shotgun.tscn")
 onready var enemy_pistol_scn: Resource = preload("res://Enemies/Enemy_Pistol.tscn")
+onready var enemy_sniper_scn: Resource = preload("res://Enemies/Enemy_Sniper.tscn")
 
 
 var rng = RandomNumberGenerator.new()
