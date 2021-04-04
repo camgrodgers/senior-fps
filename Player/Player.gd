@@ -366,7 +366,11 @@ func _crosshair_update(delta:float) -> void:
 		$CameraHolder/LaserPoint.translation = Vector3(0, 0, 0)
 		return
 
-	var point = ray.get_collision_point()
+	var point: Vector3 = ray.get_collision_point()
+	var distance = point.distance_to(self.global_transform.origin)
+	$CameraHolder/LaserPoint.radius = range_lerp(
+		distance, 0, (250 if not _zoomed else 500), 0.015, 1
+	)
 	$CameraHolder/LaserPoint.global_transform.origin = point
 
 func _input(event: InputEvent) -> void:
