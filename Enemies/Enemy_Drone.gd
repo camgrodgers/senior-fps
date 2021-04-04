@@ -29,7 +29,7 @@ func _process(delta):
 func take_damage(damage: float) -> void:
 
 	$CSGCombiner.get_node("CSGCylinder" + str(int(damage_taken))).visible = false
-	damage_taken += damage
+	damage_taken += damage / 3
 	
 	if damage_taken < MAX_HP:
 		$CSGCombiner.get_node("CSGCylinder" + str(int(damage_taken))).visible = true
@@ -75,10 +75,9 @@ func rate_of_danger_increase() -> float:
 	
 	var rate: float = 0
 
-	if player_distance > 15:
-		rate = 5
-	elif player_distance > 10:
-		rate = 10
+	
+	if player_distance > 10:
+		rate = 0
 	elif player_distance > 5:
 		rate = 20
 	else:

@@ -8,7 +8,7 @@
 [ext_resource path="res://Enemies/goal_kill_player.gd" type="Script" id=8]
 [ext_resource path="res://Enemies/action_get_in_range.gd" type="Script" id=10]
 
-[sub_resource type="BoxShape" id=1]
+[sub_resource type="BoxShape" id=13]
 extents = Vector3( 1, 0.878, 1 )
 
 [sub_resource type="SpatialMaterial" id=2]
@@ -57,8 +57,8 @@ collision_mask = 5
 script = ExtResource( 1 )
 
 [node name="Hitbox" type="CollisionShape" parent="."]
-transform = Transform( 0.696, 0, 0, 0, -4.67712e-08, -0.413, 0, 1.07, -1.80528e-08, 0, 0.190601, 0.00109588 )
-shape = SubResource( 1 )
+transform = Transform( 0.696, 0, 0, 0, -4.67712e-08, -0.413, 0, 1.07, -1.80528e-08, 0, 0.29029, 0.00109588 )
+shape = SubResource( 13 )
 
 [node name="CSGCombiner" type="CSGCombiner" parent="."]
 
@@ -85,20 +85,20 @@ radius = 5.0
 material = SubResource( 6 )
 
 [node name="CSGCylinder0" type="CSGCylinder" parent="CSGCombiner"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.200787, 0 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.374901, 0 )
 radius = 0.75
 height = 0.6
 material = SubResource( 7 )
 
 [node name="CSGCylinder1" type="CSGCylinder" parent="CSGCombiner"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.200787, 0 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.374901, 0 )
 visible = false
 radius = 0.75
 height = 0.6
 material = SubResource( 8 )
 
 [node name="CSGCylinder2" type="CSGCylinder" parent="CSGCombiner"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.200787, 0 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.374901, 0 )
 visible = false
 radius = 0.75
 height = 0.6

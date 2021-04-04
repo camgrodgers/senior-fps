@@ -8,6 +8,7 @@ var ENEMY_RANGE: float = 60.0
 var MAX_HP: float = 2.0
 var DAMAGE_MULTIPLIER: float = 1.0
 var current_damage_mult = DAMAGE_MULTIPLIER
+var MINIMUM_RANGE = 5;
 
 var nav: Navigation = null
 var player = null
@@ -32,6 +33,7 @@ var world_state: Dictionary = {
 	"in_danger" : false,
 	"drone_ready" : true,
 	"crouched" : false,
+	"under_minimum_range": false
 }
 
 var action_plan: Array

@@ -40,3 +40,6 @@ func playing():
 func destroy_self():
 	audio_node.stop()
 	queue_free()
+
+func stop():
+	audio_node.stop()
