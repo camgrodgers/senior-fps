@@ -1,0 +1,13 @@
+[remap]
+
+importer="qodot.map"
+type="Resource"
+path="res://.import/tutorial.2.map-f1c2b0e48d786740f6b6739319adb251.tres"
+
+[deps]
+
+source_file="res://addons/qodot/maps/autosave/tutorial.2.map"
+dest_files=[ "res://.import/tutorial.2.map-f1c2b0e48d786740f6b6739319adb251.tres" ]
+
+[params]
+

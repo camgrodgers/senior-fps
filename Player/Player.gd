@@ -21,6 +21,7 @@ func _ready() -> void:
 	signals.connect("recoil", self, "_on_weapon_recoil")
 	signals.connect("camera_zoom",self,"_on_zoom_camera")
 	signals.connect("camera_unzoom",self,"_on_unzoom_camera")
+	signals.connect("level_completed", self, "_on_level_completed")
 	for weapon in weapon_holder.get_children():
 		weapon.set_ray(ray)
 		_unequip_weapon(weapon)
@@ -28,10 +29,15 @@ func _ready() -> void:
 	
 	
 	$Sound_Player.play_sound($Sound_Player.gun_cock)
+func _on_level_completed(end_level: bool) -> void:
+	if end_level:
+		disable_inputs()
+	
+	signals.emit_signal("popup_message", "You beat the level!")
+	yield(get_tree().create_timer(5.0), "timeout")
+	signals.emit_signal("hide_popup_message")
 
-func die() -> void:
-	is_dead = true
-	$HUD.player_dead_message()
+func disable_inputs() -> void:
 	$Danger_Player.stop()
 #	if held_weapon != null:
 #		held_weapon.set_inputs(false,
@@ -40,6 +46,12 @@ func die() -> void:
 	set_process(false)
 	set_physics_process(false)
 #	set_process_input(false)
+
+func die() -> void:
+	is_dead = true
+#	$HUD.player_dead_message()
+	signals.emit_signal("popup_message", 'You are dead. Press "space" to reload.')
+	disable_inputs()
 	return
 
 func _process(delta) -> void:
