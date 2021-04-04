@@ -32,8 +32,9 @@ func _ready() -> void:
 func _on_level_completed(end_level: bool) -> void:
 	if end_level:
 		disable_inputs()
-	
-	signals.emit_signal("popup_message", "You beat the level!")
+	var message := "You beat the level!"
+	if end_level: message += ' Press "space" to continue.' 
+	signals.emit_signal("popup_message", message)
 	yield(get_tree().create_timer(5.0), "timeout")
 	signals.emit_signal("hide_popup_message")
 
