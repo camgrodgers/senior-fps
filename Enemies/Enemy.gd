@@ -8,7 +8,8 @@ var ENEMY_RANGE: float = 60.0
 var MAX_HP: float = 2.0
 var DAMAGE_MULTIPLIER: float = 1.0
 var current_damage_mult = DAMAGE_MULTIPLIER
-var MINIMUM_RANGE = 5;
+var MINIMUM_RANGE = 10;
+var WOUNDED_RANGE = 30;
 
 var nav: Navigation = null
 var player = null
@@ -33,7 +34,6 @@ var world_state: Dictionary = {
 	"in_danger" : false,
 	"drone_ready" : true,
 	"crouched" : false,
-	"under_minimum_range": false
 }
 
 var action_plan: Array
@@ -90,7 +90,7 @@ func get_shortest_node():
 	var shortestNodePathIndex = null
 	var currentNodePathIndex = 0
 	for n in coverNodes:
-		if n.occupied == true:
+		if n.occupied == true || n.translation.distance_to(player.translation) < MINIMUM_RANGE:
 			currentNodePathIndex += 1
 			continue
 		var path_to_node = nav.get_simple_path(translation, n.translation, true)
@@ -288,6 +288,8 @@ func take_damage(damage: float) -> void:
 	$CSGCombiner.get_node("CSGCylinder" + str(int(damage_taken))).visible = false
 	damage_taken += damage
 	world_state["in_danger"] = damage_taken / MAX_HP >= 0.5
+	if(world_state["in_danger"]):
+		MINIMUM_RANGE = WOUNDED_RANGE
 	
 	if damage_taken < MAX_HP:
 		$CSGCombiner.get_node("CSGCylinder" + str(int(damage_taken))).visible = true

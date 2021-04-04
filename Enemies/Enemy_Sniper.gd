@@ -4,6 +4,7 @@ func _init():
 	ENEMY_RANGE = 125
 	_shoot_interval = 2.0
 	MINIMUM_RANGE = 50
+	WOUNDED_RANGE = 80
 	DAMAGE_MULTIPLIER = 0.0
 	
 func _ready():

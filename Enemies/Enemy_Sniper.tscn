@@ -1,6 +1,6 @@
 [gd_scene load_steps=20 format=2]
 
-[ext_resource path="res://Enemies/Enemy_Rifle.gd" type="Script" id=1]
+[ext_resource path="res://Enemies/Enemy_Sniper.gd" type="Script" id=1]
 [ext_resource path="res://Enemies/Enemy_audio_player.gd" type="Script" id=2]
 [ext_resource path="res://Enemies/GOAP_Planner.gd" type="Script" id=3]
 [ext_resource path="res://Enemies/action_find_cover.gd" type="Script" id=5]
