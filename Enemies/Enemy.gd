@@ -116,7 +116,9 @@ func get_shortest_node():
 		for node in get_tree().get_nodes_in_group("navnodes_seen_by_player"):
 			if not node.occupied:
 				return node
-	return coverNodes[shortestNodePathIndex]
+	if minimumRangeNodePathIndex == null:
+		return coverNodes[shortestNodePathIndex]
+	return coverNodes[minimumRangeNodePathDistance] 
 
 func prep_node(node):
 #	if node == null: return
