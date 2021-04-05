@@ -19,6 +19,7 @@ var temporary_nodes: Spatial = Spatial.new()
 
 var time_in_level: float = 0
 var lower_time_better: bool = true
+var _level_finished: bool = false
 
 func _init():
 	self.add_to_group("level")
@@ -33,6 +34,7 @@ func _ready():
 			self,
 			"_on_temporary_object_spawned")
 	signals.connect("restart_level", self, "_on_restart_level")
+	signals.connect("level_completed", self, "_on_level_completed")
 	
 	_spawn_player()
 	_spawn_items()
@@ -43,10 +45,12 @@ func _process(delta):
 	_update_cover()
 	_custom_level_process(delta)
 	# NOTE: it might make sense to replace this bool flag with a signal
-	if not(player.is_dead and Input.is_action_pressed("jump")):
+	if _level_finished and Input.is_action_just_pressed("jump"):
+		signals.emit_signal("quit")
+	if player.is_dead and Input.is_action_pressed("jump"):
+		signals.emit_signal("restart_level")
 		return
 	
-	signals.emit_signal("restart_level")
 
 # Overrideable method
 func _custom_level_process(delta) -> void:
@@ -55,6 +59,10 @@ func _custom_level_process(delta) -> void:
 # Overrideable method
 func _custom_level_restart() -> void:
 	pass
+
+func _on_level_completed(end_level: bool) -> void:
+	if end_level:
+		_level_finished = true
 
 func _on_restart_level():
 	_teardown_level()
@@ -66,6 +74,7 @@ func _on_restart_level():
 func _teardown_level():
 	get_tree().call_group("enemies", "queue_free")
 	get_tree().call_group("temporary_level_objects", "queue_free")
+	signals.emit_signal("hide_popup_message")
 	player.queue_free()
 
 func _spawn_items():
@@ -77,6 +86,7 @@ func _spawn_player():
 	self.add_child(player)
 	player.translation = $PlayerSpawn.translation
 	player.get_node("CameraHolder").rotation.y = $PlayerSpawn.rotation.y
+	player.aim_x = rad2deg($PlayerSpawn.rotation.y)
 
 func _spawn_enemy(spawn_pos: Vector3,
 					enemy_type: String,

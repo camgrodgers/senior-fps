@@ -87,7 +87,9 @@ func move_along_path(delta: float, lookat: bool = false) -> void:
 # Will try to get nearest node that is at a distance to player > MINIMUM_RANGE
 # Return absolute nearest node if none
 func get_shortest_node():
-	var coverNodes = get_tree().get_nodes_in_group("navnodes_not_seen_by_player")
+	var coverNodes = get_tree().get_nodes_in_group(
+			"navnodes_not_seen_by_player"
+		)
 	var shortestNodePathDistance = INF
 	var shortestNodePathIndex = null
 	var currentNodePathIndex = 0
@@ -97,7 +99,9 @@ func get_shortest_node():
 		if n.occupied == true:
 			currentNodePathIndex += 1
 			continue
-		var path_to_node = nav.get_simple_path(translation, n.translation, true)
+		var path_to_node = nav.get_simple_path(global_transform.origin,
+						n.global_transform.origin,
+						true)
 		var total_distance = get_path_distance(path_to_node)
 		if total_distance < shortestNodePathDistance:
 			shortestNodePathIndex = currentNodePathIndex
@@ -108,16 +112,14 @@ func get_shortest_node():
 		currentNodePathIndex += 1
 	if shortestNodePathIndex == null:
 		print("no free nodes")
-		return currentNode
-	if minimumRangeNodePathIndex == null:
-		return coverNodes[shortestNodePathIndex]
-	return coverNodes[minimumRangeNodePathIndex]
+		if currentNode != null: return currentNode
+		for node in get_tree().get_nodes_in_group("navnodes_seen_by_player"):
+			if not node.occupied:
+				return node
+	return coverNodes[shortestNodePathIndex]
 
 func prep_node(node):
-	if not node:
-		replan_actions()
-		path.append(self.translation)
-		return
+#	if node == null: return
 	if currentNode != node:
 		clear_node_data()
 	update_path(node.global_transform.origin)
@@ -283,6 +285,7 @@ func get_path_distance_to(goal: Vector3) -> float:
 
 # Length of a path
 func get_path_distance(path_array: Array) -> float:
+	if path_array == null or path_array.empty(): return INF
 	var total_distance: float = translation.distance_to(path_array[0])
 	for i in range(path_array.size() - 2):
 		total_distance += path_array[i].distance_to(path_array[i + 1])
