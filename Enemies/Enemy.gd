@@ -114,6 +114,10 @@ func get_shortest_node():
 	return coverNodes[minimumRangeNodePathIndex]
 
 func prep_node(node):
+	if not node:
+		replan_actions()
+		path.append(self.translation)
+		return
 	if currentNode != node:
 		clear_node_data()
 	update_path(node.global_transform.origin)

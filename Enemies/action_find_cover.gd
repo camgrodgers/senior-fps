@@ -29,7 +29,7 @@ func move_to(enemy: KinematicBody, delta: float) -> bool:
 	
 	if enemy.path.empty():
 		path_updated = false
-		if enemy.currentNode.visible_to_player:
+		if enemy.currentNode == null || enemy.currentNode.visible_to_player:
 			enemy.replan_actions()
 			return false
 		enemy.ready_for_action()
