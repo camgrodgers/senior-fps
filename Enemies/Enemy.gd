@@ -84,7 +84,7 @@ func move_along_path(delta: float, lookat: bool = false) -> void:
 	move_and_slide(velocity, Vector3.UP)
 
 # Find the nearest node to take cover at
-# Will try to get nearest node that is at a distnace to player > MINIMUM_RANGE
+# Will try to get nearest node that is at a distance to player > MINIMUM_RANGE
 # Return absolute nearest node if none
 func get_shortest_node():
 	var coverNodes = get_tree().get_nodes_in_group("navnodes_not_seen_by_player")

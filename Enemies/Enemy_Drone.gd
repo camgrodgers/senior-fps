@@ -96,3 +96,21 @@ func rate_of_danger_increase() -> float:
 	
 	rate *= speed_factor
 	return rate
+
+func move_along_path(delta: float, lookat: bool = false) -> void:
+	if path == null or path.empty():
+		print("null or empty path")
+		return
+	
+	var moving = ENEMY_SPEED * delta
+	var to = path[0]
+	
+	while translation.distance_to(to) < moving:
+		path.pop_front()
+		if path.empty():
+			return
+		to = path[0]
+	var distance = translation.distance_to(to)
+	var velocity = translation.direction_to(path[0]).normalized() * ENEMY_SPEED
+	look_at(global_transform.origin + velocity, Vector3.UP)
+	translation = translation.linear_interpolate(to, moving/distance)
