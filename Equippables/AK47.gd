@@ -1,6 +1,6 @@
 extends HitScanWeapon
 class_name AK47
-
+  
 
 func _ready():
 	ammo_loaded = 20

@@ -35,9 +35,9 @@ _global_script_classes=[ {
 "path": "res://Equippables/Glock18.gd"
 }, {
 "base": "HitScanWeapon",
-"class": "Grenade3",
+"class": "GrenadeHeld",
 "language": "GDScript",
-"path": "res://Equippables/Grenade3.gd"
+"path": "res://Equippables/GrenadeHeld.gd"
 }, {
 "base": "Spatial",
 "class": "HitScanWeapon",
@@ -80,7 +80,7 @@ _global_script_class_icons={
 "AnimatedCrosshair": "",
 "Enemy": "",
 "Glock18": "",
-"Grenade3": "",
+"GrenadeHeld": "",
 "HitScanWeapon": "",
 "Level": "",
 "Menu": "",

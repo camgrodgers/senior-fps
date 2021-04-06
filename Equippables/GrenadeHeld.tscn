@@ -1,6 +1,6 @@
 [gd_scene load_steps=8 format=2]
 
-[ext_resource path="res://Equippables/Grenade3.gd" type="Script" id=1]
+[ext_resource path="res://Equippables/GrenadeHeld.gd" type="Script" id=1]
 [ext_resource path="res://Equippables/Grenade.obj" type="ArrayMesh" id=3]
 
 [sub_resource type="Animation" id=1]

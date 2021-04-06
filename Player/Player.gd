@@ -11,12 +11,6 @@ onready	var weapon_holder = $CameraHolder/Camera/WeaponHolder
 onready var item_holder = $CameraHolder/Camera/ItemHolder
 var held_weapon: HitScanWeapon = null
 
-#Grenade 
-#var grenade_count = 3;
-#var grenade_scene = preload("res://Equippables/Grenade.tscn")
-var GrenadeInstance = preload("res://Equippables/Grenade1.tscn")
-onready var grenade = $CameraHolder/Camera/WeaponHolder/Grenade3
-
 func _ready() -> void:
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	
@@ -287,14 +281,9 @@ func _equip_weapon(weapon: HitScanWeapon) -> void:
 	held_weapon = weapon
 	
 func _on_throw_grenade() -> void:
-	var GrenadeHeld = GrenadeInstance.instance()
-	weapon_holder.add_child(GrenadeHeld)
-	get_tree().root.add_child(GrenadeHeld)
-	#yield(get_tree().create_timer(1.76),"timeout")
-	GrenadeHeld.global_transform = $CameraHolder/Camera/WeaponHolder.global_transform
-	GrenadeHeld.set_as_toplevel(true)
-	GrenadeHeld.apply_impulse(Vector3(0,0,0),-GrenadeHeld.global_transform.basis.z * 20)
-	yield(get_tree().create_timer(3.25 - 1.76),"timeout")
+	var weaponholder = $CameraHolder/Camera/WeaponHolder
+	$CameraHolder/Camera/WeaponHolder/Grenade3.throw_grenade(weaponholder)
+	
 		
 	
 func _unequip_weapon(weapon: HitScanWeapon) -> void:
