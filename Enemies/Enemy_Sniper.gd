@@ -60,3 +60,44 @@ func reset_damage():
 	current_damage_mult = 0
 	if $Enemy_audio_player.playing():
 		$Enemy_audio_player.stop()
+
+func get_shortest_node():
+	var coverNodes = get_tree().get_nodes_in_group(
+			"navnodes_not_seen_by_player"
+		)
+	var shortestNodePathDistance = INF
+	var shortestNodePathIndex = null
+	var currentNodePathIndex = 0
+	var minimumRangeNodePathIndex = null
+	var minimumRangeNodePathDistance = INF
+	var sniperNodeIndex = null
+	var sniperNodeDistance = INF
+	for n in coverNodes:
+		if n.occupied == true:
+			currentNodePathIndex += 1
+			continue
+		var path_to_node = nav.get_simple_path(global_transform.origin,
+						n.global_transform.origin,
+						true)
+		var total_distance = get_path_distance(path_to_node)
+		if total_distance < shortestNodePathDistance:
+			shortestNodePathIndex = currentNodePathIndex
+			shortestNodePathDistance = total_distance
+		if total_distance < minimumRangeNodePathDistance && n.translation.distance_to(player.translation) > MINIMUM_RANGE:
+			minimumRangeNodePathIndex = currentNodePathIndex
+			minimumRangeNodePathDistance = total_distance
+		if n.name == "NavNodeSniper" && total_distance < sniperNodeDistance && n.translation.distance_to(player.translation) > MINIMUM_RANGE:
+			sniperNodeDistance = total_distance
+			sniperNodeIndex = currentNodePathIndex
+		currentNodePathIndex += 1
+	if shortestNodePathIndex == null:
+		print("no free nodes")
+		if currentNode != null: return currentNode
+		for node in get_tree().get_nodes_in_group("navnodes_seen_by_player"):
+			if not node.occupied:
+				return node
+	if sniperNodeIndex == null:
+		if minimumRangeNodePathIndex == null:
+			return coverNodes[shortestNodePathIndex]
+		return coverNodes[minimumRangeNodePathIndex]
+	return coverNodes[sniperNodeIndex]

@@ -96,7 +96,7 @@ func get_shortest_node():
 	var minimumRangeNodePathIndex = null
 	var minimumRangeNodePathDistance = INF
 	for n in coverNodes:
-		if n.occupied == true:
+		if n.occupied == true || n.name == "NavNodeSniper":
 			currentNodePathIndex += 1
 			continue
 		var path_to_node = nav.get_simple_path(global_transform.origin,
@@ -118,7 +118,7 @@ func get_shortest_node():
 				return node
 	if minimumRangeNodePathIndex == null:
 		return coverNodes[shortestNodePathIndex]
-	return coverNodes[minimumRangeNodePathDistance] 
+	return coverNodes[minimumRangeNodePathIndex] 
 
 func prep_node(node):
 #	if node == null: return
