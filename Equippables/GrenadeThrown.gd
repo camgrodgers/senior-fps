@@ -34,7 +34,7 @@ func _on_Timer_timeout():
 			var collide = env_world.intersect_ray(global_transform.origin,object.global_transform.origin)
 			if collide.collider.has_method("take_damage"):
 				object.take_damage(1.0)
-			elif collide.collider.has_method("die"):
+			if collide.collider.has_method("die"):
 				player.die()
 				
 				
