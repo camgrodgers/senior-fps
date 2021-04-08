@@ -1,8 +1,9 @@
-[gd_scene load_steps=19 format=2]
+[gd_scene load_steps=20 format=2]
 
 [ext_resource path="res://Enemies/Enemy_Sniper.gd" type="Script" id=1]
 [ext_resource path="res://Enemies/Enemy_audio_player.gd" type="Script" id=2]
 [ext_resource path="res://Enemies/GOAP_Planner.gd" type="Script" id=3]
+[ext_resource path="res://Equippables/SNIPERItemDrop.tscn" type="PackedScene" id=4]
 [ext_resource path="res://Enemies/action_find_cover.gd" type="Script" id=5]
 [ext_resource path="res://Enemies/action_patrolling.gd" type="Script" id=6]
 [ext_resource path="res://Enemies/PriorityQueue.gd" type="Script" id=7]
@@ -37,6 +38,7 @@ points = PoolVector3Array( 0, 0, 0, -100, 50, -100, 100, 50, -100, -100, -50, -1
 collision_layer = 4
 collision_mask = 5
 script = ExtResource( 1 )
+weapon_drop_scn = ExtResource( 4 )
 
 [node name="Hitbox" type="CollisionShape" parent="."]
 transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1.511, 0, 1, -6.60479e-08, 0, 1.39359, 0 )
