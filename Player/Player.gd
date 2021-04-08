@@ -319,6 +319,7 @@ func _unequip_weapon(weapon: HitScanWeapon) -> void:
 	weapon.visible = false
 	weapon.set_physics_process(false)
 	held_weapon = null
+	signals.emit_signal("camera_unzoom")
 
 func _switch_to_weapon(weapon: HitScanWeapon) -> void:
 	if not weapon.enabled:
