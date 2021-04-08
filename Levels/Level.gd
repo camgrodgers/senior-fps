@@ -99,6 +99,8 @@ func _spawn_enemy(spawn_pos: Vector3,
 		enemy_instance = enemy_shotgun_scn.instance()
 	elif enemy_type == "pistol":
 		enemy_instance = enemy_pistol_scn.instance()
+	elif enemy_type == "sniper":
+		enemy_instance = enemy_sniper_scn.instance()
 	else:
 		enemy_instance = enemy_rifle_scn.instance()
 	enemies.add_child(enemy_instance)
