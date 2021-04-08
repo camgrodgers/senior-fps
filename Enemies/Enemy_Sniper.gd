@@ -62,8 +62,8 @@ func reset_damage():
 		$Enemy_audio_player.stop()
 
 func get_shortest_node():
-	var coverNodes = get_tree().get_nodes_in_group(
-			"navnodes_not_seen_by_player"
+	var sniper_nodes = get_tree().get_nodes_in_group(
+			"sniper_navnodes"
 		)
 	var shortestNodePathDistance = INF
 	var shortestNodePathIndex = null
@@ -72,7 +72,7 @@ func get_shortest_node():
 	var minimumRangeNodePathDistance = INF
 	var sniperNodeIndex = null
 	var sniperNodeDistance = INF
-	for n in coverNodes:
+	for n in sniper_nodes:
 		if n.occupied == true:
 			currentNodePathIndex += 1
 			continue
