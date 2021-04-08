@@ -15,6 +15,7 @@ func _process(delta) -> void:
 # Game code
 var occupied: bool = false
 var occupied_by = null
+var visible_to_player: bool = false
 
 func _game_ready():
 	self.visible = false

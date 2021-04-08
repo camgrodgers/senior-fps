@@ -96,7 +96,7 @@ func get_shortest_node():
 	var minimumRangeNodePathIndex = null
 	var minimumRangeNodePathDistance = INF
 	for n in coverNodes:
-		if n.occupied == true || n.name == "NavNodeSniper":
+		if n.occupied == true:
 			currentNodePathIndex += 1
 			continue
 		var path_to_node = nav.get_simple_path(global_transform.origin,

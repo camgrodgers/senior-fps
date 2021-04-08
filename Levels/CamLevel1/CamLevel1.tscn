@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=2]
+[gd_scene load_steps=18 format=2]
 
 [ext_resource path="res://default_env.tres" type="Environment" id=1]
 [ext_resource path="res://LevelObjects/PlayerSpawn.gd" type="Script" id=2]
@@ -13,6 +13,7 @@
 [ext_resource path="res://LevelObjects/Crate.tscn" type="PackedScene" id=11]
 [ext_resource path="res://Equippables/AK47ItemDrop.tscn" type="PackedScene" id=12]
 [ext_resource path="res://Equippables/SNIPERItemDrop.tscn" type="PackedScene" id=13]
+[ext_resource path="res://LevelObjects/NavNodeSniper.tscn" type="PackedScene" id=14]
 
 [sub_resource type="SpatialMaterial" id=1]
 albedo_color = Color( 0.937255, 0.964706, 0.0431373, 1 )
@@ -299,6 +300,12 @@ material = SubResource( 1 )
 [node name="NavNode29" parent="NavNodes" instance=ExtResource( 6 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -69.5161, 11.02, 27.7864 )
 material = SubResource( 1 )
+
+[node name="NavNodeSniper" parent="NavNodes" instance=ExtResource( 14 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -58.3629, 11.02, 27.4848 )
+
+[node name="NavNodeSniper2" parent="NavNodes" instance=ExtResource( 14 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -46.5762, 11.02, 7.38256 )
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = ExtResource( 1 )
