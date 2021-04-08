@@ -8,6 +8,7 @@ onready var enemy_rifle_scn: Resource = preload("res://Enemies/Enemy_Rifle.tscn"
 onready var drone: Resource = preload("res://Enemies/Enemy_Drone.tscn")
 onready var enemy_shotgun_scn: Resource = preload("res://Enemies/Enemy_Shotgun.tscn")
 onready var enemy_pistol_scn: Resource = preload("res://Enemies/Enemy_Pistol.tscn")
+onready var enemy_sniper_scn: Resource = preload("res://Enemies/Enemy_Sniper.tscn")
 
 
 var rng = RandomNumberGenerator.new()
@@ -98,6 +99,8 @@ func _spawn_enemy(spawn_pos: Vector3,
 		enemy_instance = enemy_shotgun_scn.instance()
 	elif enemy_type == "pistol":
 		enemy_instance = enemy_pistol_scn.instance()
+	elif enemy_type == "sniper":
+		enemy_instance = enemy_sniper_scn.instance()
 	else:
 		enemy_instance = enemy_rifle_scn.instance()
 	enemies.add_child(enemy_instance)
@@ -152,7 +155,7 @@ func spawn_drone(spawn_pos: Vector3, owner: Node) -> void:
 	enemy_drone.nav = self
 	enemy_drone.replan_actions()
 	enemy_drone.player = player
-	enemy_drone.translation = get_closest_point(Vector3(spawn_pos.x + 1, spawn_pos.y + 0.5, spawn_pos.z + 1))
+	enemy_drone.translation = get_closest_point(Vector3(spawn_pos.x + 1, spawn_pos.y, spawn_pos.z + 1))
 	enemy_drone.enemy_owner = weakref(owner)
 	owner.drone = weakref(enemy_drone)
 

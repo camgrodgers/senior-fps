@@ -5,7 +5,7 @@ var preconditions = {
 }
 
 var effects = {
-	"in_cover" : true
+	"in_cover" : false
 }
 
 var cost = 1

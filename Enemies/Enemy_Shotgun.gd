@@ -4,7 +4,9 @@ func _init():
 	MAX_HP = 3.0
 	ENEMY_RANGE = 15.0
 	_shoot_interval = 4.0
-	DAMAGE_MULTIPLIER = 1.5
+	DAMAGE_MULTIPLIER = 1.0
+	MINIMUM_RANGE = 0
+	WOUNDED_RANGE = 0
 	
 func _ready():
 	$Enemy_audio_player.enemy_shot = preload("res://Sounds/Shotgun_shot.wav")

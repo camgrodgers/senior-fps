@@ -8,6 +8,8 @@ var ENEMY_RANGE: float = 60.0
 var MAX_HP: float = 2.0
 var DAMAGE_MULTIPLIER: float = 1.0
 var current_damage_mult = DAMAGE_MULTIPLIER
+var MINIMUM_RANGE = 10;
+var WOUNDED_RANGE = 30;
 
 var nav: Navigation = null
 var player = null
@@ -82,6 +84,8 @@ func move_along_path(delta: float, lookat: bool = false) -> void:
 	move_and_slide(velocity, Vector3.UP)
 
 # Find the nearest node to take cover at
+# Will try to get nearest node that is at a distance to player > MINIMUM_RANGE
+# Return absolute nearest node if none
 func get_shortest_node():
 	var coverNodes = get_tree().get_nodes_in_group(
 			"navnodes_not_seen_by_player"
@@ -89,6 +93,8 @@ func get_shortest_node():
 	var shortestNodePathDistance = INF
 	var shortestNodePathIndex = null
 	var currentNodePathIndex = 0
+	var minimumRangeNodePathIndex = null
+	var minimumRangeNodePathDistance = INF
 	for n in coverNodes:
 		if n.occupied == true:
 			currentNodePathIndex += 1
@@ -100,6 +106,9 @@ func get_shortest_node():
 		if total_distance < shortestNodePathDistance:
 			shortestNodePathIndex = currentNodePathIndex
 			shortestNodePathDistance = total_distance
+		if total_distance < minimumRangeNodePathDistance && n.translation.distance_to(player.translation) > MINIMUM_RANGE:
+			minimumRangeNodePathIndex = currentNodePathIndex
+			minimumRangeNodePathDistance = total_distance
 		currentNodePathIndex += 1
 	if shortestNodePathIndex == null:
 		print("no free nodes")
@@ -107,7 +116,9 @@ func get_shortest_node():
 		for node in get_tree().get_nodes_in_group("navnodes_seen_by_player"):
 			if not node.occupied:
 				return node
-	return coverNodes[shortestNodePathIndex]
+	if minimumRangeNodePathIndex == null:
+		return coverNodes[shortestNodePathIndex]
+	return coverNodes[minimumRangeNodePathIndex] 
 
 func prep_node(node):
 #	if node == null: return
@@ -295,6 +306,8 @@ func take_damage(damage: float) -> void:
 	$CSGCombiner.get_node("CSGCylinder" + str(int(damage_taken))).visible = false
 	damage_taken += damage
 	world_state["in_danger"] = damage_taken / MAX_HP >= 0.5
+	if(world_state["in_danger"]):
+		MINIMUM_RANGE = WOUNDED_RANGE
 	
 	if damage_taken < MAX_HP:
 		$CSGCombiner.get_node("CSGCylinder" + str(int(damage_taken))).visible = true

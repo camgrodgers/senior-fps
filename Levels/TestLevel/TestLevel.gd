@@ -39,6 +39,8 @@ func add_instances():
 		var enemy_instance: KinematicBody = null
 		if random_number > 0.8:
 			enemy_instance = enemy_shotgun_scn.instance()
+		elif random_number > 0.5:
+			enemy_instance = enemy_sniper_scn.instance()
 		else:
 			enemy_instance = enemy_rifle_scn.instance()
 		enemies.add_child(enemy_instance)

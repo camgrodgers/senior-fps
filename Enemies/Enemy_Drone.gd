@@ -29,7 +29,7 @@ func _process(delta):
 func take_damage(damage: float) -> void:
 
 	$CSGCombiner.get_node("CSGCylinder" + str(int(damage_taken))).visible = false
-	damage_taken += damage
+	damage_taken += damage / 3
 	
 	if damage_taken < MAX_HP:
 		$CSGCombiner.get_node("CSGCylinder" + str(int(damage_taken))).visible = true
@@ -75,10 +75,9 @@ func rate_of_danger_increase() -> float:
 	
 	var rate: float = 0
 
-	if player_distance > 15:
-		rate = 5
-	elif player_distance > 10:
-		rate = 10
+	
+	if player_distance > 10:
+		rate = 0
 	elif player_distance > 5:
 		rate = 20
 	else:
@@ -97,3 +96,21 @@ func rate_of_danger_increase() -> float:
 	
 	rate *= speed_factor
 	return rate
+
+func move_along_path(delta: float, lookat: bool = false) -> void:
+	if path == null or path.empty():
+		print("null or empty path")
+		return
+	
+	var moving = ENEMY_SPEED * delta
+	var to = path[0]
+	
+	while translation.distance_to(to) < moving:
+		path.pop_front()
+		if path.empty():
+			return
+		to = path[0]
+	var distance = translation.distance_to(to)
+	var velocity = translation.direction_to(path[0]).normalized() * ENEMY_SPEED
+	look_at(global_transform.origin + velocity, Vector3.UP)
+	translation = translation.linear_interpolate(to, moving/distance)

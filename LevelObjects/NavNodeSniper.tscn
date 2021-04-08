@@ -1,0 +1,19 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://LevelObjects/NavNodeSniper.gd" type="Script" id=1]
+
+[sub_resource type="SpatialMaterial" id=1]
+albedo_color = Color( 0.0509804, 0.984314, 0.0627451, 1 )
+
+[node name="NavNodeSniper" type="CSGSphere" groups=[
+"sniper_navnodes",
+]]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.701584, -0.135872 )
+cast_shadow = 0
+use_collision = true
+collision_layer = 32
+collision_mask = 2147483680
+radius = 0.249943
+radial_segments = 8
+material = SubResource( 1 )
+script = ExtResource( 1 )
