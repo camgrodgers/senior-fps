@@ -29,7 +29,7 @@ func danger_update(delta):
 
 	for e in enemies:
 		if ((not e.world_state["can_see_player"])
-				and e.last_player_position.distance_to(player_position) < 6):
+				and e.last_player_position.distance_to(player_position) < 10):
 			danger_level_orange += e.player_danger
 
 		danger_level += e.player_danger
