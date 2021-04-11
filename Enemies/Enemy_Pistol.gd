@@ -2,7 +2,6 @@ extends Enemy
 
 func _init():
 	ENEMY_RANGE = 20.0
-	_shoot_interval = 3.0
 	
 func _ready():
 	pass

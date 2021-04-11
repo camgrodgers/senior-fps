@@ -385,7 +385,7 @@ func _crosshair_update(delta:float) -> void:
 	# Early return if the raycast is momentarily colliding with the player
 	# TODO: Get a better solution than this hack fix
 	if distance < 0.9:
-		print("ray collided %f" % distance)
+#		print("ray collided %f" % distance)
 		return
 	
 	$CameraHolder/LaserPoint.radius = range_lerp(

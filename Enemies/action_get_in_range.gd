@@ -14,7 +14,6 @@ var last_player_position = null
 
 
 func move_to(enemy: KinematicBody, delta: float) -> bool:
-	
 	if not path_updated or last_player_position.distance_to(enemy.player.translation) > 5 or enemy.path.empty():
 		enemy.clear_node_data()
 		enemy.update_path(enemy.player.translation)
@@ -23,6 +22,8 @@ func move_to(enemy: KinematicBody, delta: float) -> bool:
 		path_updated = true
 	enemy.move_along_path(delta)
 	enemy.aim_at_player(delta)
+	if enemy.world_state["can_see_player"]:
+		enemy.shoot_around_player(delta)
 	
 	if enemy.check_range():
 		enemy.ready_for_action()

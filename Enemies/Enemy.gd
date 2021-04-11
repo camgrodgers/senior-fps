@@ -186,12 +186,12 @@ func aim_at_player(_delta):
 	rotation_degrees.x = 0
 
 var _shoot_timer: float = 0
-var _shoot_interval: float = 2
+export var shoot_interval: float = 2
 
 func shoot_around_player(delta):
 	rng.randomize()
 	_shoot_timer += delta
-	if _shoot_timer < _shoot_interval:
+	if _shoot_timer < shoot_interval:
 		return
 	_shoot_timer = 0 - rng.randf_range(0, 2)
 	$Enemy_audio_player.play_sound($Enemy_audio_player.enemy_shot)

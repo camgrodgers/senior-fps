@@ -40,6 +40,7 @@ points = PoolVector3Array( 0, 0, 0, -100, 50, -100, 100, 50, -100, -100, -50, -1
 collision_layer = 4
 collision_mask = 5
 script = ExtResource( 1 )
+shoot_interval = 1.5
 
 [node name="Hitbox" type="CollisionShape" parent="."]
 transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1.246, 0, 1, -5.44644e-08, 0, 1.108, 0 )
