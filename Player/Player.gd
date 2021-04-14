@@ -208,6 +208,19 @@ func _process_movement(delta: float) -> void:
 
 func _toggle_crouch():
 	if _is_crouching:
+		var space_state = get_world().direct_space_state
+		var from = $CrouchingCollisionShape.global_transform.origin
+		var to = from
+		to.y += 1.45
+		var body_ray = space_state.intersect_ray(
+			from,
+			to,
+			[self], # exclude
+			0b00001, # collides with 0...0, 0, 0, 0, world
+			true, # collide with bodies  
+			false) # collide with areas
+		if not body_ray.empty(): return
+		
 		$CameraHolder.translation.y += 0.7
 		$StandingCollisionShape.disabled = false
 		$CrouchingCollisionShape.disabled = true
