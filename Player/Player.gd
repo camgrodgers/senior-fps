@@ -40,17 +40,14 @@ func _on_level_completed(end_level: bool) -> void:
 
 func disable_inputs() -> void:
 	$Danger_Player.stop()
-#	if held_weapon != null:
-#		held_weapon.set_inputs(false,
-#				false,
-#				false)
+	_unequip_weapon(held_weapon)
 	set_process(false)
 	set_physics_process(false)
 #	set_process_input(false)
 
 func die() -> void:
 	is_dead = true
-#	$HUD.player_dead_message()
+	$HUD.player_dead = true
 	signals.emit_signal("popup_message", 'You are dead. Press "space" to reload.')
 	disable_inputs()
 	return

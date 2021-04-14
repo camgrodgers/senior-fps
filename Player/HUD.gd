@@ -7,6 +7,7 @@ onready var known_cover_label: Label = $KnownCover
 onready var danger_meter: TextureProgress = $RedProgress
 onready var danger_meter_yellow: TextureProgress = $YellowProgress
 onready var danger_meter_orange: TextureProgress = $OrangeProgress
+var player_dead = false
 #var crosshair_coordinates = Vector2.ZERO
 
 func _ready():
@@ -29,6 +30,8 @@ func _process(_delta):
 			and player_stats.danger_level > 0)
 
 func update_danger_meter():
+	if player_dead: return
+	
 	danger_meter.value = player_stats.danger_level
 	danger_meter_yellow.value = player_stats.danger_level
 	danger_meter_orange.value = player_stats.danger_level_orange
