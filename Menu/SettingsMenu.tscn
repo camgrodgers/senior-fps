@@ -85,10 +85,16 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="MasterVolumeSlider" type="HBoxContainer" parent="."]
+[node name="Fullscreen" type="CheckBox" parent="."]
 margin_top = 120.0
 margin_right = 618.0
-margin_bottom = 136.0
+margin_bottom = 144.0
+text = "Fullscreen"
+
+[node name="MasterVolumeSlider" type="HBoxContainer" parent="."]
+margin_top = 154.0
+margin_right = 618.0
+margin_bottom = 170.0
 
 [node name="Label" type="Label" parent="MasterVolumeSlider"]
 margin_top = 1.0
@@ -115,13 +121,13 @@ __meta__ = {
 }
 
 [node name="Invincibility" type="CheckBox" parent="."]
-margin_top = 146.0
-margin_right = 618.0
-margin_bottom = 170.0
-text = "Invincibility"
-
-[node name="Flying" type="CheckBox" parent="."]
 margin_top = 180.0
 margin_right = 618.0
 margin_bottom = 204.0
+text = "Invincibility"
+
+[node name="Flying" type="CheckBox" parent="."]
+margin_top = 214.0
+margin_right = 618.0
+margin_bottom = 238.0
 text = "Flying"

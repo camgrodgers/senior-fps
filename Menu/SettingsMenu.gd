@@ -6,6 +6,7 @@ func _ready():
 	$InvertMouseY.pressed = settings.inverse_y
 	$MouseSlider/HSlider.value = settings.mouse_sensitivity
 	$FOVSlider/HSlider.value = settings.fov
+	$Fullscreen.pressed = settings.fullscreen
 	$MasterVolumeSlider/HSlider.value = settings.master_volume_pct
 
 func _process(delta):
@@ -16,6 +17,7 @@ func _process(delta):
 	$MouseSlider/ValueLabel.text = "%d" % settings.mouse_sensitivity
 	settings.set_fov($FOVSlider/HSlider.value)
 	$FOVSlider/ValueLabel.text = "%d" % settings.fov
+	settings.set_fullscreen($Fullscreen.pressed)
 	settings.set_master_volume_percent($MasterVolumeSlider/HSlider.value)
 	$MasterVolumeSlider/ValueLabel.text = "%d%%" % settings.master_volume_pct
 	settings.invincibility = $Invincibility.pressed

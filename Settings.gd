@@ -8,6 +8,7 @@ var fov: float = 90
 
 # Other settings
 var master_volume_pct: int = 100
+var fullscreen: bool = true
 
 # Temporary settings
 var invincibility: bool = false
@@ -23,6 +24,8 @@ func _ready():
 		mouse_sensitivity = config.get_value("camera", "mouse_sensitivity", 15)
 		fov = config.get_value("camera", "fov", 90)
 		master_volume_pct = config.get_value("audio", "master_bus_volume", 100)
+		fullscreen = config.get_value("window", "fullscreen", true)
+		OS.window_fullscreen = fullscreen
 		_update_master_volume(master_volume_pct)
 	else:
 		save_settings_to_file()
@@ -34,6 +37,7 @@ func save_settings_to_file() -> void:
 	config.set_value("camera", "mouse_sensitivity", mouse_sensitivity)
 	config.set_value("camera", "fov", fov)
 	config.set_value("audio", "master_bus_volume", master_volume_pct)
+	config.set_value("window", "fullscreen", fullscreen)
 	config.save("user://FPS_settings.cfg")
 
 func set_inverse_x(val: bool) -> void:
@@ -65,3 +69,11 @@ func set_master_volume_percent(val: float) -> void:
 func _update_master_volume(val: float) -> void:
 	var master_bus_index = AudioServer.get_bus_index("Master")
 	AudioServer.set_bus_volume_db(master_bus_index, linear2db(val / 100))
+
+func set_fullscreen(val: bool) -> void:
+	if val == fullscreen: return
+	
+	fullscreen = val
+	OS.window_fullscreen = fullscreen
+	save_settings_to_file()
+	
