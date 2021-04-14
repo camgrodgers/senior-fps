@@ -24,7 +24,7 @@ func danger_update(delta):
 	for e in enemies:
 		if e.world_state["can_see_player"]:
 			hidden_from_enemies = false
-		if e.last_player_position.distance_to(player_position) < 6:
+		if e.last_player_position.distance_to(player_position) < 10:
 			known_cover_position = true
 
 	for e in enemies:
