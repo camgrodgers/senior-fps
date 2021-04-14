@@ -8,6 +8,7 @@ onready var resume = $MarginContainer/HBoxContainer/Buttons/Resume
 onready var restart = $MarginContainer/HBoxContainer/Buttons/Restart
 onready var level_select_menu = $MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/LevelSelectMenu
 onready var settings_menu = $MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/SettingsMenu
+onready var controls_listing = $MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/Controls
 
 func _ready():
 	signals.connect("level_selected", self, "_on_level_selected")
@@ -37,11 +38,19 @@ func _on_LevelSelect_pressed():
 	level_select_menu.visible = not level_select_menu.visible
 	$MarginContainer/HBoxContainer/PanelContainer.visible = level_select_menu.visible
 	settings_menu.visible = false
+	controls_listing.visible = false
 
 func _on_Settings_pressed():
 	settings_menu.visible = not settings_menu.visible
 	$MarginContainer/HBoxContainer/PanelContainer.visible = settings_menu.visible
 	level_select_menu.visible = false
+	controls_listing.visible = false
+
+func _on_Controls_pressed():
+	controls_listing.visible = not controls_listing.visible
+	$MarginContainer/HBoxContainer/PanelContainer.visible = controls_listing.visible
+	level_select_menu.visible = false
+	settings_menu.visible = false
 
 func _on_Resume_pressed():
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
@@ -57,8 +66,5 @@ func _on_Restart_pressed():
 	signals.emit_signal("restart_level")
 	_resume()
 
-
 func _on_Quit_pressed():
 	signals.emit_signal("quit")
-
-
