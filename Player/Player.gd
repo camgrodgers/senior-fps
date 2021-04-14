@@ -245,10 +245,10 @@ func _process_item_use(_delta: float) -> void:
 			if items_in_slots[1] != null: _switch_to_weapon(items_in_slots[1])
 		if Input.is_action_pressed("slot2"):
 			if items_in_slots[2] != null: _switch_to_weapon(items_in_slots[2])
-		if Input.is_action_pressed("slot3"):
-			if items_in_slots[3] != null: _switch_to_weapon(items_in_slots[3])
-		if Input.is_action_pressed("slot4"):
-			if items_in_slots[4] != null: _switch_to_weapon(items_in_slots[4])
+#		if Input.is_action_pressed("slot3"):
+#			if items_in_slots[3] != null: _switch_to_weapon(items_in_slots[3])
+#		if Input.is_action_pressed("slot4"):
+#			if items_in_slots[4] != null: _switch_to_weapon(items_in_slots[4])
 	
 	var held_item = (
 		item_holder.get_child(0) if item_holder.get_child_count() > 0
