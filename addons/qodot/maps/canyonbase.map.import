@@ -1,0 +1,13 @@
+[remap]
+
+importer="qodot.map"
+type="Resource"
+path="res://.import/canyonbase.map-5d61ff41859ffe3c33fa1a58738f7154.tres"
+
+[deps]
+
+source_file="res://addons/qodot/maps/canyonbase.map"
+dest_files=[ "res://.import/canyonbase.map-5d61ff41859ffe3c33fa1a58738f7154.tres" ]
+
+[params]
+
