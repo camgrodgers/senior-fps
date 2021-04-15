@@ -1,0 +1,13 @@
+[remap]
+
+importer="qodot.map"
+type="Resource"
+path="res://.import/siege.map-b8d7f19886d3afcb44e4653c25bb53f1.tres"
+
+[deps]
+
+source_file="res://addons/qodot/maps/siege.map"
+dest_files=[ "res://.import/siege.map-b8d7f19886d3afcb44e4653c25bb53f1.tres" ]
+
+[params]
+
