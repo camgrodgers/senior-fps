@@ -1,0 +1,18 @@
+[remap]
+
+importer="hterrain_packed_texture_importer"
+type="StreamTexture"
+path.s3tc="res://.import/CanyonInfiltration_slot1_albedo_bump.packed_tex-e1372af67c2b305ef107ac10647f5587.s3tc.stex"
+path.etc2="res://.import/CanyonInfiltration_slot1_albedo_bump.packed_tex-e1372af67c2b305ef107ac10647f5587.etc2.stex"
+
+[deps]
+
+source_file="res://Levels/SnipersValley/CanyonInfiltration_slot1_albedo_bump.packed_tex"
+dest_files=[ "res://.import/CanyonInfiltration_slot1_albedo_bump.packed_tex-e1372af67c2b305ef107ac10647f5587.s3tc.stex", "res://.import/CanyonInfiltration_slot1_albedo_bump.packed_tex-e1372af67c2b305ef107ac10647f5587.etc2.stex" ]
+
+[params]
+
+compress/mode=2
+flags/repeat=1
+flags/filter=true
+flags/mipmaps=true

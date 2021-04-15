@@ -1,0 +1,76 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://Levels/CanyonInfiltration/SmallBuilding02brick.tres" type="Material" id=1]
+
+[node name="SmallBuilding02" type="Spatial"]
+
+[node name="SpotLight2" type="SpotLight" parent="."]
+transform = Transform( 1, 0, 0, 0, 0.0135781, 0.999908, 0, -0.999908, 0.0135781, 0, 4.05702, -4.7981 )
+shadow_enabled = true
+spot_range = 7.17518
+spot_angle = 55.2228
+
+[node name="SpotLight" type="SpotLight" parent="."]
+transform = Transform( 1, 0, 0, 0, 0.0135781, 0.999908, 0, -0.999908, 0.0135781, 0, 4.05702, 0 )
+shadow_enabled = true
+spot_range = 7.51696
+spot_angle = 53.1856
+
+[node name="Walls" type="CSGCombiner" parent="."]
+material_override = ExtResource( 1 )
+use_collision = true
+
+[node name="Outer" type="CSGBox" parent="Walls"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.9883, 0 )
+width = 10.0
+height = 6.0
+depth = 20.0
+
+[node name="InteriorHole" type="CSGBox" parent="Walls/Outer"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.490009, 0 )
+operation = 2
+width = 9.0
+height = 5.0
+depth = 19.0
+
+[node name="Door" type="CSGBox" parent="Walls/Outer"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -4.92213, -0.942912, -5.50518 )
+operation = 2
+width = 1.16046
+height = 4.0
+depth = 3.0
+
+[node name="Door2" type="CSGBox" parent="Walls/Outer"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -4.92213, -0.942912, 6.50656 )
+operation = 2
+width = 1.16046
+height = 4.0
+depth = 3.0
+
+[node name="Door3" type="CSGBox" parent="Walls/Outer"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 4.94551, -0.942912, 6.50656 )
+operation = 2
+width = 1.16046
+height = 4.0
+depth = 3.0
+
+[node name="Window" type="CSGBox" parent="Walls/Outer"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -4.90797, -0.398701, 3.03672 )
+operation = 2
+width = 1.16046
+height = 1.81392
+depth = 1.84093
+
+[node name="Window2" type="CSGBox" parent="Walls/Outer"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -4.90797, -0.398701, -0.985872 )
+operation = 2
+width = 1.16046
+height = 1.81392
+depth = 1.84093
+
+[node name="Window3" type="CSGBox" parent="Walls/Outer"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 4.78136, -0.398701, -0.985872 )
+operation = 2
+width = 1.16046
+height = 1.81392
+depth = 1.84093
