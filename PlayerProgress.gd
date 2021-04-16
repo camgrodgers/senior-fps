@@ -33,6 +33,12 @@ var levels = {
 		, "best_time": -1.0
 	}
 	,
+	"Sniper's Valley": {
+		 "filename": "res://Levels/SnipersValley/SnipersValley.tscn"
+		, "completed": false
+		, "best_time": -1.0
+	}
+	,
 }
 var save_filename = "user://save.dat"
 var current_level_name = null
