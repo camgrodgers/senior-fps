@@ -1,4 +1,4 @@
-[gd_scene load_steps=31 format=2]
+[gd_scene load_steps=34 format=2]
 
 [ext_resource path="res://textures/PNG/Red/texture_10.png" type="Texture" id=1]
 [ext_resource path="res://textures/PNG/Orange/texture_09.png" type="Texture" id=2]
@@ -10,6 +10,7 @@
 [ext_resource path="res://textures/PNG/Light/texture_06.png" type="Texture" id=8]
 [ext_resource path="res://textures/PNG/Orange/texture_10.png" type="Texture" id=9]
 [ext_resource path="res://textures/PNG/Dark/texture_04.png" type="Texture" id=10]
+[ext_resource path="res://Levels/JacobLevel2/AnimationPlayer.gd" type="Script" id=11]
 
 [sub_resource type="CubeMesh" id=1]
 size = Vector3( 90, 0.5, 90 )
@@ -73,7 +74,40 @@ albedo_texture = ExtResource( 1 )
 [sub_resource type="SpatialMaterial" id=19]
 albedo_texture = ExtResource( 8 )
 
-[sub_resource type="Environment" id=20]
+[sub_resource type="ProceduralSky" id=20]
+
+[sub_resource type="Environment" id=21]
+background_mode = 2
+background_sky = SubResource( 20 )
+
+[sub_resource type="Animation" id=22]
+resource_name = "New Anim"
+length = 40.0
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("Camera:translation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 17.5, 23.9, 39.2 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector3( -39.0139, 3.9628, -34.3286 ), Vector3( 10.1635, 3.9628, 10.7324 ), Vector3( 26.7491, 3.9628, 12.9858 ), Vector3( -33.7675, 3.9628, -31.0697 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Camera:rotation_degrees")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 17.6, 23.9, 27.2 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector3( 0, -144.937, 0 ), Vector3( 0, -72.4432, 0 ), Vector3( 0, 17.252, 0 ), Vector3( 0, 24.0028, 0 ) ]
+}
 
 [node name="MainScene" type="Spatial"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.435333, 0.225521, -0.140871 )
@@ -202,10 +236,18 @@ transform = Transform( 7.08036, 0, 0, 0, 3.70962, 0, 0, 0, 0.618458, 29.0149, 4.
 material = SubResource( 19 )
 
 [node name="Camera" type="Camera" parent="."]
-transform = Transform( -0.692043, 0, -0.721857, 0, 1, 0, 0.721857, 0, -0.692043, -17.4816, 3.9628, -13.7416 )
+transform = Transform( 0.974445, 0, 0.224625, 0, 1, 0, -0.224625, 0, 0.974445, 25.9717, 3.9628, 12.8802 )
+fov = 90.0
+far = 500.0
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
-environment = SubResource( 20 )
+environment = SubResource( 21 )
 
 [node name="DirectionalLight" type="DirectionalLight" parent="."]
 transform = Transform( 1, 0, 0, 0, -0.451983, 0.892026, 0, -0.892026, -0.451983, 0, 8.64516, -4.47035e-08 )
+shadow_enabled = true
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+autoplay = "New Anim"
+"anims/New Anim" = SubResource( 22 )
+script = ExtResource( 11 )

@@ -19,6 +19,7 @@ func _process(delta):
 	
 	if not main.in_game:
 		Input.set_mouse_mode(Input.MOUSE_MODE_CONFINED)
+		get_tree().paused = false
 		self.visible = true
 		return
 
